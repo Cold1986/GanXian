@@ -1,0 +1,231 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css?v=01291">
+    <link rel="stylesheet" href="~/Content/style.css?v=1?v=01291">
+    <link rel="stylesheet" href="~/Content/member.css?v=01291">
+    <link rel="stylesheet" href="~/Content/order3.css?v=01291">
+    <link rel="stylesheet" href="~/Content/productDetail.css">
+    @{
+        ViewBag.Title = "赶鲜";
+    }
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script charset="utf-8" src="~/Scripts/global.js?v=01291"></script>
+    <script charset="utf-8" src="~/Scripts/bootstrap.min.js?v=01291"></script>
+    <script charset="utf-8" src="~/Scripts/template.js?v=01291"></script>
+    <script charset="utf-8" src="~/Scripts/TouchSlide.js?v=01291"></script>
+    <script charset="utf-8" src="~/Scripts/prodDetail.js?v=01291"></script>
+</head>
+
+<body>
+    <div class="fanhui_cou">
+        <div class="fanhui_1"></div>
+        <div class="fanhui_ding">顶部</div>
+    </div>
+
+    <header class="header">
+        <div class="fix_nav">
+            <div style="max-width:768px;margin:0 auto;background:#000;position: relative;">
+                <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+                <div class="tit">商品详情</div>
+            </div>
+        </div>
+    </header>
+    <input type="hidden" id="prodId" value="663" />
+    <input id="currSkuId" value="" type="hidden" />
+    <div class="container">
+        <div class="row white-bg">
+            <div id="slide">
+                <div class="hd">
+                    <ul>
+                        <li>1</li>
+                    </ul>
+                </div>
+                <div class="bd">
+                    <div class="tempWrap" style="overflow:hidden; position:relative;">
+                        <ul style="width: 3072px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translateX(-768px);">
+                            <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
+                                <a href="#"><img style="max-width:100vw;max-height:80vw;margin:auto;" src="~/img/product01.jpg"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row gary-bg">
+            <div class="white-bg p10 details_con">
+                <h1 class="item-name" id="prodName">小眼带鱼</h1>
+                <ul>
+                    <li>
+                        <label>规格：</label>
+                        <span class="spec">5两</span>
+                    </li>
+                    <li>
+                        <label>折后价：</label>
+                        <span class="price">¥<span class="price" id="prodCash">179.00</span></span><del class="spec">197</del>
+                    </li>
+
+                    <li>
+                        <label>数量：</label>
+                        <div class="count_div" style="height: 30px; width: 130px;">
+                            <a href="javascript:void(0);" class="minus"></a>
+                            <input type="text" class="count" value="1" id="prodCount" readonly="readonly" />
+                            <a href="javascript:void(0);" class="add"></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div id="goodsContent" class="goods-content white-bg">
+
+                <div class="hd hd_fav">
+                    <ul>
+                        <li class="on">图文详情</li>
+                    </ul>
+                </div>
+
+                <div class="tempWrap" style="overflow:hidden; position:relative;">
+                    <ul>
+                        <li>
+                            <label>产地：</label>
+                            <span class="spec">舟山</span>
+                        </li>
+                        <li>
+                            <label>净重：</label>
+                            <span class="spec">2000克</span>
+                        </li>
+                        <li>
+                            <label>存放条件：</label>
+                            <span class="spec">5度以下</span>
+                        </li>
+                    </ul>
+                    <div class="product-description">
+                        东海本地带鱼，每年入冬后小眼带鱼又肥又鲜，清蒸出油，入口即化，鲜美无比。带鱼的麟含有多种营养成分，千万不要刮掉哦。唯一的问题就是小眼带鱼因为肉质细嫩，出水后很容易破肚，这个我们也没法避免，所以介意的朋友请慎拍。往往大家也会把破肚作为衡量是否为正宗小眼带鱼的标准之一。<br /><br />带鱼吃口很凶，所以它肚子里小鱼小虾很多，再加上长度不利于真空包装，所以我都是事先称重拍照，再进行剪嘴，清理内脏，切段真空包装，介意的朋友请提前说明。<br /><br />渔山岛海钓带鱼的最佳时节是每年的789月份，包船夜钓，包船费用4500-5000左右，需要的可事先联系客服咨询。<br /><br />【本店所售带鱼的常规规格为5-7两/条，需要其他规格的请联系客服】<br /><br />
+                    </div>
+                    <div class="prop-area" style="min-height:300px;overflow: hidden;">
+                        <img src="~/img/product01.jpg" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-foot">
+            <div class="fixed_inner">
+                <a class="btn-fav" href="javascript:void(0);" onclick="addInterest(this,'663');">
+                    <i class="i-fav"></i><span>收藏</span>
+                </a>
+                <a class="cart-wrap" href="/shopcart">
+                    <i class="i-cart"></i>
+                    <span>购物车</span>
+                    <span class="add-num" id="totalNum">0</span>
+                </a>
+                <div class="buy-btn-fix">
+                    <a class="btn btn-info btn-cart" onclick="addShopCart();" href="javascript:void(0);">加入购物车</a>
+                    <a class="btn btn-danger btn-buy" onclick="buyNow();" href="javascript:void(0);">立即购买</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <footer class="footer">
+            <div class="foot-con">
+                <div class="foot-con_2">
+                    <a href="index.html">
+                        <i class="navIcon home"></i>
+                        <span class="text">首页</span>
+                    </a>
+                    <a href="category.html">
+                        <i class="navIcon sort"></i>
+                        <span class="text">分类</span>
+                    </a>
+                    <a href="shopcart.html">
+                        <i class="navIcon shop"></i>
+                        <span class="text">购物车</span>
+                    </a>
+                    <a href="userhome.html">
+                        <i class="navIcon member"></i>
+                        <span class="text">我的</span>
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        var contextPath = '';
+        var currProdId = '663';
+        var prodName = '小眼带鱼';
+        var skuDtoList = eval('[{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:636","skuId":1358,"status":1},{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:661","skuId":1359,"status":1},{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:635","skuId":1360,"status":1}]');
+        var propValueImgList = eval('[{"imgList":["~/img/product01.jpg"],"valueId":661},{"imgList":["~/img/product01.jpg"],"valueId":636}]');
+        var allSelected = true;
+        var prodLessMsg = '商品缺货';
+        var failedOwnerMsg = '您是商品主人, 不能购买此商品。';
+        var failedBasketMaxMsg = '已达到购物车最大数量, 不能购买此商品。';
+        var failedBasketErrorMsg = '购物车错误, 不能购买此商品。';
+        var photoPath = "";
+        var distUserName = '';
+
+        //插件：图片轮播
+        TouchSlide({
+            slideCell: "#slide",
+            titCell: ".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+            mainCell: ".bd ul",
+            effect: "left",
+            autoPlay: false,//自动播放
+            autoPage: true, //自动分页
+            switchLoad: "_src" //切换加载，真实图片路径为"_src"
+        });
+
+        var scrollTop = 0;
+        TouchSlide({
+            slideCell: "#goodsContent",
+            startFun: function (i, c) {
+                var prodId = $("#prodId").val();
+                if (i == 1) {//规格参数
+                    var th = jQuery("#goodsContent .bd ul").eq(i);
+                    if (!th.hasClass('hadGoodsContent')) {
+                        queryParameter(th, prodId);
+                    }
+
+                    if ($(window).scrollTop() > scrollTop) {
+                        $(window).scrollTop(scrollTop);
+                    }
+
+                } else if (i == 2) {//评价
+                    var th = jQuery("#goodsContent .bd ul").eq(i);
+
+                    if (!th.hasClass('hadConments')) {
+                        queryProdComment(th, prodId);
+                    }
+
+                    if ($(window).scrollTop() > scrollTop) {
+                        $(window).scrollTop(scrollTop);
+                    }
+                } else {
+                    if (scrollTop == 0) {
+                        $(window).scrollTop(scrollTop);
+                        var hd_fav = $('.hd_fav');
+                        var position = hd_fav.position();
+
+                        scrollTop = position.top;
+                    }
+                }
+            },
+        });
+
+    </script>
+</body>
+</html>
