@@ -343,6 +343,14 @@
       <Project>{6ff5efa9-ca43-4d4b-8a5a-e8f03ce34379}</Project>
       <Name>CommonLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Facade\Facade.csproj">
+      <Project>{928bd36f-8e50-46b6-b444-1ec25f6ceb2e}</Project>
+      <Name>Facade</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{53995dbb-9836-4647-ad22-865884fdeb9e}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
