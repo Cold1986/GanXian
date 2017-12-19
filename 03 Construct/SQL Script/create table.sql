@@ -1,5 +1,5 @@
 use ganxian
-
+drop table Products
 -- 产品表
 create table Products
 (
@@ -38,7 +38,7 @@ status int null comment '状态', -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
-
+drop table Products2Types
 -- 首页分类2产品表
 create table Products2Types
 (
@@ -54,7 +54,7 @@ column2 nvarchar(100) null, -- 备用字段2
 FOREIGN KEY (productId) REFERENCES Products (productId),
 FOREIGN KEY (typeId) REFERENCES TypeList (typeId)
 )
-
+drop table Stocks
 -- 库存表\ 是否需要提醒补货
 create table Stocks
 (
