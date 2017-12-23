@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 *{-webkit-tap-highlight-color:transparent;outline:0}
 html {-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;font-family:Helvetica,"STHeiti STXihei","Microsoft JhengHei","Microsoft YaHei",Tohoma,Arial;}
 body{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif; font-size:14px; color: #999;margin: 0px;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;-webkit-backface-visibility:hidden;zoom:1; background-color: #eee;}
@@ -75,8 +75,8 @@ h1, h2, h3{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;}
 .navbar-search{height: 100%; top:0; position: absolute; width: auto !important;}
 .left-search{padding-right: 0;left:5px;right: 55px;}
 .right-search{padding-right: 0;right:5px;left: 55px;}
-.left-search .form-control{background:#fff url(../images/search.jpg) no-repeat 5px center; background-size: 25px;padding-left: 30px;margin-top:5px;}
-.right-search .form-control{background:#fff url(../images/search.jpg) no-repeat right center; background-size: 25px; margin-top:5px;}
+.left-search .form-control{background:#fff url(../../images/search.jpg) no-repeat 5px center; background-size: 25px;padding-left: 30px;margin-top:5px;}
+.right-search .form-control{background:#fff url(../../images/search.jpg) no-repeat right center; background-size: 25px; margin-top:5px;}
 .nav-left,.nav-right{width:42px; height:34px; position:absolute; top:5px; display:block; overflow:hidden; text-indent:-999px;border-radius: 5px;}
 .nav-left{left:5px;}
 .nav-right{right:5px;text-align: center;}

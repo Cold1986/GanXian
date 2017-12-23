@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
     <title>@ViewBag.Title - 赶鲜</title>
     @Styles.Render("~/Content/css/webLayout")
-    @Scripts.Render("~/bundles/jquery")
+    <script charset="utf-8" src="~/Scripts/jquery-1.10.2.min.js"></script>
 </head>
 <body>
     @Html.Partial("_HeaderPartial")
@@ -31,14 +31,13 @@
                     <i class="navIcon shop"></i>
                     <span class="text">购物车</span>
                 </a>
-                <a href="userhome.html">
+                <a href="~/User">
                     <i class="navIcon member"></i>
                     <span class="text">我的</span>
                 </a>
             </div>
         </div>
     </footer>
-    @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>

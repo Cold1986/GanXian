@@ -1,5 +1,5 @@
 use ganxian
-
+drop table Products
 -- 产品表
 create table Products
 (
@@ -30,7 +30,7 @@ create table TypeList
 typeId int(4) NOT NULL AUTO_INCREMENT PRIMARY KEY comment '编号',
 typeName nvarchar(50) not null comment '类别名称',
 isShow int(2) not null comment '是否需要首页推荐', -- 0否 1是
-showNum int(4) not null comment '显示张数',
+-- showNum int(4) not null comment '显示张数',
 isBanner int(2) not null comment '是否是banner', -- banner 为轮播效果，其他平铺',
 remark nvarchar(2000) null  comment '信息',
 createDate datetime null comment '插入时间',
@@ -38,7 +38,7 @@ status int null comment '状态', -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
-
+drop table Products2Types
 -- 首页分类2产品表
 create table Products2Types
 (
@@ -54,7 +54,7 @@ column2 nvarchar(100) null, -- 备用字段2
 FOREIGN KEY (productId) REFERENCES Products (productId),
 FOREIGN KEY (typeId) REFERENCES TypeList (typeId)
 )
-
+drop table Stocks
 -- 库存表\ 是否需要提醒补货
 create table Stocks
 (
@@ -75,12 +75,16 @@ create table Users
 (
 id int(8) NOT NULL AUTO_INCREMENT PRIMARY KEY comment '编号',
 openid nvarchar(40) null comment '微信openid',
-userName nvarchar(40) null comment '用户名',
-userPic nvarchar(100) null comment '用户头像',
+-- userName nvarchar(40) null comment '用户名',
+-- userPic nvarchar(100) null comment '用户头像',
 createDate datetime not null comment '插入时间', 
 status int null comment '状态', -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
-column2 nvarchar(100) null -- 备用字段2
+column2 nvarchar(100) null, -- 备用字段2
+
+-- 电话
+-- 送货地址
+
 )
 
 -- 用户地址
