@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<GanXian.Model.ProductsAndSalesNum>
 @{
     ViewBag.Title = "产品列表";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -9,145 +9,54 @@
         <ul class="mod-filter clearfix">
             <div class="white-bg_2 bb1">
                 <li id="default" class="active">
-                    <a title="默认排序" href="javascript:void(0);">默认</a>
+                    @Html.ActionLink("默认", "Category", new { sortOrder = "" })
+                </li>
+                <li id="publishDate">
+                    <a title="点击按日期从高到低排序"
+                       href=@string.Concat("Category?sortOrder=",ViewBag.ReleaseDateSortParm)>
+                        日期
+                        <i class='icon_sort'></i>
+                    </a>
                 </li>
                 <li id="buys">
                     <a title="点击按销量从高到低排序"
-                       href="javascript:void(0);">
+                       href=@string.Concat("Category?sortOrder=",ViewBag.SalesSortParm)>
                         销量
                         <i class='icon_sort'></i>
                     </a>
                 </li>
                 <li id="cash">
                     <a title="点击按价格从高到低排序"
-                       href="javascript:void(0);">
+                       href=@string.Concat("Category?sortOrder=",ViewBag.PriceSortParm)>
                         价格
                         <i class='icon_sort'></i>
                     </a>
+
                 </li>
             </div>
         </ul>
 
         <div class="item-list" id="container" rel="2" status="0">
             <input type="hidden" id="ListTotal" value="1">
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product01.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">小眼带鱼</p>
-                        <p class="p-description">
-                            东海本地带鱼，每年入冬后小眼带鱼又肥又鲜，清蒸出油，入口即化，鲜美无比。带鱼的麟含有多种营养成分，千万不要刮掉哦。唯一的问题就是小眼带鱼因为肉质细嫩，出水后很容易破肚，这个我们也没法避免，所以介意的朋友请慎拍。往往大家也会把破肚作为衡量是否为正宗小眼带鱼的标准之一。
-                            带鱼吃口很凶，所以它肚子里小鱼小虾很多，再加上长度不利于真空包装，所以我都是事先称重拍照，再进行剪嘴，清理内脏，切段真空包装，介意的朋友请提前说明。
-                            渔山岛海钓带鱼的最佳时节是每年的789月份，包船夜钓，包船费用4500-5000左右，需要的可事先联系客服咨询。
-                            【本店所售带鱼的常规规格为5-7两/条，需要其他规格的请联系客服】
-                        </p>
-                        <p class="p-origin"><em class="price">¥10.00</em><del class="old-price">¥12.00</del></p>
+            @foreach (var item in Model)
+            {
+                <a href=@string.Concat("index/", item.productId)>
+                    <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
+                        <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.pic1))></div>
+                        <div class="p-info">
+                            <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
+                            <p class="p-description">
+                                @(new HtmlString(item.remark))
+                            </p>
+                            <p class="p-origin"><em class="price">@Html.DisplayFor(modelItem => item.discountedPrice)</em><del class="old-price">@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
+                        </div>
                     </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product02.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">方头鱼</p>
-                        <p class="p-description">
-                            方头鱼也是深海鱼类，色泽鲜红，头方方的，它跟大黄鱼一样，属于鲈科，肉质与鲜美程度非常接近，适合多种做法。
-                            不过方头鱼又好看又好吃，价格也平民，但是小朋友忌食，尤其是体型越大的方头鱼，体内汞含量极有可能超标，建议食用一斤以内的哦。同样可能汞含量超标的还有鲨鱼、箭鱼、旗鱼、枪鱼、罗非鱼、方头鱼以及鲶鱼！
-                        </p>
-                        <p class="p-origin"><em class="price">¥15.00</em><del class="old-price">¥19.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product03.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">海鲈鱼</p>
-                        <p class="p-description">海钓常见鱼类，雪菜烧汤或者葱油都不错，价格也实惠，一般在渔山岛矶钓为主，路亚效果也不错，吃口很凶。如果是渔山岛海钓的鲈鱼建议刺身尝试一下，口感非常棒，肉质Q弹，鲜美无比！</p>
-                        <p class="p-origin"><em class="price">¥10.00</em><del class="old-price">¥12.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product04.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">虎头鱼</p>
-                        <p class="p-description">
-                            我们叫虎头鱼，长相比较奇特，个头也不大，但是营养绝对在石浦海鱼类数一数二了，煲出来的鱼汤浓白，通常作为给小孩补身体食用。
-                            抛竿串钩在渔山岛海钓的话收获颇丰，注意背上的刺，有点毒，戳到可能会肿几天，所以钓这种鱼尽量带上手套！
-                        </p>
-                        <p class="p-origin"><em class="price">¥133.00</em><del class="old-price">¥142.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product05.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">米鱼</p>
-                        <p class="p-description">越大越贵，五斤以上的米鱼就是不是卖鱼了，是在卖鱼鳔，鱼鳔制成鱼胶后是一味昂贵的药材，价值不菲。1斤左右的小米鱼肉质鲜美，价格实惠，多种烹饪均适合，还可以做鱼丸，鱼面。做松鼠鱼是一个不错的烹饪方法</p>
-                        <p class="p-origin"><em class="price">¥13.00</em><del class="old-price">¥18.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product06.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">油鳗</p>
-                        <p class="p-description">油鳗可以生活在海里也可以生活在淡水里，肉质非常接近淡水河鳗，当然价格肯定是油鳗便宜很多，营养成分和鲜美程度绝对不输于淡水河鳗，而且刺也不多，肉质也嫩，非常适合小朋友老年人滋补！油鳗晒制成鱼干后清蒸炒菜鲜美无比，旧时候是过年才吃的到的佳肴。</p>
-                        <p class="p-origin"><em class="price">¥55.00</em><del class="old-price">¥66.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product07.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">马鲛鱼</p>
-                        <p class="p-description">马鲛鱼俗称鲅鱼越大肉质越鲜。1-10斤都有，价格也会有所不同，越大越贵。新鲜的马鲛鱼我们通常切段烧雪菜汤或者香煎，不过在冬季捕获量巨大，更多的是做成马鲛鱼丸，味道更鲜。马鲛鱼丸一定要选用纯手工纯鱼肉的哦，不然口感会差很多。</p>
-                        <p class="p-origin"><em class="price">¥150.00</em><del class="old-price">¥162.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product08.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">白鳗</p>
-                        <p class="p-description">
-                            海鳗中的特色代表，肉质紧实，个大，鳗鱼鳔晒干后价高黄金，滋补的圣品。通常的做法为爆盐后清蒸，咸鲜中透着清香，大快朵颐好不快活。
-                            白鳗更多的是被晒制成干，在我们这鳗鱼干往往被替代成肉丝，炒菜前加一点鳗鱼干油里爆一下，整盘菜更加鲜香。
-                        </p>
-                        <p class="p-origin"><em class="price">¥110.00</em><del class="old-price">¥121.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product09.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">花枝</p>
-                        <p class="p-description">个大，肉嫩，尾部有骨刺，跟墨鱼口感差不多，只不过是品种略有不同，新鲜的花枝肚子上应该是白色的，不会发红。有些不良商贩故意在花枝身上涂满墨汁就是想掩盖身体发红这个特点，请大家选购时要注意辨别。</p>
-                        <p class="p-origin"><em class="price">¥23.00</em><del class="old-price">¥25.00</del></p>
-                    </div>
-                </div>
-            </a>
-            <a href="views.html">
-                <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                    <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src="~/img/product10.jpg"></div>
-                    <div class="p-info">
-                        <p class="p-title">鱿鱼</p>
-                        <p class="p-description">本地正宗鱿鱼个头不大，肉质鲜美细嫩，白灼或者清蒸炒菜都很鲜香。不过样子的确不太好看，另外飞机鱿鱼是不好吃的，但是价格很便宜，品相也好，请大家注意辨别。往往鱿鱼丝就是用飞机鱿鱼做的。</p>
-                        <p class="p-origin"><em class="price">¥20.00</em><del class="old-price">¥22.00</del></p>
-                    </div>
-                </div>
-            </a>
+                </a>
+            }
         </div>
 
         <div id="ajax_loading" style="display:none;width:300px;margin: 10px  auto 15px;text-align:center;">
-            <img src="images/loading.gif">
+            <img src="~/images/loading.gif">
         </div>
         <form action='/m_search/prodlist' method="post" id="list_form">
             <input type="hidden" id="curPageNO" name="curPageNO" value="" />
@@ -159,4 +68,3 @@
         </form>
     </div>
 </div>
-

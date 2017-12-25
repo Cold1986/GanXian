@@ -13,8 +13,8 @@ namespace GanXian.Model
 		private int _productid;
 		private string _productname;
 		private string _specs;
-		private string _originalprice;
-		private string _discountedprice;
+		private decimal _originalprice;
+		private decimal? _discountedprice;
 		private DateTime? _discountedexpireddate;
 		private string _pic1;
 		private string _pic2;
@@ -25,7 +25,7 @@ namespace GanXian.Model
 		private string _storagecondition;
 		private string _remark;
 		private DateTime? _createdate;
-		private int? _status;
+		private int? _status=1;
 		private string _column1;
 		private string _column2;
 		/// <summary>
@@ -55,7 +55,7 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public string originalPrice
+		public decimal originalPrice
 		{
 			set{ _originalprice=value;}
 			get{return _originalprice;}
@@ -63,7 +63,7 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public string discountedPrice
+		public decimal? discountedPrice
 		{
 			set{ _discountedprice=value;}
 			get{return _discountedprice;}

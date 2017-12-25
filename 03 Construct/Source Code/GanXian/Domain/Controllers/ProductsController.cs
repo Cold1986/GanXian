@@ -1,5 +1,4 @@
 ﻿using CommonLib;
-using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using GanXian.Model;
+using GanXian.BLL;
 
 namespace Domain.Controllers
 {
@@ -19,15 +19,9 @@ namespace Domain.Controllers
             var resCache = CacheHelper.GetCache("product_" + id.ToString());
             if (resCache != null) products = (products)resCache;
             else {
-
-                using (IDbConnection conn = DapperHelper.MySqlConnection())
-                {
-                    string sqlCommandText = @"SELECT * FROM Products WHERE productId=@ID";
-                    products = conn.Query<products>(sqlCommandText, new { ID = id }).FirstOrDefault();
-                }
+                products = ProductsBiz.CreateNew().getProductById(id);
                 if (products != null)
                 {
-                    products.remark = products.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />");
                     var start = DateTime.Now;
                     var expiredDate = start.AddDays(1);
                     TimeSpan ts = expiredDate - start;
@@ -49,11 +43,58 @@ namespace Domain.Controllers
             return Json("success");
         }
 
-        public ActionResult Category()
+        public ActionResult Category(string sortOrder)
         {
+            List<ProductsAndSalesNum> productsAndSalesNumList;
+            var resCache = CacheHelper.GetCache("productsAndSalesNumList");
+            if (resCache != null) productsAndSalesNumList = (List<ProductsAndSalesNum>)resCache;
+            else {
+                productsAndSalesNumList = ProductsBiz.CreateNew().getAllProductsAndSalesNum();
+                if (productsAndSalesNumList != null)
+                {
+                    var start = DateTime.Now;
+                    var expiredDate = start.AddHours(1);
+                    TimeSpan ts = expiredDate - start;
+                    CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
+                }
+            }
+            ViewBag.SortMethod = String.IsNullOrEmpty(sortOrder) ? "defaultSort" : "defaultSort";
+            ViewBag.ReleaseDateSortParm = sortOrder == "date" ? "date_desc" : "date";
+            ViewBag.SalesSortParm = sortOrder == "sales" ? "sales_desc" : "sales";
+            ViewBag.PriceSortParm = sortOrder == "price" ? "price_desc" : "price";
+
+
+            switch (sortOrder)
+            {
+                case "date":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.createDate).ToList();
+                    break;
+                case "date_desc":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.createDate).ToList();
+                    break;
+                case "sales":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.soldNum).ToList();
+                    break;
+                case "sales_desc":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).ToList();
+                    break;
+                case "price":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.discountedPrice).ToList();
+                    break;
+                case "price_desc":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.discountedPrice).ToList();
+                    break;
+                case "defaultSort":
+                    productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.productId).ToList();
+                    break;
+                default:
+                    productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.productId).ToList();
+                    break;
+            }
+
             ViewBag.PageType = "ProductsPage";
             ViewBag.PageName = "产品列表";
-            return View();
+            return View(productsAndSalesNumList);
         }
 
         public ActionResult Shopcart()
