@@ -8,31 +8,78 @@
     <div class="row">
         <ul class="mod-filter clearfix">
             <div class="white-bg_2 bb1">
-                <li id="default" class="active">
-                    @Html.ActionLink("默认", "Category", new { sortOrder = "" })
-                </li>
-                <li id="publishDate">
-                    <a title="点击按日期从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.ReleaseDateSortParm)>
-                        日期
-                        <i class='icon_sort'></i>
-                    </a>
-                </li>
-                <li id="buys">
-                    <a title="点击按销量从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.SalesSortParm)>
-                        销量
-                        <i class='icon_sort'></i>
-                    </a>
-                </li>
-                <li id="cash">
-                    <a title="点击按价格从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.PriceSortParm)>
-                        价格
-                        <i class='icon_sort'></i>
-                    </a>
-
-                </li>
+                @if (string.IsNullOrEmpty(ViewBag.SortMethod) || ViewBag.SortMethod == "defaultSort")
+                {
+                    <li id="default" class="active">
+                        @Html.ActionLink("默认", "Category", new { sortOrder = "" })
+                    </li>
+                }
+                else
+                {
+                    <li id="default">
+                        @Html.ActionLink("默认", "Category", new { sortOrder = "" })
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "date")
+                {
+                    <li id="publishDate" class="active">
+                        <a title="点击按日期从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>
+                            日期
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="publishDate">
+                        <a title="点击按日期从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>
+                            日期
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "sales")
+                {
+                    <li id="buys" class="active">
+                        <a title="点击按销量从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.SalesSortParm)>
+                            销量
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="buys">
+                        <a title="点击按销量从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.SalesSortParm)>
+                            销量
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "price")
+                {
+                    <li id="cash" class="active">
+                        <a title="点击按价格从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.PriceSortParm)>
+                            价格
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="cash">
+                        <a title="点击按价格从高到低排序"
+                           href=@string.Concat("Category?sortOrder=", ViewBag.PriceSortParm)>
+                            价格
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
             </div>
         </ul>
 

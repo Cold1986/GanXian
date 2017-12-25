@@ -58,31 +58,38 @@ namespace Domain.Controllers
                     CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
                 }
             }
-            ViewBag.SortMethod = String.IsNullOrEmpty(sortOrder) ? "defaultSort" : "defaultSort";
+            ViewBag.SortMethod = "defaultSort";
             ViewBag.ReleaseDateSortParm = sortOrder == "date" ? "date_desc" : "date";
             ViewBag.SalesSortParm = sortOrder == "sales" ? "sales_desc" : "sales";
             ViewBag.PriceSortParm = sortOrder == "price" ? "price_desc" : "price";
-
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "defaultSort" : sortOrder;
+            ViewBag.SortClass = sortOrder.IndexOf("desc") > 0 ? "icon_sort_down" : "icon_sort_up";
 
             switch (sortOrder)
             {
                 case "date":
                     productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.createDate).ToList();
+                    ViewBag.SortMethod = "date";
                     break;
                 case "date_desc":
                     productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.createDate).ToList();
+                    ViewBag.SortMethod = "date";
                     break;
                 case "sales":
                     productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.soldNum).ToList();
+                    ViewBag.SortMethod = "sales";
                     break;
                 case "sales_desc":
                     productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).ToList();
+                    ViewBag.SortMethod = "sales";
                     break;
                 case "price":
                     productsAndSalesNumList = productsAndSalesNumList.OrderBy(s => s.discountedPrice).ToList();
+                    ViewBag.SortMethod = "price";
                     break;
                 case "price_desc":
                     productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.discountedPrice).ToList();
+                    ViewBag.SortMethod = "price";
                     break;
                 case "defaultSort":
                     productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.productId).ToList();
