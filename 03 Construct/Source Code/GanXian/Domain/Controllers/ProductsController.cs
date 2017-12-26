@@ -43,7 +43,7 @@ namespace Domain.Controllers
             return Json("success");
         }
 
-        public ActionResult Category(string sortOrder)
+        public ActionResult Category(string sortOrder, string searchString)
         {
             List<ProductsAndSalesNum> productsAndSalesNumList;
             var resCache = CacheHelper.GetCache("productsAndSalesNumList");
@@ -64,6 +64,12 @@ namespace Domain.Controllers
             ViewBag.PriceSortParm = sortOrder == "price" ? "price_desc" : "price";
             sortOrder = string.IsNullOrEmpty(sortOrder) ? "defaultSort" : sortOrder;
             ViewBag.SortClass = sortOrder.IndexOf("desc") > 0 ? "icon_sort_down" : "icon_sort_up";
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productsAndSalesNumList = productsAndSalesNumList.Where(w => w.remark.Contains(searchString) 
+                                                                        || w.productName.Contains(searchString)).ToList();
+            }
 
             switch (sortOrder)
             {

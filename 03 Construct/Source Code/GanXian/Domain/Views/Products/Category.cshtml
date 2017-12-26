@@ -11,20 +11,21 @@
                 @if (string.IsNullOrEmpty(ViewBag.SortMethod) || ViewBag.SortMethod == "defaultSort")
                 {
                     <li id="default" class="active">
-                        @Html.ActionLink("默认", "Category", new { sortOrder = "" })
+                        <a title="点击按默认排序" href="javascript:location.href='Category?searchString='+document.getElementById('searchString').value">默认</a>
                     </li>
                 }
                 else
                 {
                     <li id="default">
-                        @Html.ActionLink("默认", "Category", new { sortOrder = "" })
+                        <a title="点击按默认排序" href="javascript:location.href='Category?searchString='+document.getElementById('searchString').value">默认</a>
                     </li>
                 }
                 @if (ViewBag.SortMethod == "date")
                 {
                     <li id="publishDate" class="active">
                         <a title="点击按日期从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.ReleaseDateSortParm, "&searchString='+document.getElementById('searchString').value")>
+                            @*href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>*@
                             日期
                             <i class=@ViewBag.SortClass></i>
                         </a>
@@ -34,7 +35,7 @@
                 {
                     <li id="publishDate">
                         <a title="点击按日期从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.ReleaseDateSortParm, "&searchString='+document.getElementById('searchString').value")>
                             日期
                             <i class="icon_sort"></i>
                         </a>
@@ -44,7 +45,7 @@
                 {
                     <li id="buys" class="active">
                         <a title="点击按销量从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.SalesSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.SalesSortParm, "&searchString='+document.getElementById('searchString').value")>
                             销量
                             <i class=@ViewBag.SortClass></i>
                         </a>
@@ -54,7 +55,7 @@
                 {
                     <li id="buys">
                         <a title="点击按销量从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.SalesSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.SalesSortParm, "&searchString='+document.getElementById('searchString').value")>
                             销量
                             <i class="icon_sort"></i>
                         </a>
@@ -64,7 +65,7 @@
                 {
                     <li id="cash" class="active">
                         <a title="点击按价格从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.PriceSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.PriceSortParm, "&searchString='+document.getElementById('searchString').value")>
                             价格
                             <i class=@ViewBag.SortClass></i>
                         </a>
@@ -74,7 +75,7 @@
                 {
                     <li id="cash">
                         <a title="点击按价格从高到低排序"
-                           href=@string.Concat("Category?sortOrder=", ViewBag.PriceSortParm)>
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.PriceSortParm, "&searchString='+document.getElementById('searchString').value")>
                             价格
                             <i class="icon_sort"></i>
                         </a>
