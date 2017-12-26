@@ -8,7 +8,7 @@
                 @using (Html.BeginForm("Category", "Products"))
                 {
                     <div class="navbar-search left-search">
-                        @Html.TextBox("searchString", "", new { @class = "form-control" })
+                        @Html.TextBox("searchString", "", new { @class = "form-control", placeholder = "搜索商品" })
                         @*<input type="text" id="keyword" name="keyword" value="" placeholder="搜索商品" class="form-control">*@
                     </div>
                     <div class="nav-right">
