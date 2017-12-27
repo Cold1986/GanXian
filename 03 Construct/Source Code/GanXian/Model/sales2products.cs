@@ -15,6 +15,7 @@ namespace GanXian.Model
 		private int _productid;
 		private string _originalprice;
 		private string _discountedprice;
+		private string _nw;
 		private int _num;
 		private string _salesprice;
 		private DateTime _createdate;
@@ -60,6 +61,14 @@ namespace GanXian.Model
 		{
 			set{ _discountedprice=value;}
 			get{return _discountedprice;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string nw
+		{
+			set{ _nw=value;}
+			get{return _nw;}
 		}
 		/// <summary>
 		/// 

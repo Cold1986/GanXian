@@ -20,6 +20,7 @@ namespace GanXian.Model
 		private string _pic2;
 		private string _pic3;
 		private string _pic4;
+		private string _showpic;
 		private string _origin;
 		private string _nw;
 		private string _storagecondition;
@@ -107,6 +108,14 @@ namespace GanXian.Model
 		{
 			set{ _pic4=value;}
 			get{return _pic4;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string showPic
+		{
+			set{ _showpic=value;}
+			get{return _showpic;}
 		}
 		/// <summary>
 		/// 

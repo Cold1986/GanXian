@@ -103,6 +103,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="products.cs" />
+    <Compile Include="products2tabs.cs" />
     <Compile Include="products2types.cs" />
     <Compile Include="ProductsAndSalesNum.cs" />
     <Compile Include="sales2products.cs" />
