@@ -1,0 +1,227 @@
+.tip:before {
+	display: none;
+}
+.order-panel {
+	padding: 15px 15px 15px 35px;
+	display: flex;
+	flex-direction: row;
+	background: url(../images/member_img16.png) no-repeat 15px center #fff;
+	background-size: auto 20px;
+}
+.order-panel a {
+	flex: 1;
+	flex-wrap: wrap;
+	border-right: 1px solid #ddd;
+	text-align: center;
+	font-size: 12px;
+}
+.order-panel a:last-child {
+	border: none;
+}
+.order-panel .focus {
+	color: #6b92ed;
+}
+.order-list {
+	width: 100%;
+}
+.order-list > li {
+	background: #fff;
+	border: 1px solid #ddd;
+	width: 100%;
+	padding: 15px 15px 5px;
+}
+.order-list-title {
+	background: #fff;
+	padding: 10px 15px 5px;
+	display: flex;
+	flex-direction: row;
+	border: 1px solid #ddd;
+	border-width: 1px 1px 0 1px; 
+}
+.order-list-title > p {
+	flex: 1;
+	margin-bottom: 5px;
+}
+.order-list-title > p:last-child {
+	text-align: right;
+}
+.order-list-detail {
+	background: #f9f9f9;
+	padding: 5px 8px;
+	margin-bottom: 5px;
+}
+.order-list-detail ul {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.order-list-detail li {
+	width: 20%;
+	padding: 2px;
+	box-sizing: border-box;
+}
+.order-list-detail li img {
+	width: 100%;
+}
+.order-list-detail li span {
+	display: block;
+	width: 100%;
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.order-list-info {
+	text-align: right;
+}
+.order-list-info p {
+	margin-bottom: 5px;
+	font-size: 12px;
+}
+.order-list-info p span {
+	font-size: 14px;
+}
+.order-list-info p button:first-child {
+	background: #f63234;
+	color: #fff;
+	border: 1px solid #f63234;
+}
+.order-list-info p button:nth-child(2) {
+	background: #6a94e7;
+	color: #fff;
+	border: 1px solid #6a94e7;
+}
+.order-list-info button {
+	margin-left: 10px;
+	border-radius: 3px;
+	padding: 2px 10px;
+	border: 1px solid #ddd;
+}
+.list-group {
+	margin-bottom: 0;
+}
+/*状态*/
+.order {
+	margin-bottom: 10px;
+}
+.order:last-child {
+	margin-bottom: 0;
+}
+
+.order-unpaid .order-list-info p button:nth-child(2) {
+	display: none;
+}
+.order-unshipped .order-list-info p button:nth-child(1), .order-unshipped .order-list-info p button:nth-child(2) {
+	display: none;
+}
+.order-in-delivery .order-list-info p button:nth-child(1) {
+	display: none;
+}
+.order-completed .order-list-info p button:nth-child(1) {
+	display: none;
+}
+
+
+/* checkout */
+.address {
+	padding: 15px 10px 5px 55px;
+	background: url(../images/location.png) no-repeat #fff 16px 48%;
+	background-size: auto 26px;
+	font-size: 12px;
+}
+.address p {
+	padding-right: 5px;
+}
+.checkout .address p  {
+	padding: 0;
+}
+.address a {
+	display: block;
+	padding-right: 50px;
+	background: url(../images/forward.png) no-repeat right 44%;
+	background-size: auto 26px;
+}
+.address p span {
+	float: right;
+}
+.product-list {
+	border: 1px solid #ddd;
+	padding: 0 10px;
+	background: #f5f5f5;
+}
+.product-list li {
+	padding: 5px;
+	border-bottom: 1px solid #ddd;
+}
+.product-list li:last-child {
+	border-bottom: 0;
+}
+.product-list li a {
+	display: flex;
+	flex-direction: row;
+}
+.product-list li img {
+	width: 40px;
+	height: 40px;
+}
+.product-list li p {
+	width: calc(100% - 110px);
+	padding: 0 10px;
+}
+.product-list li div {
+	width: 70px;
+	text-align: right;
+}
+.product-list li div span {
+	display: block;
+}
+.product-list li div span.p-price {
+	color: red;
+}
+.order-list-info {
+	background: #fff;
+	padding: 5px 15px;
+	border: 1px solid #ddd;
+	border-width: 0 1px 1px 1px;
+}
+footer.checkout p {
+	line-height: 49px;
+	text-align: right;
+	padding-right: 120px;
+}
+footer.checkout button {
+	width: 100px;
+}
+
+/* order-detail */
+.logistics {
+	padding: 15px 10px 5px 55px;
+	background: url(../images/logistics.png) no-repeat #fff 12px 48%;
+	background-size: auto 24px;
+	font-size: 12px;
+}
+.logistics a {
+	display: block;
+	padding-right: 50px;
+	background: url(../images/forward.png) no-repeat right 44%;
+	background-size: auto 26px;
+}
+.logistics a .time {
+	color: #999;
+}
+.logistics a .link {
+	color: #6b92ed;
+}
+.total p {
+	text-align: left;
+}
+.total p span {
+	float: right;
+	font-size: 12px;
+}
+
+.order-detail {
+	border: 1px solid #ddd;
+	text-align: left;
+	padding-top: 10px;
+}
