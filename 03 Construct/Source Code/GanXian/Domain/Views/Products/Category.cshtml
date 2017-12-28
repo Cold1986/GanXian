@@ -90,7 +90,7 @@
             {
                 <a href=@string.Concat("index/", item.productId)>
                     <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                        <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.pic1))></div>
+                        <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic))></div>
                         <div class="p-info">
                             <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
                             <p class="p-description">

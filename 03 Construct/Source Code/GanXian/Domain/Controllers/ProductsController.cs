@@ -52,20 +52,6 @@ namespace Domain.Controllers
                 productsAndSalesNumList = ProductsBiz.CreateNew().getAllProductsAndSalesNum();
                 if (productsAndSalesNumList != null)
                 {
-                    foreach(var item in productsAndSalesNumList)
-                    {
-                        System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
-                        foreach (System.Reflection.PropertyInfo item2 in pro)
-                        {
-                            if (item2.Name == item.showPic)
-                            {
-                                item.showPic = item2.GetValue(item).ToString();
-                            }
-                              
-                        }
-
-                    }
-                 
                     var start = DateTime.Now;
                     var expiredDate = start.AddHours(1);
                     TimeSpan ts = expiredDate - start;
