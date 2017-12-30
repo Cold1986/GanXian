@@ -1,29 +1,69 @@
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('虎头鱼','9两','488','458','/img/product04.jpg','','','','舟山','1800克','8度以下','  我们叫虎头鱼，长相比较奇特，个头也不大，但是营养绝对在石浦海鱼类数一数二了，煲出来的鱼汤浓白，通常作为给小孩补身体食用。
-    抛竿串钩在渔山岛海钓的话收获颇丰，注意背上的刺，有点毒，戳到可能会肿几天，所以钓这种鱼尽量带上手套！
-')
+truncate table Products2Tabs;
+truncate table TabList;
+truncate table products;
+
+-- 建立标签
+insert into TabList(typeName,isShow,isCarousel,sort) values('海鱼',1,0,2);
+insert into TabList(typeName,isShow,isCarousel,sort) values('特产干货',1,0,3);
+insert into TabList(typeName,isShow,isCarousel,sort) values('虾蟹',1,0,4);
+
+-- 建立产品
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('辣螺酱','500g','80','65','/img/llj001.jpg','/img/llj002.jpg','/img/llj003.jpg','/img/llj004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('咸呛蟹','300g','120','96','/img/xxx001.jpg','/img/xxx002.jpg','/img/xxx003.jpg','/img/xxx004.jpg','石浦','300g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('红膏蟹股','700g','190','150','/img/xg001.jpg','/img/xg002.jpg','/img/xg003.jpg','/img/xg004.jpg','石浦','700g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('红膏蟹糊','500g','160','128','/img/xh001.jpg','/img/xh002.jpg','/img/xh003.jpg','/img/xh004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('头道紫菜','200g','48','38','/img/zc001.jpg','/img/zc002.jpg','/img/zc003.jpg','/img/zc004.jpg','石浦','200g','0℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('醉泥螺','700g','140','112','/img/znl001.jpg','/img/znl002.jpg','/img/znl003.jpg','/img/znl004.jpg','石浦','700g','-18℃');
+
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('鲜活红膏蟹','250g','150','120','/img/hgx001.jpg','/img/hgx002.jpg','/img/hgx003.jpg','/img/hgx004.jpg','石浦','250g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('滑皮虾','500g','70','56','/img/hpx001.jpg','/img/hpx002.jpg','/img/hpx003.jpg','/img/hpx004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('竹节虾','50g','125','100','/img/zjx001.jpg','/img/zjx002.jpg','/img/zjx003.jpg','/img/zjx004.jpg','石浦','500g','-18℃');
+
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('白鲳','125g','48','38','/img/bc001.jpg','/img/bc002.jpg','/img/bc003.jpg','/img/bc004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('白鳗','500g','40','32','/img/bm001.jpg','/img/bm002.jpg','/img/bm003.jpg','/img/bm004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('花枝','250g','50','40','/img/hz001.jpg','/img/hz002.jpg','/img/hz003.jpg','/img/hz004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('带鱼','250g','40','32','/img/dy001.jpg','/img/dy002.jpg','/img/dy003.jpg','/img/dy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('海刀鱼','100g','100','80','/img/hdy001.jpg','/img/hdy001.jpg','/img/hdy003.jpg','/img/hdy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('豆腐鱼','50g','20','16','/img/dfy001.jpg','/img/dfy002.jpg','/img/dfy003.jpg','/img/dfy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('方头鱼','250g','50','40','/img/fty001.jpg','/img/fty002.jpg','/img/fty003.jpg','/img/fty004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('海鲈鱼','50g','40','32','/img/hly001.jpg','/img/hly002.jpg','/img/hly003.jpg','/img/hly004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('虎头鱼','500g','80','65','/img/hty001.jpg','/img/hty002.jpg','/img/hty003.jpg','/img/hty004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('黄姑鱼','250g','60','48','/img/hgy001.jpg','/img/hgy002.jpg','/img/hgy003.jpg','/img/hgy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('叽咕','500g','70','56','/img/jg001.jpg','/img/jg002.jpg','/img/jg003.jpg','/img/jg004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('红眼鱼','500g','80','65','/img/hyy001.jpg','/img/hyy002.jpg','/img/hyy003.jpg','/img/hyy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('龙舌鱼','500g','100','80','/img/ls001.jpg','/img/ls002.jpg','/img/ls003.jpg','/img/ls004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('马鲛鱼','500g','30','24','/img/mjy001.jpg','/img/mjy002.jpg','/img/mjy003.jpg','/img/mjy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('梅童鱼','25g','70','56','/img/mty001.jpg','/img/mty002.jpg','/img/mty003.jpg','/img/mty004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('米鱼','500g','40','32','/img/my001.jpg','/img/my002.jpg','/img/my003.jpg','/img/my004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('墨鱼','100g','40','32','/img/myz001.jpg','/img/myz002.jpg','/img/myz003.jpg','/img/myz004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('舌鳎鱼','200g','60','48','/img/sty001.jpg','/img/sty002.jpg','/img/sty003.jpg','/img/sty004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('深水黄鱼','500g','90','72','/img/sshy001.jpg','/img/sshy002.jpg','/img/sshy003.jpg','/img/sshy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('小黄鱼','75g','80','65','/img/xhy001.jpg','/img/xhy002.jpg','/img/xhy003.jpg','/img/xhy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('油鳗','250g','60','48','/img/ym001.jpg','/img/ym002.jpg','/img/ym003.jpg','/img/ym004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('油墨','500g','50','40','/img/ymy001.jpg','/img/ymy002.jpg','/img/ymy003.jpg','/img/ymy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('鱿鱼','250g','50','40','/img/yy001.jpg','/img/yy002.jpg','/img/yy003.jpg','/img/yy004.jpg','石浦','500g','-18℃');
+insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,PIC3,PIC4,origin,nw,storageCondition) values('真鲷','500g','70','56','/img/zd001.jpg','/img/zd002.jpg','/img/zd003.jpg','/img/zd004.jpg','石浦','500g','-18℃');
+
+set SQL_SAFE_UPDATES =0
+update products set showPic='pic1'
+set SQL_SAFE_UPDATES =1
 
 
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('小眼带鱼','5两','197','179','/img/product01.jpg','','','','舟山','2000克','5度以下','东海本地带鱼，每年入冬后小眼带鱼又肥又鲜，清蒸出油，入口即化，鲜美无比。带鱼的麟含有多种营养成分，千万不要刮掉哦。唯一的问题就是小眼带鱼因为肉质细嫩，出水后很容易破肚，这个我们也没法避免，所以介意的朋友请慎拍。往往大家也会把破肚作为衡量是否为正宗小眼带鱼的标准之一。
-带鱼吃口很凶，所以它肚子里小鱼小虾很多，再加上长度不利于真空包装，所以我都是事先称重拍照，再进行剪嘴，清理内脏，切段真空包装，介意的朋友请提前说明。
-渔山岛海钓带鱼的最佳时节是每年的789月份，包船夜钓，包船费用4500-5000左右，需要的可事先联系客服咨询。
-【本店所售带鱼的常规规格为5-7两/条，需要其他规格的请联系客服】')
+-- 标签与产品分类
+insert into Products2Tabs(productId,tabId,sort,status) values(12,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(13,2,2,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(14,2,3,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(15,2,4,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(16,2,5,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(17,2,6,1);
 
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('方头鱼','5两','196','188','/img/product02.jpg','','','','舟山','1800克','5度以下','方头鱼也是深海鱼类，色泽鲜红，头方方的，它跟大黄鱼一样，属于鲈科，肉质与鲜美程度非常接近，适合多种做法。
-不过方头鱼又好看又好吃，价格也平民，但是小朋友忌食，尤其是体型越大的方头鱼，体内汞含量极有可能超标，建议食用一斤以内的哦。同样可能汞含量超标的还有鲨鱼、箭鱼、旗鱼、枪鱼、罗非鱼、方头鱼以及鲶鱼！
-【本店所售方头鱼的常规规格为5-7两/条，需要其他规格的请联系客服】
-')
+insert into Products2Tabs(productId,tabId,sort,status) values(1,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(2,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(3,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(4,3,1,1);
 
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('海鲈鱼','6两','248','230','/img/product03.jpg','','','','舟山','1800克','5度以下','海钓常见鱼类，雪菜烧汤或者葱油都不错，价格也实惠，一般在渔山岛矶钓为主，路亚效果也不错，吃口很凶。如果是渔山岛海钓的鲈鱼建议刺身尝试一下，口感非常棒，肉质Q弹，鲜美无比！
-【本店所售海鲈鱼的常规规格为1-2斤/条，需要其他规格的请联系客服】
-')
-
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('虎头鱼','9两','488','458','/img/product04.jpg','','','','舟山','1800克','8度以下','  我们叫虎头鱼，长相比较奇特，个头也不大，但是营养绝对在石浦海鱼类数一数二了，煲出来的鱼汤浓白，通常作为给小孩补身体食用。
-    抛竿串钩在渔山岛海钓的话收获颇丰，注意背上的刺，有点毒，戳到可能会肿几天，所以钓这种鱼尽量带上手套！
-')
-
-insert  INTO products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,origin,nw,storageCondition,remark) values('米鱼','20两','1888','1588','/img/product05.jpg','','','','舟山','2800克','5度以下','越大越贵，五斤以上的米鱼就是不是卖鱼了，是在卖鱼鳔，鱼鳔制成鱼胶后是一味昂贵的药材，价值不菲。1斤左右的小米鱼肉质鲜美，价格实惠，多种烹饪均适合，还可以做鱼丸，鱼面。做松鼠鱼是一个不错的烹饪方法')
-
-
+insert into Products2Tabs(productId,tabId,sort,status) values(7,4,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(8,4,1,1);
 -- test part
 select IFNULL(b.num,0) soldNum,a.* from products a 
 left join (select sum(num) as num ,productid from sales2products group by productid) as b on a.productid=b.productid
