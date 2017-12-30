@@ -2,6 +2,8 @@ truncate table Products2Tabs;
 truncate table TabList;
 truncate table products;
 
+truncate table Products2Tabs;
+
 -- 建立标签
 insert into TabList(typeName,isShow,isCarousel,sort) values('海鱼',1,0,2);
 insert into TabList(typeName,isShow,isCarousel,sort) values('特产干货',1,0,3);
@@ -47,23 +49,23 @@ insert  INTO products(productName,specs,originalPrice,discountedPrice,PIC1,PIC2,
 set SQL_SAFE_UPDATES =0
 update products set showPic='pic1'
 set SQL_SAFE_UPDATES =1
-
+use ganxian
 
 -- 标签与产品分类
-insert into Products2Tabs(productId,tabId,sort,status) values(12,2,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(13,2,2,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(14,2,3,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(15,2,4,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(16,2,5,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(17,2,6,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(12,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(13,1,2,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(14,1,3,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(15,1,4,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(16,1,5,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(17,1,6,1);
 
-insert into Products2Tabs(productId,tabId,sort,status) values(1,3,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(2,3,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(3,3,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(4,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(1,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(2,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(3,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(4,2,1,1);
 
-insert into Products2Tabs(productId,tabId,sort,status) values(7,4,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(8,4,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(7,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status) values(8,3,1,1);
 -- test part
 select IFNULL(b.num,0) soldNum,a.* from products a 
 left join (select sum(num) as num ,productid from sales2products group by productid) as b on a.productid=b.productid
