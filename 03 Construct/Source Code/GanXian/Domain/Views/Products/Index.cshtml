@@ -122,14 +122,14 @@
                     {
                         <li>
                             <label>折后价：</label>
-                            <span class="price" id="prodCash">@Html.DisplayFor(model => model.discountedPrice)</span><del class="spec">@Html.DisplayFor(model => model.originalPrice)</del>
+                            <span class="price" id="prodCash">¥@Html.DisplayFor(model => model.discountedPrice)</span><del class="spec">¥@Html.DisplayFor(model => model.originalPrice)</del>
                         </li>
                     }
                     else
                     {
                         <li>
                             <label>价格：</label>
-                            <span class="price" id="prodCash">@Html.DisplayFor(model => model.originalPrice)</span>
+                            <span class="price" id="prodCash">¥@Html.DisplayFor(model => model.originalPrice)</span>
                         </li>
                     }
                     <li>

@@ -96,7 +96,7 @@
                             <p class="p-description">
                                 @(new HtmlString(item.remark))
                             </p>
-                            <p class="p-origin"><em class="price">@Html.DisplayFor(modelItem => item.discountedPrice)</em><del class="old-price">@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
+                            <p class="p-origin"><em class="price">¥@Html.DisplayFor(modelItem => item.discountedPrice)</em><del class="old-price">¥@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
                         </div>
                     </div>
                 </a>

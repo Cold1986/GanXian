@@ -30,7 +30,7 @@ namespace GanXian.BLL
                 string sqlCommandText = @"SELECT * FROM Products WHERE productId=@ID";
                 products = conn.Query<products>(sqlCommandText, new { ID = productId }).FirstOrDefault();
             }
-            if (products != null)
+            if (products != null && !string.IsNullOrEmpty(products.remark))
             {
                 products.remark = products.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />");
             }
@@ -51,7 +51,10 @@ namespace GanXian.BLL
                 List<ProductsAndSalesNum> productsAndSalesNum = conn.Query<ProductsAndSalesNum>(sqlCommandText, new { }).ToList();
                 if (productsAndSalesNum.Any())
                 {
-                    productsAndSalesNum.ForEach(p => p.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />"));
+                    productsAndSalesNum.ForEach(p =>
+                    {
+                        if (!string.IsNullOrEmpty(p.remark)) p.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />");
+                    });
                     foreach (var item in productsAndSalesNum)
                     {
                         System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
