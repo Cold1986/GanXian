@@ -12,9 +12,42 @@ namespace Domain.Controllers
 {
     public class ProductsController : Controller
     {
+        public LogHelper _Apilog = new LogHelper("ApiLog");
         // GET: Products
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, string code)
         {
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+
+            userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                if (string.IsNullOrEmpty(code))
+                {
+                    //请求微信接口获取code
+                }
+                else
+                {
+                    //请求微信接口获取openid
+                }
+                if (string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
+                {
+                    _Apilog.WriteLog("userOpenId 为空,缓存为空，code不会空，code: " + code);
+                }
+                else
+                {
+                    CookieHelper.SetCookie("userOpenId", userOpenId);
+                }
+            }
+            else//稳定后可去除日志
+            {
+                _Apilog.WriteLog("cookie 不为空,用户OpenId: " + userOpenId);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+
+            #region 产品信息部分
             products products = new products();
             var resCache = CacheHelper.GetCache("product_" + id.ToString());
             if (resCache != null) products = (products)resCache;
@@ -29,6 +62,7 @@ namespace Domain.Controllers
                 }
             }
             return View(products);
+            #endregion
         }
 
         /// <summary>
@@ -67,7 +101,7 @@ namespace Domain.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                productsAndSalesNumList = productsAndSalesNumList.Where(w => w.remark.Contains(searchString) 
+                productsAndSalesNumList = productsAndSalesNumList.Where(w => w.remark.Contains(searchString)
                                                                         || w.productName.Contains(searchString)).ToList();
             }
 
