@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using GanXian.Model;
 using GanXian.BLL;
+using WechatService.Biz;
 
 namespace Domain.Controllers
 {
@@ -18,28 +19,41 @@ namespace Domain.Controllers
         {
             #region 用户信息部分
             string userOpenId = string.Empty;
-
             userOpenId = CookieHelper.GetCookieValue("userOpenId");
             if (string.IsNullOrEmpty(userOpenId))
             {
-                if (string.IsNullOrEmpty(code))
+                try
                 {
-                    //请求微信接口获取code
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        //请求微信接口获取code
+                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(Request.Url.ToString());
+                        return Redirect(snsapi_Base_Link);
+                    }
+                    else
+                    {
+                        _Apilog.WriteLog("code 不为空: " + code);
+                        Authorize userInfo = AuthorizeBiz.getUserInfo(code);
+                        if (userInfo != null) userOpenId = userInfo.openid;
+                        //请求微信接口获取openid
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    //请求微信接口获取openid
+                    _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
                 }
+
                 if (string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
                 {
                     _Apilog.WriteLog("userOpenId 为空,缓存为空，code不会空，code: " + code);
                 }
                 else
                 {
+                    _Apilog.WriteLog("调用wechat接口获得 " + userOpenId);
                     CookieHelper.SetCookie("userOpenId", userOpenId);
                 }
             }
-            else//稳定后可去除日志
+            else//测试用
             {
                 _Apilog.WriteLog("cookie 不为空,用户OpenId: " + userOpenId);
             }
