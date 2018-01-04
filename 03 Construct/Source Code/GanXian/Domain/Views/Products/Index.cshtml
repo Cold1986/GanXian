@@ -196,111 +196,48 @@
                 </div>
             </div>
         </div>
-        @Html.HiddenFor(model => model.productId)
+        @Html.Hidden("currProdId", Model.productId)
         <div class="fixed-foot">
-            <div class="fixed_inner">
-                @*<a class="btn-fav" href="javascript:void(0);" onclick="addInterest(this,'663');">
-                        <i class="i-fav"></i><span>收藏</span>
-                    </a>*@
-                <a class="cart-wrap" href="/shopcart">
-                    <i class="i-cart"></i>
-                    <span>购物车</span>
-                    <span class="add-num" id="totalNum">0</span>
-                </a>
-                <div class="buy-btn-fix">
-                    <a class="btn btn-info btn-cart" onclick="addShopCart();" href="javascript:void(0);">加入购物车</a>
-                    <a class="btn btn-danger btn-buy" onclick="buyNow();" href="javascript:void(0);">立即购买</a>
-                </div>
+        <div class="fixed_inner">
+            @*<a class="btn-fav" href="javascript:void(0);" onclick="addInterest(this,'663');">
+                    <i class="i-fav"></i><span>收藏</span>
+                </a>*@
+            <a class="cart-wrap" href="/shopcart">
+                <i class="i-cart"></i>
+                <span>购物车</span>
+                <span class="add-num" id="totalNum">0</span>
+            </a>
+            <div class="buy-btn-fix">
+                <a class="btn btn-info btn-cart" href="javascript:void(0);">加入购物车</a>
+                <a class="btn btn-danger btn-buy" onclick="buyNow();" href="javascript:void(0);">立即购买</a>
             </div>
         </div>
-
-        <div class="clear"></div>
-
-        <footer class="footer">
-            <div class="foot-con">
-                <div class="foot-con_2">
-                    <a href="index.html">
-                        <i class="navIcon home"></i>
-                        <span class="text">首页</span>
-                    </a>
-                    <a href="category.html">
-                        <i class="navIcon sort"></i>
-                        <span class="text">分类</span>
-                    </a>
-                    <a href="shopcart.html">
-                        <i class="navIcon shop"></i>
-                        <span class="text">购物车</span>
-                    </a>
-                    <a href="userhome.html">
-                        <i class="navIcon member"></i>
-                        <span class="text">我的</span>
-                    </a>
-                </div>
-            </div>
-        </footer>
     </div>
-    <script type="text/javascript">
-        var contextPath = '';
-        var currProdId = '663';
-        var prodName = '小眼带鱼';
-        var skuDtoList = eval('[{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:636","skuId":1358,"status":1},{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:661","skuId":1359,"status":1},{"amountDetail":{"cash":179,"num":1,"price":179,"promotionPrice":179,"totalAmount":179},"name":"小眼带鱼","price":179,"properties":"208:635","skuId":1360,"status":1}]');
-        var propValueImgList = eval('[{"imgList":["~/img/product01.jpg"],"valueId":661},{"imgList":["~/img/product01.jpg"],"valueId":636}]');
-        var allSelected = true;
-        var prodLessMsg = '商品缺货';
-        var failedOwnerMsg = '您是商品主人, 不能购买此商品。';
-        var failedBasketMaxMsg = '已达到购物车最大数量, 不能购买此商品。';
-        var failedBasketErrorMsg = '购物车错误, 不能购买此商品。';
-        var photoPath = "";
-        var distUserName = '';
 
-        //插件：图片轮播
-        TouchSlide({
-            slideCell: "#slide",
-            titCell: ".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
-            mainCell: ".bd ul",
-            effect: "left",
-            autoPlay: false,//自动播放
-            autoPage: true, //自动分页
-            switchLoad: "_src" //切换加载，真实图片路径为"_src"
-        });
+    <div class="clear"></div>
 
-        var scrollTop = 0;
-        TouchSlide({
-            slideCell: "#goodsContent",
-            startFun: function (i, c) {
-                var prodId = $("#prodId").val();
-                if (i == 1) {//规格参数
-                    var th = jQuery("#goodsContent .bd ul").eq(i);
-                    if (!th.hasClass('hadGoodsContent')) {
-                        queryParameter(th, prodId);
-                    }
-
-                    if ($(window).scrollTop() > scrollTop) {
-                        $(window).scrollTop(scrollTop);
-                    }
-
-                } else if (i == 2) {//评价
-                    var th = jQuery("#goodsContent .bd ul").eq(i);
-
-                    if (!th.hasClass('hadConments')) {
-                        queryProdComment(th, prodId);
-                    }
-
-                    if ($(window).scrollTop() > scrollTop) {
-                        $(window).scrollTop(scrollTop);
-                    }
-                } else {
-                    if (scrollTop == 0) {
-                        $(window).scrollTop(scrollTop);
-                        var hd_fav = $('.hd_fav');
-                        var position = hd_fav.position();
-
-                        scrollTop = position.top;
-                    }
-                }
-            },
-        });
-
-    </script>
+    <footer class="footer">
+        <div class="foot-con">
+            <div class="foot-con_2">
+                <a href="index.html">
+                    <i class="navIcon home"></i>
+                    <span class="text">首页</span>
+                </a>
+                <a href="category.html">
+                    <i class="navIcon sort"></i>
+                    <span class="text">分类</span>
+                </a>
+                <a href="shopcart.html">
+                    <i class="navIcon shop"></i>
+                    <span class="text">购物车</span>
+                </a>
+                <a href="userhome.html">
+                    <i class="navIcon member"></i>
+                    <span class="text">我的</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+    </div>
 </body>
 </html>
