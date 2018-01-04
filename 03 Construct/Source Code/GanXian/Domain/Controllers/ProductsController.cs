@@ -26,8 +26,14 @@ namespace Domain.Controllers
                 {
                     if (string.IsNullOrEmpty(code))
                     {
+                        string url = Request.Url.ToString();
+                        if (url.IndexOf("www.") < 0)
+                        {
+                            url = url.Replace("http://", "http://www.");
+                        }
+
                         //请求微信接口获取code
-                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(Request.Url.ToString());
+                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
                         return Redirect(snsapi_Base_Link);
                     }
                     else
