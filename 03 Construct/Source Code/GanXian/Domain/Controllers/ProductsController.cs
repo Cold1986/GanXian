@@ -20,6 +20,7 @@ namespace Domain.Controllers
             #region 用户信息部分
             string userOpenId = string.Empty;
             userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            //缓存为空
             if (string.IsNullOrEmpty(userOpenId))
             {
                 try
@@ -38,7 +39,6 @@ namespace Domain.Controllers
                     }
                     else
                     {
-                        _Apilog.WriteLog("code 不为空: " + code);
                         Authorize userInfo = AuthorizeBiz.getUserInfo(code);
                         if (userInfo != null) userOpenId = userInfo.openid;
                         //请求微信接口获取openid
@@ -49,23 +49,13 @@ namespace Domain.Controllers
                     _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
                 }
 
-                if (string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
+                if (!string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
                 {
-                    _Apilog.WriteLog("userOpenId 为空,缓存为空，code不会空，code: " + code);
-                }
-                else
-                {
-                    _Apilog.WriteLog("调用wechat接口获得 " + userOpenId);
                     CookieHelper.SetCookie("userOpenId", userOpenId);
                 }
             }
-            else//测试用
-            {
-                _Apilog.WriteLog("cookie 不为空,用户OpenId: " + userOpenId);
-            }
             ViewBag.userOpenId = userOpenId;
-
-            ViewBag.userShopcartNum = ShopCartBiz.CreateNew().getUserCartsNum(userOpenId).ToString();
+            ViewBag.userShopcartNum = ShopCartBiz.CreateNew().getUserCartsNum(userOpenId).ToString();//获取用户购物车数量
             #endregion
 
 
@@ -203,10 +193,57 @@ namespace Domain.Controllers
             return Json(res);
         }
 
-        public ActionResult Shopcart()
+        public ActionResult Shopcart(string code)
         {
+            string userOpenId = string.Empty;
+            #region 用户信息部分
+            //userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            ////缓存为空
+            //if (string.IsNullOrEmpty(userOpenId))
+            //{
+            //    try
+            //    {
+            //        if (string.IsNullOrEmpty(code))
+            //        {
+            //            string url = Request.Url.ToString();
+            //            if (url.IndexOf("www.") < 0)
+            //            {
+            //                url = url.Replace("http://", "http://www.");
+            //            }
+
+            //            //请求微信接口获取code
+            //            string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
+            //            return Redirect(snsapi_Base_Link);
+            //        }
+            //        else
+            //        {
+            //            Authorize userInfo = AuthorizeBiz.getUserInfo(code);
+            //            if (userInfo != null) userOpenId = userInfo.openid;
+            //            //请求微信接口获取openid
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
+            //    }
+
+            //    if (!string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
+            //    {
+            //        CookieHelper.SetCookie("userOpenId", userOpenId);
+            //    }
+            //}
+            //ViewBag.userOpenId = userOpenId;
+
+            #endregion
+
+            userOpenId = "test";
+            List<UserShopcartsInfo> userShopcartsInfoList = null;
+            if (!string.IsNullOrEmpty(userOpenId)) userShopcartsInfoList = ShopCartBiz.CreateNew().getUserShopcartsInfo(userOpenId);
+
             ViewBag.PageName = "购物车";
-            return View();
+            return View(userShopcartsInfoList);
         }
+
+
     }
 }

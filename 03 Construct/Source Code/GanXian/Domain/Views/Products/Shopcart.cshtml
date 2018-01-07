@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<GanXian.Model.UserShopcartsInfo>
 @{
     ViewBag.Title = "购物车";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -6,71 +6,42 @@
 
 <div class="container ">
     <div class="row rowcar">
-        <ul class="list-group">
-            <li class="list-group-item hproduct clearfix">
-                <div class="icheck pull-left mr5">
-                    <input type="checkbox" checked="checked" class="ids" prodStatus="1" itemkey="" />
-                    <label class="checkLabel">
-                        <span></span>
-                    </label>
-                </div>
-                <div class="p-pic"><a href="/views/663"><img class="img-responsive" src="~/img/product01.jpg"></a></div>
-                <div class="p-info">
-                    <a href="/views/663"><p class="p-title">小眼带鱼</p></a>
-                    <p class="p-attr">
-                        <span>规格：5两</span>
-                    </p>
-                    <p class="p-origin">
-                        <a class="close p-close" onclick="deleteShopCart('','小眼带鱼','663','1358')" href="javascript:void(0);">×</a>
-                        <em class="price">¥179.00</em>
-                    </p>
-                </div>
-            </li>
-            <li class="list-group-item clearfix">
-                <div class="pull-left mt5">
-                    <span class="gary">小计：</span>
-                    <em class="red productTotalPrice">¥179.00</em>
-                </div>
-                <div class="btn-group btn-group-sm control-num">
-                    <a onclick="disDe(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-minus gary"></span></a>
-                    <!--读取的数量、id等信息存在这个input上-->
-                    <input type="tel" class="btn gary2 Amount" readonly="readonly" value="1" maxlength="4" itemkey="" prodId="663" skuId="1358">
-                    <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
-                </div>
-            </li>
-        </ul>
-        <ul class="list-group">
-            <li class="list-group-item hproduct clearfix">
-                <div class="icheck pull-left mr5">
-                    <input type="checkbox" checked="checked" class="ids" prodStatus="1" itemkey="" />
-                    <label class="checkLabel">
-                        <span></span>
-                    </label>
-                </div>
-                <div class="p-pic"><a href="/views/663"><img class="img-responsive" src="~/img/product04.jpg"></a></div>
-                <div class="p-info">
-                    <a href="/views/663"><p class="p-title">虎头鱼</p></a>
-                    <p class="p-attr">
-                        <span>规格：200g</span>
-                    </p>
-                    <p class="p-origin">
-                        <a class="close p-close" onclick="deleteShopCart('','虎头鱼','664','1358')" href="javascript:void(0);">×</a>
-                        <em class="price">¥179.00</em>
-                    </p>
-                </div>
-            </li>
-            <li class="list-group-item clearfix">
-                <div class="pull-left mt5">
-                    <span class="gary">小计：</span>
-                    <em class="red productTotalPrice">¥179.00</em>
-                </div>
-                <div class="btn-group btn-group-sm control-num">
-                    <a onclick="disDe(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-minus gary"></span></a>
-                    <input type="tel" class="btn gary2 Amount" readonly="readonly" value="1" maxlength="4" itemkey="" prodId="663" skuId="1358">
-                    <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
-                </div>
-            </li>
-        </ul>
+        @foreach (var item in Model)
+        {
+            <ul class="list-group">
+                <li class="list-group-item hproduct clearfix">
+                    <div class="icheck pull-left mr5">
+                        <input type="checkbox" checked="checked" class="ids" prodStatus="1" itemkey="" />
+                        <label class="checkLabel">
+                            <span></span>
+                        </label>
+                    </div>
+                    <div class="p-pic"><a href=@string.Concat("index/", item.productId)><img class="img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic))></a></div>
+                    <div class="p-info">
+                        <a href=@string.Concat("index/", item.productId)><p class="p-title">@item.productName</p></a>
+                        <p class="p-attr">
+                            <span>规格：@item.specs</span>
+                        </p>
+                        <p class="p-origin">
+                            <a class="close p-close" onclick="deleteShopCart(@item.userOpenId,@item.productId)" href="javascript:void(0);">×</a>
+                            <em class="price">¥@item.discountedPrice</em>
+                        </p>
+                    </div>
+                </li>
+                <li class="list-group-item clearfix">
+                    <div class="pull-left mt5">
+                        <span class="gary">小计：</span>
+                        <em class="red productTotalPrice">¥@item.productTotalPrice</em>
+                    </div>
+                    <div class="btn-group btn-group-sm control-num">
+                        <a onclick="disDe(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-minus gary"></span></a>
+                        <!--读取的数量、id等信息存在这个input上-->
+                        <input type="tel" class="btn gary2 Amount" readonly="readonly" value=@item.num maxlength="4" itemkey="">
+                        <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
+                    </div>
+                </li>
+            </ul>
+        }
     </div>
 </div>
 <div class="fixed-foot">
@@ -82,7 +53,7 @@
                     <span class="mt10"></span>全选
                 </label>
             </div>
-            <p>合计：<em class="red f22">¥<span id="totalPrice">179.00</span></em></p>
+            <p>合计：<em class="red f22">¥<span id="totalPrice">0.00</span></em></p>
         </div>
         <div class="buy-btn-fix">
             <a href="javascript:submitShopCart();" class="btn btn-danger btn-buy">去结算</a>
@@ -90,5 +61,5 @@
     </div>
 </div>
 @section Scripts {
-    <script charset="utf-8" src="~/Scripts/shopCart.js"></script>
+    <script charset="utf-8" src="~/Scripts/Products/shopCart.js"></script>
 }

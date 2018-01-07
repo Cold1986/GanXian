@@ -75,8 +75,8 @@ h1, h2, h3{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;}
 .navbar-search{height: 100%; top:0; position: absolute; width: auto !important;}
 .left-search{padding-right: 0;left:5px;right: 55px;}
 .right-search{padding-right: 0;right:5px;left: 55px;}
-.left-search .form-control{background:#fff url(../../images/search.jpg) no-repeat 5px center; background-size: 25px;padding-left: 30px;margin-top:5px;}
-.right-search .form-control{background:#fff url(../../images/search.jpg) no-repeat right center; background-size: 25px; margin-top:5px;}
+.left-search .form-control{background:#fff url(../images/search.jpg) no-repeat 5px center; background-size: 25px;padding-left: 30px;margin-top:5px;}
+.right-search .form-control{background:#fff url(../images/search.jpg) no-repeat right center; background-size: 25px; margin-top:5px;}
 .nav-left,.nav-right{width:42px; height:34px; position:absolute; top:5px; display:block; overflow:hidden; text-indent:-999px;border-radius: 5px;}
 .nav-left{left:5px;}
 .nav-right{right:5px;text-align: center;}
@@ -135,14 +135,14 @@ h1, h2, h3{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;}
 }
 .category img{margin:0 auto;}
 .tb_box{background:#fff; border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5; margin-bottom:10px;}
-.tb_box .tab_tit{margin:0; padding:10px; font-size:18px; font-weight: normal; color:#333;}
-.tb_box .tab_tit .more{float:right; font-size:14px; margin-top:3px; color:#6a91ee; position:relative; padding-right:13px;}
+.tb_box .tab_tit{margin:0; padding:10px; font-size:15px; font-weight: normal; color:#333;}
+.tb_box .tab_tit .more{float:right; font-size:12px; margin-top:3px; color:#6a91ee; position:relative; padding-right:13px;}
 .tb_box .tab_tit .more:after{content:"";width:10px;height:10px;border-right:1px solid #6a91ee; border-bottom:1px solid #6a91ee;top:50%; right:5px;margin-top:-5px;position:absolute;-webkit-transform:rotate(-45deg);-moz-transform:rotate(-45deg); -ms-transform:rotate(-45deg);-o-transform:rotate(-45deg);transform:rotate(-45deg);}
 .tb_box .tb_type{border-top:1px solid #e5e5e5; overflow:hidden;}
 .tb_type .tb_pic{width:100%; display:block; margin-bottom: 5px;}
 .tb_type .th_link{display:block; float: right; width: 50%; box-sizing: border-box; position: relative;}
 .tb_type .th_link:nth-child(2n+1)::after{ content: ""; top: 0; left: 100%; z-index: 2; width: 1px; height: 100%; position: absolute; background: #e5e5e5;  }
-.tb_info { height: 80px; }
+.tb_info { height: 70px; }
 .tb_info p { padding: 0 10px; }
 .tb_info .p-title { font-size: 14px; margin-bottom: 0px; overflow: hidden; height: 1.4em; text-overflow: ellipsis; white-space:nowrap; }
 .tb_floor{width:50%;float:left;border-right: 1px solid #dadada; margin-left:-1px;} 
@@ -163,9 +163,9 @@ h1, h2, h3{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;}
 .mod-filter li a{display: block; height: 44px; line-height: 44px;}
 .mod-filter li.active {border-bottom:1px solid #f1382f;}
 .mod-filter li.active a{color:#f1382f;}
-.icon_sort{background: url("../../images/aim-sprites.png") no-repeat; background-size: 200px 200px;content: ""; display: inline-block; width: 8px; height: 10px;background-position: -170px -30px;margin-left: 4px;}
-.icon_sort_down{background: url("../../images/aim-sprites.png") no-repeat; background-size: 200px 200px;content: "";display: inline-block;width: 8px; height: 10px;background-position: -170px 0;margin-left: 4px;}
-.icon_sort_up{background: url("../../images/aim-sprites.png") no-repeat;background-size: 200px 200px;content: "";display: inline-block; width: 8px; height: 10px; background-position: -170px -15px;margin-left: 4px;}
+.icon_sort{background: url(../images/aim-sprites.png) no-repeat; background-size: 200px 200px;content: ""; display: inline-block; width: 8px; height: 10px;background-position: -170px -30px;margin-left: 4px;}
+.icon_sort_down{background: url(../images/aim-sprites.png) no-repeat; background-size: 200px 200px;content: "";display: inline-block;width: 8px; height: 10px;background-position: -170px 0;margin-left: 4px;}
+.icon_sort_up{background: url(../images/aim-sprites.png) no-repeat;background-size: 200px 200px;content: "";display: inline-block; width: 8px; height: 10px; background-position: -170px -15px;margin-left: 4px;}
 .item-list{min-height: 230px; /* padding-top: 43px; */}
 .item-list a{display: block;background-color: #fff;}
 .hproduct{padding: 10px; height: auto; min-height: 40px;position: relative;border-bottom: 1px solid #e5e5e5;}
@@ -178,8 +178,9 @@ h1, h2, h3{font-family: "Microsoft Yahei",Arial, Helvetica, sans-serif;}
 .p-info .p-title{color: #333; height: 2em;line-height:20px;overflow: hidden;word-break: break-all; margin:0;}
 .p-info .p-description { color: #787878; height: 4.1em; margin-bottom: 5px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3; overflow: hidden;  }
 .p-attr{color: #333;font-size: 12px;}
-.p-origin{min-height: 28px; line-height: 28px;  margin:2px 0 0;}
-.price{color: #f63234; font-style: normal; font-size:18px; margin-right:5px; vertical-align: top; font-family: "Helvetica Neue";}
+.p-origin{min-height: 24px; line-height: 24px;  margin: 0; }
+.p-origin em {font-size: 16px;}
+.price{color: #f63234; font-style: normal; font-size:18px; margin-right:5px; vertical-align: top; }
 .cx{margin:3px 5px; background:#00b4ff; color:#fff; display:inline-block; line-height:17px; padding:2px 5px; border-radius:4px;}
 .old-price{color: #999; font-style: normal; font-size:14px;}
 .buy-area{border-bottom:1px solid #e5e5e5; border-top:1px solid #e5e5e5;}

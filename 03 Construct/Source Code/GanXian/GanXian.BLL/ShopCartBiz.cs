@@ -104,5 +104,39 @@ namespace GanXian.BLL
             }
             return res;
         }
+
+        /// <summary>
+        /// 获取用户购物车信息
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <returns></returns>
+        public List<UserShopcartsInfo> getUserShopcartsInfo(string userOpenId)
+        {
+            List<UserShopcartsInfo> res;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT a.num,a.userOpenId,b.* FROM ganxian.shoppingcart a 
+                                            inner join products b on a.productid=b.productid
+                                            where a.status=1 and b.status=1 and a.userOpenId=@userOpenId";
+                res = conn.Query<UserShopcartsInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
+                if (res.Any())
+                {
+                    res.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                    foreach (var item in res)
+                    {
+                        System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                        foreach (System.Reflection.PropertyInfo item2 in pro)
+                        {
+                            if (item2.Name == item.showPic)
+                            {
+                                item.showPic = item2.GetValue(item).ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+
+        }
     }
 }
