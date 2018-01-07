@@ -84,9 +84,19 @@ column2 nvarchar(100) null, -- 备用字段2
 -- 送货地址
 
 )
-
 -- 用户地址
 -- 购物车
+create table ShoppingCart
+(
+cartId int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  
+userOpenId nvarchar(50) not null comment '用户微信openid',
+productId int(4) not null comment '产品编号',
+num int(4) not null comment '购买数量',
+createDate datetime not null comment '插入时间' default now(), 
+status int null comment '状态', -- 0无效 1有效
+column1 nvarchar(100) null, -- 备用字段1
+column2 nvarchar(100) null -- 备用字段2
+)
 -- 销售单表
 create table SalesSlip
 (
