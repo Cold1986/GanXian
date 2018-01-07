@@ -109,6 +109,7 @@
     <Compile Include="ProductsAndSalesNum.cs" />
     <Compile Include="sales2products.cs" />
     <Compile Include="salesslip.cs" />
+    <Compile Include="shoppingcart.cs" />
     <Compile Include="stocks.cs" />
     <Compile Include="tablist.cs" />
     <Compile Include="typelist.cs" />

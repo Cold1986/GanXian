@@ -64,6 +64,8 @@ namespace Domain.Controllers
                 _Apilog.WriteLog("cookie 不为空,用户OpenId: " + userOpenId);
             }
             ViewBag.userOpenId = userOpenId;
+
+            ViewBag.userShopcartNum = ShopCartBiz.CreateNew().getUserCartsNum(userOpenId).ToString();
             #endregion
 
 
@@ -162,6 +164,43 @@ namespace Domain.Controllers
             ViewBag.PageType = "ProductsPage";
             ViewBag.PageName = "产品列表";
             return View(productsAndSalesNumList);
+        }
+
+        [HttpPost]
+        public JsonResult AddShopcart(string prodId, int num)
+        {
+            string res = string.Empty;
+            string userOpenId = string.Empty;
+            userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            //userOpenId = "test";
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                res = "false";//这里可以扩展，可以换成枚举，目前功能不需要
+            }
+            else
+            {
+                try
+                {
+                    ShopCartBiz shopcartBiz = ShopCartBiz.CreateNew();
+                    shoppingcart userShopcart = shopcartBiz.checkProdExistInCarts(userOpenId, prodId);
+                    if (userShopcart != null)
+                    {
+                        int addNum = userShopcart.num + num;
+                        shopcartBiz.UpdateProdInCarts(userOpenId, prodId, addNum);
+                    }
+                    else
+                    {
+                        shopcartBiz.AddProdInCarts(userOpenId, prodId, num);
+                    }
+                    res = shopcartBiz.getUserCartsNum(userOpenId).ToString();
+                }
+                catch (Exception e)
+                {
+                    _Apilog.WriteLog("添加购物车异常: " + e.Message);
+                    res = "false";
+                }
+            }
+            return Json(res);
         }
 
         public ActionResult Shopcart()

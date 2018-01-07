@@ -198,46 +198,46 @@
         </div>
         @Html.Hidden("currProdId", Model.productId)
         <div class="fixed-foot">
-        <div class="fixed_inner">
-            @*<a class="btn-fav" href="javascript:void(0);" onclick="addInterest(this,'663');">
-                    <i class="i-fav"></i><span>收藏</span>
-                </a>*@
-            <a class="cart-wrap" href="/shopcart">
-                <i class="i-cart"></i>
-                <span>购物车</span>
-                <span class="add-num" id="totalNum">0</span>
-            </a>
-            <div class="buy-btn-fix">
-                <a class="btn btn-info btn-cart" href="javascript:void(0);">加入购物车</a>
-                <a class="btn btn-danger btn-buy" onclick="buyNow();" href="javascript:void(0);">立即购买</a>
+            <div class="fixed_inner">
+                @*<a class="btn-fav" href="javascript:void(0);" onclick="addInterest(this,'663');">
+                        <i class="i-fav"></i><span>收藏</span>
+                    </a>*@
+                <a class="cart-wrap" href="~/Products/Shopcart">
+                    <i class="i-cart"></i>
+                    <span>购物车</span>
+                    <span class="add-num" id="totalNum">@ViewBag.userShopcartNum</span>
+                </a>
+                <div class="buy-btn-fix">
+                    <a class="btn btn-info btn-cart" href="javascript:void(0);">加入购物车</a>
+                    <a class="btn btn-danger btn-buy" onclick="buyNow();" href="javascript:void(0);">立即购买</a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="clear"></div>
+        <div class="clear"></div>
 
-    <footer class="footer">
-        <div class="foot-con">
-            <div class="foot-con_2">
-                <a href="index.html">
-                    <i class="navIcon home"></i>
-                    <span class="text">首页</span>
-                </a>
-                <a href="category.html">
-                    <i class="navIcon sort"></i>
-                    <span class="text">分类</span>
-                </a>
-                <a href="shopcart.html">
-                    <i class="navIcon shop"></i>
-                    <span class="text">购物车</span>
-                </a>
-                <a href="userhome.html">
-                    <i class="navIcon member"></i>
-                    <span class="text">我的</span>
-                </a>
+        <footer class="footer">
+            <div class="foot-con">
+                <div class="foot-con_2">
+                    <a href="index.html">
+                        <i class="navIcon home"></i>
+                        <span class="text">首页</span>
+                    </a>
+                    <a href="category.html">
+                        <i class="navIcon sort"></i>
+                        <span class="text">分类</span>
+                    </a>
+                    <a href="shopcart.html">
+                        <i class="navIcon shop"></i>
+                        <span class="text">购物车</span>
+                    </a>
+                    <a href="userhome.html">
+                        <i class="navIcon member"></i>
+                        <span class="text">我的</span>
+                    </a>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
     </div>
 </body>
 </html>

@@ -51,6 +51,7 @@
     <Compile Include="Class1.cs" />
     <Compile Include="ProductsBiz.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShopCartBiz.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
