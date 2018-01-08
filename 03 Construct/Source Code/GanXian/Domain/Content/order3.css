@@ -113,6 +113,7 @@ a{font-size: 12px;}
 .member_m_bz img{border-radius: 5px;width:100%;}
 .member_m_bz span{position: absolute;font-size: 12px;left:37%;top:16%;}
 .member_m_r{width:33%;position: absolute;right:4%;text-align: right;bottom: 10%;color: #fff;font-size: 10px;}
+.member_m_r a{color:#fff;}
 
 /* 会员中心，代理商 */
 .member_m_dl{width:60%;position: absolute;left: 32%;top: 10%;text-align: left;color: #fff;}

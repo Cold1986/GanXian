@@ -1,0 +1,80 @@
+.row > div {
+	background: #fff;
+	padding: 10px;
+}
+.row > div p {
+	margin: 0;
+}
+.row .logistics-info {
+	padding-left: 60px;
+	background: url(../images/logistics.png) 10px center no-repeat #fff;
+	background-size: 40px auto;
+	font-size: 13px;
+}
+.row .logistics-info p:first-child {
+	font-size: 14px;
+	color: #333;
+}
+.row .logistics-info p:first-child span {
+	color: #18b632;
+}
+.row .logistics-title {
+	border-bottom: 1px solid #dfdfdf;
+}
+.row .logistics-detail {
+	padding-left: 40px;
+	border-bottom: 1px solid #dfdfdf;
+	position: relative;
+}
+.row .logistics-detail::before {
+	content: "";
+	width: 1px;
+	height: calc(100% - 20px);
+	background: #dfdfdf;
+	display: block;
+	position: absolute;
+	left: 20px;
+	top: 20px;
+}
+.row .logistics-detail li {
+	border-bottom: 1px solid #dfdfdf;
+	padding: 10px 0;
+	position: relative;
+}
+.row .logistics-detail li::before {
+	content: "";
+	width: 8px;
+	height: 8px;
+	background: #dfdfdf;
+	display: block;
+	position: absolute;
+	left: -23.5px;
+	top: 15px;
+	border-radius: 50%;
+}
+.row .logistics-detail li:first-child {
+	color: #18b632;
+	padding-top: 0;
+}
+.row .logistics-detail li:first-child::before {
+	content: "";
+	width: 10px;
+	height: 10px;
+	background: #18b632;
+	display: block;
+	position: absolute;
+	left: -24px;
+	top: 5px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 2px rgba(24,182,50,0.3);
+}
+.row .logistics-detail li:last-child {
+	border: 0;
+	padding-bottom: 0;
+}
+.row .logistics-detail li p {
+	font-size: 13px;
+}
+.row .logistics-detail li span {
+	font-size: 12px;
+}
