@@ -18,20 +18,20 @@ $(document).ready(function () {
     $('.checkLabel').on('click', function () {
         var flag = $(this).prev().is(':checked');
         if (flag) {
-            $(this).prev().attr("checked", false);
+            $(this).prev().prop("checked", false);
 
-            $("#buy-sele-all").attr("checked", false); //将全选勾除
+            $("#buy-sele-all").prop("checked", false); //将全选勾除
             $("#buy-sele-all").val(0);
 
         } else {
 
-            $(this).prev().attr("checked", true);
+            $(this).prev().prop("checked", true);
 
             //如果全部都选中了，将全选勾选
             var groupUL = $(".container").find("ul[class='list-group']").get();
             var checkUL = $(".container").find("div[class='icheck pull-left mr5'] :checkbox:checked").get();
             if (groupUL.length == checkUL.length) {
-                $("#buy-sele-all").attr("checked", true);
+                $("#buy-sele-all").prop("checked", true);
                 $("#buy-sele-all").val(1);
             }
         }
@@ -46,10 +46,10 @@ $(document).ready(function () {
 
         if (flag == 1) {
             $(this).val(0);
-            $(".ids").attr("checked", false);
+            $(".ids").prop("checked", false);
         } else {
             $(this).val(1);
-            $(".ids").attr("checked", true);
+            $(".ids").prop("checked", true);
         }
 
         //计算总价
@@ -65,9 +65,9 @@ function increase(obj) {
     var _this = $(obj);
     var _count_obj = _this.prev();
     var count = Number($(_count_obj).val());
-    var basket_id = $(_count_obj).attr("itemkey");
-    var prod_id = $(_count_obj).attr("prodId");
-    var sku_id = $(_count_obj).attr("skuId");
+    var basket_id = $(_count_obj).prop("itemkey");
+    var prod_id = $(_count_obj).prop("prodId");
+    var sku_id = $(_count_obj).prop("skuId");
 
     var _num = parseInt(count) + 1;
     var re = /^[1-9]+[0-9]*]*$/;
@@ -99,9 +99,9 @@ function disDe(obj) {
     var _this = $(obj);
     var _count_obj = _this.next();
     var count = Number($(_count_obj).val());
-    var basket_id = $(_count_obj).attr("itemkey");
-    var prod_id = $(_count_obj).attr("prodId");
-    var sku_id = $(_count_obj).attr("skuId");
+    var basket_id = $(_count_obj).prop("itemkey");
+    var prod_id = $(_count_obj).prop("prodId");
+    var sku_id = $(_count_obj).prop("skuId");
     var _num = parseInt(count) - 1;
 
     var re = /^[1-9]+[0-9]*]*$/;
@@ -175,25 +175,24 @@ function calculateTotal() {
 }
 
 //删除购物车商品
-function deleteShopCart(_basketId, _basketName, _prodId, _skuId) {
-    if (confirm("删除后不可恢复, 确定要删除'" + _basketName + "'吗？")) {
+function deleteShopCart(productId, productName) {
+    if (confirm("删除后不可恢复, 确定要删除'" + productName + "'吗？")) {
         $.ajax({
-            url: contextPath + "/deletShopCart",
-            data: { "basket_id": _basketId, "prod_id": _prodId, "sku_id": _skuId },
+            url: "DelShopcartById",
+            data: { "productId": productId },
             type: 'post',
             async: true, //默认为true 异步   
             dataType: 'json',
             error: function (data) {
             },
             success: function (data) {
-                if (data == "OK") {
-                    window.location.href = contextPath + "/shopcart";
+                if (data == "success") {
+                    window.location.href = window.location.href;
                     return;
                 } else {
-                    floatNotify.simple("删除失败");
+                    alert("删除失败");
                     return false;
                 }
-
             }
         });
     }
@@ -213,7 +212,7 @@ function submitShopCart() {
         if (i != 0) {
             shopCartStr = shopCartStr + ",";
         }
-        var basket_id = $(array[i]).attr("itemkey");
+        var basket_id = $(array[i]).prop("itemkey");
         shopCartStr = shopCartStr + basket_id;
     }
 

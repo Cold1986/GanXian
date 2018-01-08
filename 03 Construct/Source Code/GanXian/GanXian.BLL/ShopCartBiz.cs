@@ -138,5 +138,30 @@ namespace GanXian.BLL
             return res;
 
         }
+
+        /// <summary>
+        /// 删除用户购物车信息
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <param name="productId"></param>
+        /// <returns>0 失败 1成功</returns>
+        public int delUserShopcartsByProductId(string userOpenId, string productId)
+        {
+            int res = 0;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    res = 1;
+                    string sqlCommandText = @"update shoppingcart set status=0,column1=now() where userOpenId=@userOpenId and productId=@productId ";
+                    res = Convert.ToInt32(conn.ExecuteScalar(sqlCommandText, new { userOpenId = userOpenId, productId = productId }));
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
+        }
     }
 }

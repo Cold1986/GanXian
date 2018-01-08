@@ -197,51 +197,76 @@ namespace Domain.Controllers
         {
             string userOpenId = string.Empty;
             #region 用户信息部分
-            //userOpenId = CookieHelper.GetCookieValue("userOpenId");
-            ////缓存为空
-            //if (string.IsNullOrEmpty(userOpenId))
-            //{
-            //    try
-            //    {
-            //        if (string.IsNullOrEmpty(code))
-            //        {
-            //            string url = Request.Url.ToString();
-            //            if (url.IndexOf("www.") < 0)
-            //            {
-            //                url = url.Replace("http://", "http://www.");
-            //            }
+            userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            //缓存为空
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(code))
+                    {
+                        string url = Request.Url.ToString();
+                        if (url.IndexOf("www.") < 0)
+                        {
+                            url = url.Replace("http://", "http://www.");
+                        }
 
-            //            //请求微信接口获取code
-            //            string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
-            //            return Redirect(snsapi_Base_Link);
-            //        }
-            //        else
-            //        {
-            //            Authorize userInfo = AuthorizeBiz.getUserInfo(code);
-            //            if (userInfo != null) userOpenId = userInfo.openid;
-            //            //请求微信接口获取openid
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
-            //    }
+                        //请求微信接口获取code
+                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
+                        return Redirect(snsapi_Base_Link);
+                    }
+                    else
+                    {
+                        Authorize userInfo = AuthorizeBiz.getUserInfo(code);
+                        if (userInfo != null) userOpenId = userInfo.openid;
+                        //请求微信接口获取openid
+                    }
+                }
+                catch (Exception e)
+                {
+                    _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
+                }
 
-            //    if (!string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
-            //    {
-            //        CookieHelper.SetCookie("userOpenId", userOpenId);
-            //    }
-            //}
-            //ViewBag.userOpenId = userOpenId;
+                if (!string.IsNullOrEmpty(userOpenId))
+                {
+                    CookieHelper.SetCookie("userOpenId", userOpenId);
+                }
+            }
+            ViewBag.userOpenId = userOpenId;
 
             #endregion
 
-            userOpenId = "test";
+            //userOpenId = "test";
             List<UserShopcartsInfo> userShopcartsInfoList = null;
             if (!string.IsNullOrEmpty(userOpenId)) userShopcartsInfoList = ShopCartBiz.CreateNew().getUserShopcartsInfo(userOpenId);
 
             ViewBag.PageName = "购物车";
             return View(userShopcartsInfoList);
+        }
+
+        [HttpPost]
+        public JsonResult DelShopcartById(string productId, string userOpenId)
+        {
+            string res = "fail";
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            }
+            //userOpenId = "test";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    res = "success";
+                    ShopCartBiz.CreateNew().delUserShopcartsByProductId(userOpenId, productId);
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("ProductsController/DelShopcartById 异常： " + e.Message);
+                }
+            }
+            return Json(res);
         }
 
 
