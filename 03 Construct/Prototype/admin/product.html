@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>赶鲜 - 后台管理系统</title>
+	<title>后台管理系统</title>
 	<link href="style/reset.css" rel="stylesheet">
 	<link href="style/global.css" rel="stylesheet">
 	<link href="style/product.css" rel="stylesheet">
@@ -10,16 +10,16 @@
 </head>
 <body>
 	<header>
-		<h1>赶鲜 - 后台管理系统</h1>
+		<h1>后台管理系统</h1>
 	</header>
 	<div class="main">
 		<aside>
 			<ul>
 				<li>
-					<a href="reference.html" class="focus"><i class="icon ion-android-restaurant"></i>产品管理</a>
+					<a href="product.html" class="focus"><i class="icon ion-android-restaurant"></i>产品管理</a>
 				</li>
 				<li>
-					<a href="reference.html"><i class="icon ion-clipboard"></i>订单管理</a>
+					<a href="order.html"><i class="icon ion-clipboard"></i>订单管理</a>
 				</li>
 			</ul>
 		</aside>
@@ -169,7 +169,7 @@
 		<div class="popup-inner">
 			<p class="blue">确认删除本条记录？</p>
 			<div>
-				<button class="btn popup-cancel">取消</button><button class="btn delete-alert-comfirm">确认</button>
+				<button class="btn popup-cancel">取消</button><button class="btn delete-alert-confirm">确认</button>
 			</div>
 		</div>
 	</div>
@@ -179,67 +179,69 @@
 			<p class="blue">新增产品</p>
 			<ul>
 				<li>
-					<label>项目</label>
-					<input type="text" id="r-item"></input>
-					<span class="error-msg">必填！</span>
+					<label>SKU</label>
+					<span>GS0001</span>
 				</li>
 				<li>
 					<label>产品名称</label>
-					<input type="text" id="r-product"></input>
+					<input type="text" id="r-product" />
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>装箱数量</label>
-					<input type="text" id="r-number"></input>
+					<label>产品类别</label>
+					<select id="r-catalog" />
+						<option selected="">单品</option>
+						<option>礼包</option>
+					</select>
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>颜色</label>
-					<input type="text" id="r-color"></input>
+					<label>规格</label>
+					<input type="text" id="r-size" />
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>盒形</label>
-					<input type="text" id="r-box"></input>
+					<label>原价</label>
+					<input type="text" id="r-price" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"" value="145" />
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>版本</label>
-					<input type="text" id="r-version"></input>
+					<label>折扣价</label>
+					<input type="text" id="r-oPrice" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"" value="145" />
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>AP/N</label>
-					<input type="text" id="r-APN"></input>
+					<label>库存</label>
+					<input type="text" id="r-storage" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)"" value="145" />
 					<span class="error-msg">必填！</span>
 				</li>
 				<li>
-					<label>小标签</label>
-					<input type="text" id="r-label"></input>
-					<span class="error-msg">必填！</span>
+					<label>产地</label>
+					<input type="text" id="r-APN" />
 				</li>
 				<li>
-					<label>JDE料号</label>
-					<input type="text" id="r-JDECode"></input>
-					<span class="error-msg">必填！</span>
+					<label>净重</label>
+					<input type="text" id="r-weight" />
 				</li>
 				<li>
-					<label>出wistronJDE料号</label>
-					<input type="text" id="r-JDECode-out"></input>
-				</li>
-				<li>
-					<label>OEM料号</label>
-					<input type="text" id="r-OEMCode"></input>
-					<span class="error-msg">必填！</span>
-				</li>
-				<li>
-					<label>出wistron客户料号</label>
-					<input type="text" id="r-OEMCode-out"></input>
+					<label>存放条件</label>
+					<input type="text" id="r-condition" />
 				</li>
 				<li>
 					<label>产品描述</label>
 					<textarea></textarea>
 				</li>
+				<li>
+					<label>产品图片</label>
+					<div>
+						<input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" /><span class="radio-box"><input type="radio" name="main-pic" id="main-pic1" disabled checked /><label for="main-pic1">设为主图</label></span><br />
+						<input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" /><span class="radio-box"><input type="radio" name="main-pic" id="main-pic2" disabled /><label for="main-pic2">设为主图</label></span><br />
+						<input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" /><span class="radio-box"><input type="radio" name="main-pic" id="main-pic3" disabled /><label for="main-pic3">设为主图</label></span><br />
+						<input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" /><span class="radio-box"><input type="radio" name="main-pic" id="main-pic4" disabled /><label for="main-pic4">设为主图</label></span><br />
+						<span class="error-msg">请先上传图片！</span>
+					</div>
+				</li>
+				
 			</ul>
 			<div>
 				<button class="btn popup-cancel">取消</button><button class="btn add-item-confirm">确认</button>
@@ -265,6 +267,19 @@
 		})
 		$("input[type=text]").blur(function(){
 			$(this).parent("td").removeClass("highlight");
+		})
+		/* 设为主图时判断有没有图片 */
+		$(".radio-box").click(function(){
+			if(!$(this).prev(".r-pic").val()){
+				$(this).parents("li").find(".error-msg").show();
+			}
+		})
+		$(".r-pic").change(function(){
+			
+			if($(this).val()){
+				$(this).next(".radio-box").children("input[type='radio']").removeAttr("disabled");
+				$(this).parents("li").find(".error-msg").hide();
+			}
 		})
 	</script>
 </body>

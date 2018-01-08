@@ -159,7 +159,7 @@ ul.cmd_icon li:last-child{border-bottom:0 none;background:none}
 .card_id .fr{ width:48%; padding-right:2px; text-align:right;}
 .vipbang{ width:16px; height:16px; font-style:normal; text-indent:-9999em; margin-left:5px; margin-right:5px; background:url("../images/vip_link.png") no-repeat center center; background-size:16px 16px; display: inline-block;}
 .vipbang_gray{ width:16px; height:16px; font-style:normal; text-indent:-9999em; margin-left:5px; margin-right:5px; background:url("../images/vip_link_gray.png") no-repeat center center; background-size:16px 16px; display: inline-block;}
-.red,.red a{ color: #900!important;}
+.red,.red a{ color: #f63234!important;}
 
 .green,.green a{color: #090!important;}
 
@@ -564,4 +564,78 @@ a{font-size: 12px;}
     overflow: hidden;
     vertical-align: middle;
     width: 75px;
+}
+
+
+.member-recommend .tb_type {
+	padding: 0 10px;
+}
+.member-recommend .tb_type .th_link {
+	width: 25%;
+}
+.member-recommend .tb_info .p-title {
+	font-size: 12px;
+}
+.member-recommend .tb_info .p-origin em, .member-recommend .old-price {
+	font-size: 13px;
+}
+.member-recommend .tb_info {
+	height: 65px;
+}
+
+
+/* 管理收货地址 */
+.address-list li {
+	background: #fff;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+.address-list .address-info span {
+	float: right;
+}
+.address-list .address-panel {
+	border-top: 1px solid #ddd;
+	padding-top: 10px;
+}
+.address-list input[type="radio"] {
+	vertical-align: -2px;
+	margin-right: 5px;
+}
+.address-list .address-panel span {
+	float: right;
+	margin-left: 20px;
+}
+.address-list .default-address label {
+	color: #f63234;
+}
+
+/* 编辑收货地址 */
+.address-edit {
+	background: #fff;
+	margin-bottom: 10px;
+}
+.address-edit li {
+	border-bottom: 1px solid #efefef;
+	padding: 5px 10px;
+}
+.address-edit li input[type="text"] {
+	border: 0;
+	width: calc(95% - 6em);
+}
+.address-edit li label {
+	width: 6em;
+}
+.address-edit textarea {
+	border: 0;
+	resize: none;
+	width: 100%;
+	height: auto;
+	padding: 0;
+}
+.address-edit-delete {
+	color: #f63234;
+	background: #fff;
+	border: 1px solid #efefef;
+	border-width: 1px 0 1px 0;
+	padding: 8px 10px;
 }
