@@ -312,3 +312,57 @@ a{font-size: 12px;}
 .fanhui_cou{position: fixed;bottom:60px;right:10px;z-index: 10000;opacity:0.8;background:#fff;width:52px;height:52px;border-radius: 50%;text-align: center;color:#909ca9;border:1px solid #8f9caa;display:none;}
 .fanhui_1{background:url(../images/bot_top_arrow.png) no-repeat;width:14px;height:14px;background-size:14px;font-size: 12px;text-align: center;margin: 10px auto 0;}
 .fanhui_ding{padding-top: 2px;}
+
+
+/* 购物车 */
+.rowcar .num-edit {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 50px;
+}
+.rowcar .num-edit span {
+    display: none;
+}
+.rowcar .editnow .num-edit span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height: 100%;
+    vertical-align: middle;
+    background: #f63234;
+}
+.rowcar .num-edit i {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url(../images/edit.png) no-repeat #8b8b8b center center;
+    background-size: 80%;
+    opacity: 0.2;
+    border-radius: 4px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    position: absolute;
+}
+.rowcar .editnow .num-edit i {
+    display: none;
+}
+.rowcar .control-num {
+    margin-right: 50px;
+    padding-top: 0;
+    display: none;
+}
+.rowcar .editnow .control-num {
+    display: block;
+}
+.rowcar .num-show {
+    position: absolute;
+    right: 55px;
+    top: 13px;
+}
+.rowcar .editnow .num-show {
+    display: none;
+}

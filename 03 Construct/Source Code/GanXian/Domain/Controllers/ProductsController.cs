@@ -20,7 +20,6 @@ namespace Domain.Controllers
             #region 用户信息部分
             string userOpenId = string.Empty;
             Tuple<string, string> result = base.getUserOpenId(code);
-            //string userOpenId = base.getUserOpenId(code);
             if (!string.IsNullOrEmpty(result.Item1))
             {
                 userOpenId = result.Item1;
@@ -184,7 +183,6 @@ namespace Domain.Controllers
             ViewBag.userOpenId = userOpenId;
             #endregion
 
-            //userOpenId = "test";
             List<UserShopcartsInfo> userShopcartsInfoList = null;
             if (!string.IsNullOrEmpty(userOpenId)) userShopcartsInfoList = ShopCartBiz.CreateNew().getUserShopcartsInfo(userOpenId);
 
@@ -212,6 +210,31 @@ namespace Domain.Controllers
                 {
                     res = "fail";
                     _Apilog.WriteLog("ProductsController/DelShopcartById 异常： " + e.Message);
+                }
+            }
+            return Json(res);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateShopcartById(string num, string productId, string userOpenId)
+        {
+            string res = "fail";
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            }
+            //userOpenId = "test";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    res = "success";
+                    ShopCartBiz.CreateNew().updateUserShopcartsByProductId(userOpenId, productId, num);
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("ProductsController/updateUserShopcartsByProductId 异常： " + e.Message);
                 }
             }
             return Json(res);

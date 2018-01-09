@@ -39,6 +39,9 @@
                         <input type="tel" class="btn gary2 Amount" readonly="readonly" value=@item.num maxlength="4" itemkey="">
                         <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
                     </div>
+                    <div class="num-show">x @item.num</div>
+                    <div class="num-edit"><span onclick="updateProductNum(this,'@item.productId')">完成</span><i></i></div>
+
                 </li>
             </ul>
         }

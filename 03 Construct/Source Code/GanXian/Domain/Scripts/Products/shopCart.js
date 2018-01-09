@@ -58,7 +58,43 @@ $(document).ready(function () {
 
     //计算总价
     calculateTotal();
+
+    $(".rowcar .num-edit i").on('click', function () {
+        $(this).parents("li").addClass("editnow");
+    })
+    //$(".rowcar .num-edit span").on('click', function () {
+    //    $(this).parents("li").removeClass("editnow");
+    //    var num = $(this).parent().siblings('.btn-group').children('.gary2').val();
+    //    $(this).parent().siblings('.num-show').text('x ' + num);
+    //})
 });
+
+function updateProductNum(obj, productId) {
+    var _this = $(obj);
+    _this.parents("li").removeClass("editnow");
+    var num = _this.parent().siblings('.btn-group').children('.gary2').val();
+    _this.parent().siblings('.num-show').text('x ' + num);
+    if (!isNaN(num) && num > 0) {
+        $.ajax({
+            url: "UpdateShopcartById",
+            data: { "productId": productId, "num": num },
+            type: 'post',
+            async: true, //默认为true 异步   
+            dataType: 'json',
+            error: function (data) {
+            },
+            success: function (data) {
+                if (data == "success") {
+                    alert("更新成功");
+                    return;
+                } else {
+                    alert("更新失败");
+                    return false;
+                }
+            }
+        });
+    }
+}
 
 //相加
 function increase(obj) {

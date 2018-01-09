@@ -153,8 +153,34 @@ namespace GanXian.BLL
                 using (IDbConnection conn = DapperHelper.MySqlConnection())
                 {
                     res = 1;
-                    string sqlCommandText = @"update shoppingcart set status=0,column1=now() where userOpenId=@userOpenId and productId=@productId ";
+                    string sqlCommandText = @"update shoppingcart set status=0,column1=now() where status=1 and userOpenId=@userOpenId and productId=@productId ";
                     res = Convert.ToInt32(conn.ExecuteScalar(sqlCommandText, new { userOpenId = userOpenId, productId = productId }));
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 更新产品数量
+        /// </summary>
+        /// <param name="userOpenId">用户微信OpenId</param>
+        /// <param name="productId">产品Id</param>
+        /// <param name="num">更新成数量</param>
+        /// <returns></returns>
+        public int updateUserShopcartsByProductId(string userOpenId, string productId, string num)
+        {
+            int res = 0;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    res = 1;
+                    string sqlCommandText = @"update shoppingcart set num=@num where status=1 and userOpenId=@userOpenId and productId=@productId ";
+                    res = Convert.ToInt32(conn.ExecuteScalar(sqlCommandText, new { userOpenId = userOpenId, productId = productId, num = num }));
                 }
             }
             catch (Exception e)
