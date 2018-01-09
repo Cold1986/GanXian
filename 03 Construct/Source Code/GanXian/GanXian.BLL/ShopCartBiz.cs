@@ -117,7 +117,8 @@ namespace GanXian.BLL
             {
                 string sqlCommandText = @"SELECT a.num,a.userOpenId,b.* FROM ganxian.shoppingcart a 
                                             inner join products b on a.productid=b.productid
-                                            where a.status=1 and b.status=1 and a.userOpenId=@userOpenId";
+                                            where a.status=1 and b.status=1 and a.userOpenId=@userOpenId
+                                            order by a.createDate desc";
                 res = conn.Query<UserShopcartsInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
                 if (res.Any())
                 {

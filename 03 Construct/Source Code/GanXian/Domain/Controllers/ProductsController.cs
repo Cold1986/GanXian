@@ -47,6 +47,7 @@ namespace Domain.Controllers
                     CacheHelper.SetCache("product_" + id.ToString(), products, ts);
                 }
             }
+            ViewBag.PageName = "商品详情";
             return View(products);
             #endregion
         }
