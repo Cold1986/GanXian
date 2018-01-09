@@ -11,7 +11,7 @@ using WechatService.Biz;
 
 namespace Domain.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
         // GET: Products
@@ -19,40 +19,15 @@ namespace Domain.Controllers
         {
             #region 用户信息部分
             string userOpenId = string.Empty;
-            userOpenId = CookieHelper.GetCookieValue("userOpenId");
-            //缓存为空
-            if (string.IsNullOrEmpty(userOpenId))
+            Tuple<string, string> result = base.getUserOpenId(code);
+            //string userOpenId = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
             {
-                try
-                {
-                    if (string.IsNullOrEmpty(code))
-                    {
-                        string url = Request.Url.ToString();
-                        if (url.IndexOf("www.") < 0)
-                        {
-                            url = url.Replace("http://", "http://www.");
-                        }
-
-                        //请求微信接口获取code
-                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
-                        return Redirect(snsapi_Base_Link);
-                    }
-                    else
-                    {
-                        Authorize userInfo = AuthorizeBiz.getUserInfo(code);
-                        if (userInfo != null) userOpenId = userInfo.openid;
-                        //请求微信接口获取openid
-                    }
-                }
-                catch (Exception e)
-                {
-                    _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
-                }
-
-                if (!string.IsNullOrEmpty(userOpenId))//理论上不应该存在这种情况
-                {
-                    CookieHelper.SetCookie("userOpenId", userOpenId);
-                }
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
             }
             ViewBag.userOpenId = userOpenId;
             ViewBag.userShopcartNum = ShopCartBiz.CreateNew().getUserCartsNum(userOpenId).ToString();//获取用户购物车数量
@@ -195,45 +170,18 @@ namespace Domain.Controllers
 
         public ActionResult Shopcart(string code)
         {
-            string userOpenId = string.Empty;
             #region 用户信息部分
-            userOpenId = CookieHelper.GetCookieValue("userOpenId");
-            //缓存为空
-            if (string.IsNullOrEmpty(userOpenId))
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
             {
-                try
-                {
-                    if (string.IsNullOrEmpty(code))
-                    {
-                        string url = Request.Url.ToString();
-                        if (url.IndexOf("www.") < 0)
-                        {
-                            url = url.Replace("http://", "http://www.");
-                        }
-
-                        //请求微信接口获取code
-                        string snsapi_Base_Link = AuthorizeBiz.getSnsapi_Base_Link(url);
-                        return Redirect(snsapi_Base_Link);
-                    }
-                    else
-                    {
-                        Authorize userInfo = AuthorizeBiz.getUserInfo(code);
-                        if (userInfo != null) userOpenId = userInfo.openid;
-                        //请求微信接口获取openid
-                    }
-                }
-                catch (Exception e)
-                {
-                    _Apilog.WriteLog("ProductsController/Index 异常： " + e.Message);
-                }
-
-                if (!string.IsNullOrEmpty(userOpenId))
-                {
-                    CookieHelper.SetCookie("userOpenId", userOpenId);
-                }
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
             }
             ViewBag.userOpenId = userOpenId;
-
             #endregion
 
             //userOpenId = "test";
