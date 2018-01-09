@@ -101,14 +101,18 @@ column2 nvarchar(100) null -- 备用字段2
 create table SalesSlip
 (
 salesId int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  -- 销售单号
+salesNo varchar(40) not null comment ''
 userId int(8) null, -- 用户id,
+-- 省
+-- 市
+-- 县
 userAddress nvarchar(400), -- 用户地址
 userPhone nvarchar(20),-- 用户号码
 amount decimal(10,2) null, -- 总金额
 postage decimal(5,2) null comment '邮费',
 wechatSalesId varchar(40) null,-- 微信交易id
 createDate datetime not null comment '插入时间' default now(), 
-status int null comment '状态', -- 0未付款 1已付款
+status int null comment '状态', -- 0未付款 1已付款 2待发货 3 待收货 4 已完成
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
