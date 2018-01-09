@@ -33,9 +33,10 @@ namespace Domain
                       "~/Content/style.css",
                       "~/Content/member.css",
                        "~/Content/orderlist.css",
+                        "~/Content/LArea.css",
                       "~/Content/order3.css"));
 
-           
+
         }
     }
 }
