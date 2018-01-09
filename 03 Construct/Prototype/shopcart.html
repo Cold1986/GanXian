@@ -65,6 +65,8 @@
 		                    <input type="tel" class="btn gary2 Amount" readonly="readonly" value="1" maxlength="4" itemkey="" prodId="663" skuId="1358">
 		                    <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
 		                </div>
+		                <div class="num-show">x 1</div>
+		                <div class="num-edit"><span>完成</span><i></i></div>
 					</li>
 				</ul>
 				<ul class="list-group">
@@ -96,6 +98,8 @@
 		                    <input type="tel" class="btn gary2 Amount" readonly="readonly" value="1" maxlength="4" itemkey="" prodId="663" skuId="1358">
 		                    <a onclick="increase(this)" href="javascript:void(0);" class="btn btn-default"><span class="glyphicon glyphicon-plus gary"></span></a>
 		                </div>
+		                <div class="num-show">x 1</div>
+		                <div class="num-edit"><span>完成</span><i></i></div>
 					</li>
 					</ul>
 		       </div>
@@ -144,6 +148,13 @@
 var contextPath = '';
 $(function(){
 	calculateTotal();
+	//编辑商品数量
+	$(".rowcar .num-edit i").click(function(){
+		$(this).parents("li").addClass("editnow");
+	})
+	$(".rowcar .num-edit span").click(function(){
+		$(this).parents("li").removeClass("editnow");
+	})
 })
 </script>
 </body></html>
