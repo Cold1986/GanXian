@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script charset="utf-8" src="js/jquery.min.js?v=01291"></script>
+<script charset="utf-8" src="js/global.js?v=01291"></script>
+<script charset="utf-8" src="js/bootstrap.min.js?v=01291"></script>
+<script charset="utf-8" src="js/template.js?v=01291"></script>
+<link rel="stylesheet" href="css/bootstrap.css?v=01291">
+<link rel="stylesheet" href="css/style.css?v=1?v=01291">
+<link rel="stylesheet" href="css/order3.css?v=01291">
+<link rel="stylesheet" href="css/member.css?v=01291">
+<link rel="stylesheet" href="css/orderlist.css">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<meta content="telephone=no" name="format-detection">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+<title>管理收货地址</title>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<header class="header">
+    <div class="fix_nav">
+        <div style="max-width:768px;margin:0 auto;background:#000000;position: relative;">
+            <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+            <div class="tit" style="font-size:18px;">管理收货地址</div>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="max-width:768px;margin:0 auto;">
+	<div class="row">
+				
+		<ul class="address-list">
+			<li>
+				<p class="address-info">阿三<span>1311131111</span></p>
+				<p>上海市某某区某某路1000号101室上海市某某区某某路1000号101室</p>
+				<div class="address-panel default-address">
+					<input type="radio" name="default" id="default1" checked=""><label for="default1">默认地址</label>
+					<span onclick="deleteAddress(this)">删除</span>
+					<span onclick="location.href='addressedit.html'">编辑</span>
+				</div>
+			</li>
+			<li>
+				<p class="address-info">阿四<span>1311131112</span></p>
+				<p>上海市某某区某某路1000号102室上海市某某区某某路1000号101室</p>
+				<div class="address-panel">
+					<input type="radio" name="default" id="default2"><label for="default2">设为默认</label>
+					<span onclick="deleteAddress(this)">删除</span>
+					<span onclick="location.href='addressedit.html'">编辑</span>
+				</div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+<footer class="footer">
+  <div class="foot-con">
+	<div class="foot-con_2">
+		<a href="addressnew.html" class="add-address">
+			添加新地址
+		</a>
+	</div>
+  </div>
+</footer>
+<script>
+	$(".address-list").find($("input[type='radio']")).click(function(){
+		$(".address-list").find($("input[type='radio']")).parent(".address-panel").removeClass("default-address");
+		$(this).parent(".address-panel").addClass("default-address");
+	})
+	function deleteAddress(obj){
+		if(confirm("确认删除这个地址？")){
+			$(obj).parents("li").remove();
+		}
+		
+	}
+</script>
+</body>
+</html>

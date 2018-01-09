@@ -6,26 +6,25 @@
 <script charset="utf-8" src="js/global.js?v=01291"></script>
 <script charset="utf-8" src="js/bootstrap.min.js?v=01291"></script>
 <script charset="utf-8" src="js/template.js?v=01291"></script>
-
 <link rel="stylesheet" href="css/bootstrap.css?v=01291">
 <link rel="stylesheet" href="css/style.css?v=1?v=01291">
+<link rel="stylesheet" href="css/order3.css?v=01291">
 <link rel="stylesheet" href="css/member.css?v=01291">
-<link rel="stylesheet" href="css/order3.css?v=01291"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/orderlist.css">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="yes" name="apple-mobile-web-app-capable">
 <meta content="yes" name="apple-touch-fullscreen">
 <meta content="telephone=no" name="format-detection">
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
-<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1;user-scalable=no;">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
 <title>结算</title>
-<script charset="utf-8" src="js/randomimage.js?v=01291"></script>
-<script charset="utf-8" src="js/login.js?v=01291"></script>
 <script type="text/javascript">
-		var error = '';
+
 </script>
 </head>
-<body class="" style="background-color:#fff">
+<body>
 <header class="header">
     <div class="fix_nav">
         <div style="max-width:768px;margin:0 auto;background:#000000;position: relative;">
@@ -34,13 +33,64 @@
         </div>
     </div>
 </header>
-<div class="maincontainer">
-  <div class="container itemdetail mini-innner">
-    <p style="padding-top: 20px; text-align: center; font-size: 14px;">正在结算中…</p>
-	</div>
+<div class="maincontainer checkout">
+<div class="container" style="max-width:768px;margin:0 auto;">
+    <div class="row">
+                
+        <div class="list-group mb10">
+            <div class="list-group-item tip address">
+                <a href="addresslist.html">
+                    <p>收货人：测试<span>13412312312</span></p>
+                    <p>收货地址：上海市 某某区 某某路 1000号 101室</p>
+                </a>
+            </div>
+            <ul class="product-list">
+                <li>
+                    <a href="views.html">
+                        <img src="img/product01.jpg">
+                        <p>小眼带鱼</p>
+                        <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="views.html">
+                        <img src="img/product02.jpg">
+                        <p>方头鱼</p>
+                        <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="views.html">
+                        <img src="img/product03.jpg">
+                        <p>东海小眼带鱼</p>
+                        <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="views.html">
+                        <img src="img/product04.jpg">
+                        <p>方头鱼</p>
+                        <div><span class="p-price">￥21.50</span><span>x1</span></div>
+                    </a>
+                </li>
+            </ul>
+            <div class="order-list-info">
+                <p>共<span class="red">5</span>件商品 合计：<span class="red">￥120.00</span><br>运费：<span class="red">￥12.00</span></p>
+            </div>
+        </div>
+                          
+
+    </div>
 </div>
-<script type="text/javascript">
-var contextPath = '';
-</script>
+</div>
+<footer class="footer checkout">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            <p>共<span class="red">5</span>件商品 合计<span class="red">￥132.00</span></p>
+            <div class="buy-btn-fix"><button type="button" class="btn btn-danger btn-buy">结算</button></div>
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
