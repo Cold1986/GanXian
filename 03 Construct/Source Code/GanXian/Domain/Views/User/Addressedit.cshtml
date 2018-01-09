@@ -32,8 +32,10 @@
         </div>
     </div>
 </footer>
-<script src="js/LAreaData1.js"></script>
-<script src="js/LArea.js"></script>
+@section Scripts {
+    <script src="~/Scripts/User/LArea.js" charset="utf-8"></script>
+    <script src="~/Scripts/User/LAreaData1.js" charset="utf-8"></script>
+
 <script>
     var area1 = new LArea();
     area1.init({
@@ -46,14 +48,14 @@
         'type': 1, //数据源类型
         'data': LAreaData //数据源
     });
-    area1.value=[1,13,3];//控制初始位置，注意：该方法并不会影响到input的value
+    area1.value = [1, 13, 3];//控制初始位置，注意：该方法并不会影响到input的value
 
 
-	function deleteAddress(obj){
-		if(confirm("确认删除这个地址？")){
-			location.href = "addresslist.html"
-		}
+    function deleteAddress(obj) {
+        if (confirm("确认删除这个地址？")) {
+            location.href = "addresslist.html"
+        }
 
-	}
+    }
 </script>
-
+}
