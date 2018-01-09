@@ -269,6 +269,12 @@ namespace Domain.Controllers
             return Json(res);
         }
 
+        public ActionResult Checkout(string orderId)
+        {
+            ViewBag.FooterType = "custom";
+            ViewBag.PageName = "结算";
+            return View();
+        }
 
     }
 }

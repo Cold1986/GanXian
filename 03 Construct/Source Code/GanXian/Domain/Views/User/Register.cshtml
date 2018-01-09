@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+<script type="text/javascript">
+		var error = '';
+</script>
+<style>
+    #code {
+        width: 48.5%;
+        float: left;
+    }
+
+    #getCode {
+        width: 48.5%;
+        float: right;
+    }
+
+    button, input[type="button"] {
+        height: 44px;
+    }
+
+    #register {
+        width: 100%;
+    }
+</style>
+<div class="maincontainer">
+    <div class="container itemdetail mini-innner">
+        <div class="row">
+            <div class="col-md-12 tal mt20">
+                <form id="theForm" name="theForm" class="form-signin" action="/p/j_spring_security_check" method="POST">
+                    <input type="hidden" id="returnUrl" name="returnUrl" value="http://m.legendshop.cn/p/orderDetails" />
+
+                    <input name="j_username" id="username" type="text" style="margin-bottom: -2px;-webkit-appearance:none; " class="form-control" placeholder="请输入您的手机号" message="账号" required="true" autofocus="" tabindex="1">
+                    <br>
+                    <input id="code" name="j_code" class="form-control" placeholder="请输入验证码" message="验证码" required="true" style="-webkit-appearance:none;" autocomplete="off" tabindex="2"><input type="button" class="btn" tabindex="3" onclick="sendCode(this)" value="获取验证码" id="getCode" />
+                    <div class="clear" style="margin-bottom: 20px"></div>
+                    <div><button type="button" class="btn btn-info btn-block" id="register" onclick="" tabindex="4">注 册</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+var contextPath = '';
+var clock = '';
+var nums = 60;
+var btn;
+function sendCode(thisBtn){
+  btn = thisBtn;
+  btn.disabled = true; //将按钮置为不可点击
+  btn.value = nums+'秒后可重新获取';
+  clock = setInterval(doLoop, 1000); //一秒执行一次
+  }
+  function doLoop()
+  {
+  nums--;
+  if(nums > 0){
+  btn.value = nums+'秒后可重新获取';
+  }else{
+  clearInterval(clock); //清除js定时器
+  btn.disabled = false;
+  btn.value = '点击发送验证码';
+  nums = 10; //重置时间
+  }
+}
+</script>
+

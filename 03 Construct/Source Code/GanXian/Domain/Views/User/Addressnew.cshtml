@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "Addressnew";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="container" style="max-width:768px;margin:0 auto; padding: 0;">
+    <ul class="address-edit">
+        <li>
+            <label>收货人</label><input type="text" name="rName" placeholder="请输入收货人姓名">
+        </li>
+        <li>
+            <label>联系电话</label><input onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " type="text" name="rPhone" placeholder="请输入收货人电话">
+        </li>
+        <li>
+            <label>所在地区</label><input id="demo1" type="text" readonly="" placeholder="选择城市" /><input id="value1" type="hidden" value="20,234,504" />
+        </li>
+        <li>
+            <textarea placeholder="请输入详细地址"></textarea>
+        </li>
+        <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2"></li>
+    </ul>
+
+</div>
+<footer class="footer">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            <a href="addresslist.html" class="add-address">
+                保 存
+            </a>
+        </div>
+    </div>
+</footer>
+<script src="js/LAreaData1.js"></script>
+<script src="js/LArea.js"></script>
+<script>
+    var area1 = new LArea();
+    area1.init({
+        'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+        'valueTo': '#value1', //选择完毕后id属性输出到该位置
+        'keys': {
+            id: 'id',
+            name: 'name'
+        }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+        'type': 1, //数据源类型
+        'data': LAreaData //数据源
+    });
+    area1.value=[1,13,3];//控制初始位置，注意：该方法并不会影响到input的value
+
+
+	function deleteAddress(obj){
+		if(confirm("确认删除这个地址？")){
+			location.href = "addresslist.html"
+		}
+
+	}
+</script>
+
+

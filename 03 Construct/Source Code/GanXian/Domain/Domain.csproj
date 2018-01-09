@@ -197,6 +197,7 @@
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\member.css" />
     <Content Include="Content\order3.css" />
+    <Content Include="Content\orderlist.css" />
     <Content Include="Content\productDetail.css" />
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
@@ -331,6 +332,12 @@
     <Content Include="Views\Products\Category.cshtml" />
     <Content Include="Views\Products\Shopcart.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Products\Checkout.cshtml" />
+    <Content Include="Views\Shared\_FooterPartial.cshtml" />
+    <Content Include="Views\User\Addresslist.cshtml" />
+    <Content Include="Views\User\Addressnew.cshtml" />
+    <Content Include="Views\User\Addressedit.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

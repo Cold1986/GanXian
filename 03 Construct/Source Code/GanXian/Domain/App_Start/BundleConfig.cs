@@ -32,6 +32,7 @@ namespace Domain
                       "~/Content/bootstrap.css",
                       "~/Content/style.css",
                       "~/Content/member.css",
+                       "~/Content/orderlist.css",
                       "~/Content/order3.css"));
 
            
