@@ -239,7 +239,7 @@ function submitShopCart() {
 
     var array = $(".ids:checked").get();
     if (array.length == 0) {
-        floatNotify.simple("请选择要结算的商品");
+        alert("请选择要结算的商品");
         return;
     }
 
@@ -248,12 +248,12 @@ function submitShopCart() {
         if (i != 0) {
             shopCartStr = shopCartStr + ",";
         }
-        var basket_id = $(array[i]).prop("itemkey");
+        var basket_id = $(array[i]).attr("itemkey");
         shopCartStr = shopCartStr + basket_id;
     }
 
     //调用方法  
-    abstractForm(contextPath + '/p/orderDetails', shopCartStr);
+    //abstractForm(contextPath + '/p/orderDetails', shopCartStr);
 }
 
 function abstractForm(URL, shopCartIds) {

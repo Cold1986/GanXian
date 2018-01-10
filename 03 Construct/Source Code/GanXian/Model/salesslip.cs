@@ -11,10 +11,15 @@ namespace GanXian.Model
 		{}
 		#region Model
 		private int _salesid;
+		private string _salesno;
 		private int? _userid;
+		private string _province;
+		private string _city;
+		private string _county;
 		private string _useraddress;
 		private string _userphone;
-		private string _amount;
+		private decimal? _amount;
+		private decimal? _postage;
 		private string _wechatsalesid;
 		private DateTime _createdate;
 		private int? _status;
@@ -31,10 +36,42 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
+		public string salesNo
+		{
+			set{ _salesno=value;}
+			get{return _salesno;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public int? userId
 		{
 			set{ _userid=value;}
 			get{return _userid;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string province
+		{
+			set{ _province=value;}
+			get{return _province;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string city
+		{
+			set{ _city=value;}
+			get{return _city;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string county
+		{
+			set{ _county=value;}
+			get{return _county;}
 		}
 		/// <summary>
 		/// 
@@ -55,10 +92,18 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public string amount
+		public decimal? amount
 		{
 			set{ _amount=value;}
 			get{return _amount;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public decimal? postage
+		{
+			set{ _postage=value;}
+			get{return _postage;}
 		}
 		/// <summary>
 		/// 
