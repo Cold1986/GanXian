@@ -97,15 +97,16 @@ status int null comment '状态', -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
+
 -- 销售单表
 create table SalesSlip
 (
 salesId int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  -- 销售单号
-salesNo varchar(40) not null comment ''
+salesNo varchar(40) not null comment '销售编号',-- 界面显示
 userId int(8) null, -- 用户id,
--- 省
--- 市
--- 县
+province varchar(40) null comment '省份',
+city varchar(40) null comment '市',
+county varchar(40) null comment  '县',
 userAddress nvarchar(400), -- 用户地址
 userPhone nvarchar(20),-- 用户号码
 amount decimal(10,2) null, -- 总金额
