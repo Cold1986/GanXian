@@ -12,7 +12,7 @@ namespace GanXian.Model
 		#region Model
 		private int _salesid;
 		private string _salesno;
-		private int? _userid;
+		private string _useropenid;
 		private string _province;
 		private string _city;
 		private string _county;
@@ -44,10 +44,10 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public int? userId
+		public string userOpenId
 		{
-			set{ _userid=value;}
-			get{return _userid;}
+			set{ _useropenid=value;}
+			get{return _useropenid;}
 		}
 		/// <summary>
 		/// 

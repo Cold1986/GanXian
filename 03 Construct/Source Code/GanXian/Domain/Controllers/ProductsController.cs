@@ -243,9 +243,40 @@ namespace Domain.Controllers
 
         public ActionResult Checkout(string orderId)
         {
+            _Apilog.WriteLog(orderId);
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "结算";
             return View();
+        }
+
+        /// <summary>
+        /// 创建订单
+        /// </summary>
+        /// <param name="prodId"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CreateOrder(string prodId, string num)
+        {
+            string userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            string res = "fail";
+
+            //userOpenId = "test";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    string salesNo = Guid.NewGuid().ToString();
+                    OrderBiz.CreateNew().createOrder(prodId, num, userOpenId, salesNo);
+                    res = salesNo;
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("ProductsController/CreateOrder 异常： " + e.Message);
+                }
+            }
+            return Json(res);
         }
 
     }
