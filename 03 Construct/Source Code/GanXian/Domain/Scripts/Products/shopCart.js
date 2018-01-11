@@ -62,11 +62,6 @@ $(document).ready(function () {
     $(".rowcar .num-edit i").on('click', function () {
         $(this).parents("li").addClass("editnow");
     })
-    //$(".rowcar .num-edit span").on('click', function () {
-    //    $(this).parents("li").removeClass("editnow");
-    //    var num = $(this).parent().siblings('.btn-group').children('.gary2').val();
-    //    $(this).parent().siblings('.num-show').text('x ' + num);
-    //})
 });
 
 function updateProductNum(obj, productId) {
@@ -236,13 +231,12 @@ function deleteShopCart(productId, productName) {
 
 
 function submitShopCart() {
-
     var array = $(".ids:checked").get();
     if (array.length == 0) {
         alert("请选择要结算的商品");
         return;
     }
-
+    $(".btn-buy").attr("disabled", "true"); //设置变灰按钮  
     var shopCartStr = "";
     for (var i in array) {
         if (i != 0) {
@@ -251,6 +245,26 @@ function submitShopCart() {
         var basket_id = $(array[i]).attr("itemkey");
         shopCartStr = shopCartStr + basket_id;
     }
+    $.ajax({
+        url: "CreateOrderFromShopcart",
+        data: { "prodIds": shopCartStr },
+        type: 'post',
+        async: true, //默认为true 异步   
+        dataType: 'json',
+        error: function (data) {
+        },
+        success: function (data) {
+            if (data == 'false') {
+                alert("添加失败，请稍后尝试");
+            }
+            else {
+                window.location.href = "Checkout?orderId=" + data;
+            }
+        },
+        complete: function () {
+            $(".btn-buy").removeAttr("disabled"); //设置变灰按钮  
+        }
+    });
 
     //调用方法  
     //abstractForm(contextPath + '/p/orderDetails', shopCartStr);

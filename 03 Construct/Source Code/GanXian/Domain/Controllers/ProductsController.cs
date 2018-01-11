@@ -135,9 +135,7 @@ namespace Domain.Controllers
         public JsonResult AddShopcart(string prodId, int num)
         {
             string res = string.Empty;
-            string userOpenId = string.Empty;
-            userOpenId = CookieHelper.GetCookieValue("userOpenId");
-            //userOpenId = "test";
+            string userOpenId = base.getUserOpenIdFromCookie();
             if (string.IsNullOrEmpty(userOpenId))
             {
                 res = "false";//这里可以扩展，可以换成枚举，目前功能不需要
@@ -197,9 +195,8 @@ namespace Domain.Controllers
             string res = "fail";
             if (string.IsNullOrEmpty(userOpenId))
             {
-                userOpenId = CookieHelper.GetCookieValue("userOpenId");
+                userOpenId = base.getUserOpenIdFromCookie();
             }
-            //userOpenId = "test";
             if (!string.IsNullOrEmpty(userOpenId))
             {
                 try
@@ -222,9 +219,8 @@ namespace Domain.Controllers
             string res = "fail";
             if (string.IsNullOrEmpty(userOpenId))
             {
-                userOpenId = CookieHelper.GetCookieValue("userOpenId");
+                userOpenId = base.getUserOpenIdFromCookie();
             }
-            //userOpenId = "test";
             if (!string.IsNullOrEmpty(userOpenId))
             {
                 try
@@ -258,10 +254,8 @@ namespace Domain.Controllers
         [HttpPost]
         public JsonResult CreateOrder(string prodId, string num)
         {
-            string userOpenId = CookieHelper.GetCookieValue("userOpenId");
+            string userOpenId = base.getUserOpenIdFromCookie();
             string res = "fail";
-
-            //userOpenId = "test";
             if (!string.IsNullOrEmpty(userOpenId))
             {
                 try
@@ -275,6 +269,41 @@ namespace Domain.Controllers
                     res = "fail";
                     _Apilog.WriteLog("ProductsController/CreateOrder 异常： " + e.Message);
                 }
+            }
+            else
+            {
+                _Apilog.WriteLog("ProductsController/CreateOrder 用户userOpenId 为空： " + prodId + " " + num);
+            }
+            return Json(res);
+        }
+
+        /// <summary>
+        /// 从购物车中创建订单
+        /// </summary>
+        /// <param name="prodIds"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CreateOrderFromShopcart(string prodIds)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    string salesNo = Guid.NewGuid().ToString();
+                    OrderBiz.CreateNew().createOrderFromShopcart(prodIds, userOpenId, salesNo);
+                    res = salesNo;
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("ProductsController/CreateOrderFromShopcart 异常： " + e.Message);
+                }
+            }
+            else
+            {
+                _Apilog.WriteLog("ProductsController/CreateOrderFromShopcart 用户userOpenId 为空： " + prodIds);
             }
             return Json(res);
         }

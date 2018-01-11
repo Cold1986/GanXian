@@ -61,5 +61,17 @@ namespace Domain.Controllers
                 return new Tuple<string, string>("test", null);
             }
         }
+
+        public string getUserOpenIdFromCookie()
+        {
+            if (isWechatTest == "false")
+            {
+                return CookieHelper.GetCookieValue("userOpenId");
+            }
+            else
+            {
+                return "test";
+            }
+        }
     }
 }
