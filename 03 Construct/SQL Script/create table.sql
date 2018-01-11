@@ -103,7 +103,7 @@ create table SalesSlip
 (
 salesId int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  -- 销售单号
 salesNo varchar(40) not null comment '销售编号',-- 界面显示
-userId int(8) null, -- 用户id,
+userOpenId varchar(40) null, -- 用户微信openid,
 province varchar(40) null comment '省份',
 city varchar(40) null comment '市',
 county varchar(40) null comment  '县',
@@ -129,7 +129,7 @@ originalPrice varchar(50)  null comment '原价',
 discountedPrice  varchar(50)  null comment '折后价',
 nw nvarchar(100) null comment '净重',
 num int(4) not null comment '购买数量',
-salesPrice varchar(50) not null comment '实际付款价，理论上应该是 折后价*数量',
+salesPrice varchar(50) null comment '实际付款价，理论上应该是 折后价*数量',
 createDate datetime not null comment '插入时间' default now(), 
 status int null comment '状态', -- 0未付款 1已付款
 column1 nvarchar(100) null, -- 备用字段1
