@@ -1,4 +1,6 @@
 ﻿using CommonLib;
+using GanXian.BLL;
+using GanXian.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +72,21 @@ namespace Domain.Controllers
         /// <returns></returns>
         public ActionResult UserHome()
         {
-            return View();
+            List<ProductsAndSalesNum> productsAndSalesNumList;
+            var resCache = CacheHelper.GetCache("productsAndSalesNumList");
+            if (resCache != null) productsAndSalesNumList = (List<ProductsAndSalesNum>)resCache;
+            else {
+                productsAndSalesNumList = ProductsBiz.CreateNew().getAllProductsAndSalesNum();
+                if (productsAndSalesNumList != null)
+                {
+                    var start = DateTime.Now;
+                    var expiredDate = start.AddHours(1);
+                    TimeSpan ts = expiredDate - start;
+                    CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
+                }
+            }
+            productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).Take(4).ToList();
+            return View(productsAndSalesNumList);
         }
 
     }

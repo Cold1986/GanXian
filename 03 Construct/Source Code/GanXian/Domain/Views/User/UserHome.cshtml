@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<GanXian.Model.ProductsAndSalesNum>
 @{
     ViewBag.Title = "会员中心";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -62,45 +62,23 @@
 
             <div class="tb_box member-recommend">
                 <h2 class="tab_tit">
-                    <a class="more" href="category.html">更多</a>
+                    <a class="more" href="../Products/Category?sortOrder=sales_desc">更多</a>
                     热销推荐
                 </h2>
                 <div class="tb_type tb_type_even clearfix">
-                    <a class="th_link" href="views.html">
-                        <img class="tb_pic" src="~/img/product01.jpg" style="width:100%;">
-                        <div class="tb_info">
-                            <p class="p-title">小眼带鱼</p>
-                            <p class="p-origin"><em class="price">¥10.00</em></p>
-                            <p class="mb0"><del class="old-price">¥12.00</del></p>
-                        </div>
-                    </a>
-                    <a class="th_link" href="views.html">
-                        <img class="tb_pic" src="~/img/product02.jpg" style="width:100%;">
-                        <div class="tb_info">
-                            <p class="p-title">方头鱼</p>
-                            <p class="p-origin"><em class="price">¥10.00</em></p>
-                            <p class="mb0"><del class="old-price">¥12.00</del></p>
-                        </div>
-                    </a>
-                    <a class="th_link" href="views.html">
-                        <img class="tb_pic" src="~/img/product03.jpg" style="width:100%;">
-                        <div class="tb_info">
-                            <p class="p-title">海鲈鱼</p>
-                            <p class="p-origin"><em class="price">¥10.00</em></p>
-                            <p class="mb0"><del class="old-price">¥12.00</del></p>
-                        </div>
-                    </a>
-                    <a class="th_link" href="views.html">
-                        <img class="tb_pic" src="~/img/product04.jpg" style="width:100%;">
-                        <div class="tb_info">
-                            <p class="p-title">虎头鱼</p>
-                            <p class="p-origin"><em class="price">¥10.00</em></p>
-                            <p class="mb0"><del class="old-price">¥12.00</del></p>
-                        </div>
-                    </a>
+                    @foreach (var item in Model)
+                    {
+                        <a class="th_link" href=@string.Concat("../Products/index/", item.productId)>
+                            <img class="tb_pic" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic)) style="width:100%;">
+                            <div class="tb_info">
+                                <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
+                                <p class="p-origin"><em class="price">¥@Html.DisplayFor(modelItem => item.discountedPrice)</em></p>
+                                <p class="mb0"><del class="old-price">¥@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
+                            </div>
+                        </a>
+                    }
                 </div>
             </div>
-
         </div>
     </div>
-
+</div>
