@@ -17,37 +17,14 @@
 <meta content="yes" name="apple-touch-fullscreen">
 <meta content="telephone=no" name="format-detection">
 <meta content="black" name="apple-mobile-web-app-status-bar-style">
-<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1;user-scalable=no;">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
 <title>会员中心</title>
-<script type="text/javascript">
-$(document).ready(function(){
-	var attr = parseInt($(".member_m_pic_1").height());
-	var attr3 = parseInt($(".member_m_z_1").height());
-	var h = attr - attr3;
-	var clientWidth=document.body.clientWidth;
-	$(".member_mp_t_img img").css("width",clientWidth*0.3);
-	$(".member_mp_t_img img").css("height",clientWidth*0.3);
-	
-	handleUserPic();
-});
 
-function handleUserPic(){
-	var th = $(".member_m_pic").outerHeight(true);
-	if(th<60){
-		setTimeout("handleUserPic",500);
-	}else{
-		$(".member_m_pic .img-circle").css("height",th*0.9);
-		$(".member_m_pic .img-circle").css("width",th*0.9);
-	}
-	
-}
-</script>
 </head>
 <body>
-<div class="maincontainer">
+<div class="maincontainer" style="padding-bottom:0">
 <div class="container" style="max-width:768px;margin:0 auto;">
 	<div class="row">
-	<a href="/p/userInfo">
 		<div class="member_top member_top_1">
 			<div class="member_top_bg"><img  src="images/member_bg.png"></div>
 			<div class="member_m_pic member_m_pic_1">
@@ -56,12 +33,11 @@ function handleUserPic(){
 			<div  class="member_m_z member_m_z_1">
 				<div class="member_m_x">萧雅哲</div>
 				</div>
-			<div class="member_m_r">账户管理、收货地址&gt;
+			<div class="member_m_r"><a href="addresslist.html">管理收货地址&gt;</a>
 			</div>
-		</div></a>
-		<div class="member_mp_img" data-toggle="modal" data-target="#myModalmin" data-title="我的名片" data-tpl="mp"><img src="images/member_mp_img.png"></div>
+		</div>
 		<div class="list-group mb10">
-			<a href="/p/userOrder" class="list-group-item tip">
+			<a href="orderlist.html" class="list-group-item tip">
 				<div class="list_group_img">
 				<img src="images/member_img16.png"></div>
 				我的订单
@@ -95,67 +71,48 @@ function handleUserPic(){
 				</div>
 			</div>
 		</div>
-		<div class="list-group mb10 member_list_group clearfix">
-			<a href="/p/collect" class="list-group-item col-xs-4">
-				<div class="m_img"><img src="images/order_bg_5.png"></div>
-				<p class="m_name">我的收藏</p>
-				<span class="red">0</span>
-			</a>
-			<a href="/p/userComments" class="list-group-item col-xs-4">
-				<div class="m_img"><img src="images/order_bg_8.png"></div>
-				<p class="m_name">我的评论</p>
-				<span class="red">&nbsp;&nbsp;</span>
-			</a>
-			<a href="/p/inbox" class="list-group-item col-xs-4">
-				<div class="m_img"><img src="images/order_bg_4.png"></div>
-				<p class="m_name">收件箱</p>
-				<span class="red">&nbsp;&nbsp;</span>
-			</a>
-
-			<a href="/p/systemMessages" class="list-group-item col-xs-4">
-				<div class="m_img"><img src="images/order_bg_7.png"></div>
-				<p class="m_name">系统消息</p>
-				<span class="red">&nbsp;&nbsp;</span>
-			</a>
-			
-		</div>
 				
-		<div class="list-group mb10">
-			<a href="/p/help" class="list-group-item tip">
-				<div class="list_group_img"><img src="images/order_bg_10.png"></div>
-				常见问题
-			</a>
-			<a href="/p/feedbacks" class="list-group-item tip">
-				<div class="list_group_img"><img src="images/order_bg_9.png"></div>
-				意见反馈
-			</a>
+		<div class="tb_box member-recommend">
+			<h2 class="tab_tit">
+				<a class="more" href="category.html">更多</a>
+				热销推荐
+			</h2>
+			<div class="tb_type tb_type_even clearfix">
+				<a class="th_link" href="views.html">
+					<img class="tb_pic" src="img/product01.jpg" style="width:100%;">
+					<div class="tb_info">
+						<p class="p-title">小眼带鱼</p>
+						<p class="p-origin"><em class="price">¥10.00</em></p>
+						<p class="mb0"><del class="old-price">¥12.00</del></p>
+					</div>
+				</a>
+				<a class="th_link" href="views.html">
+					<img class="tb_pic" src="img/product02.jpg" style="width:100%;">
+					<div class="tb_info">
+						<p class="p-title">方头鱼</p>
+						<p class="p-origin"><em class="price">¥10.00</em></p>
+						<p class="mb0"><del class="old-price">¥12.00</del></p>
+					</div>
+	            </a>
+				<a class="th_link" href="views.html">
+					<img class="tb_pic" src="img/product03.jpg" style="width:100%;">
+					<div class="tb_info">
+						<p class="p-title">海鲈鱼</p>
+						<p class="p-origin"><em class="price">¥10.00</em></p>
+						<p class="mb0"><del class="old-price">¥12.00</del></p>
+					</div>
+	            </a>
+	            <a class="th_link" href="views.html">
+					<img class="tb_pic" src="img/product04.jpg" style="width:100%;">
+					<div class="tb_info">
+						<p class="p-title">虎头鱼</p>
+						<p class="p-origin"><em class="price">¥10.00</em></p>
+						<p class="mb0"><del class="old-price">¥12.00</del></p>
+					</div>
+	            </a>
+			</div>
 		</div>
 		
-	</div>
-</div>
-<div style="display: none;" class="modal fade" id="myModalmin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-      	<form class="form-horizontal" role="form" data-method="formAjax">
-	         <div class="modal-header member_tc_top">
-	            <button type="button" class="close member_tc_xx" data-dismiss="modal" aria-hidden="true">×</button>
-	            <h4 class="modal-title" id="myModalLabel">&nbsp;&nbsp;</h4>
-	         </div>
-			 <div style="overflow:hidden;width: 100%;padding-top: 20px;">
-				<div style="">
-					 <div class="member_mp_t_img" >
-					 	<img src="images/noavatar.png">
-		        			</div>
-					 <div class="member_mp_t_m">萧雅哲</div>
-					 <div class="member_mp_t_m_m">
-						  	  <img src="img/a909bfc1-cada-4008-81c0-556ff86aace1.jpg">
-						  </div>
-						  <div class="member_mp_t_tit">用微信扫一扫二维码，成为我的粉丝</div>
-					  </div>
-			 </div>
-			 <div style="height:60px;"></div>
-         </form>
-      </div>
 	</div>
 </div>
 <footer class="footer">
