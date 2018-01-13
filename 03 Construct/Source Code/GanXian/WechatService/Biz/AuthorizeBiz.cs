@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Script.Serialization;
-
+using WechatService.Entity;
 
 namespace WechatService.Biz
 {
@@ -40,44 +40,50 @@ namespace WechatService.Biz
         {
             try
             {
+                Authorize aut = new Authorize();
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 string link = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wechatAppid + "&secret=" + wechatAppSecret + "&code=" + code + "&grant_type=authorization_code";
                 var res = RequestHelper.SendRequest(link, "");
-                Authorize aut = serializer.Deserialize<Authorize>(res);
+                aut = serializer.Deserialize<Authorize>(res);//todo 
                 return aut;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
         }
-   
+
+        /// <summary>
+        /// 用户授权操作
+        /// </summary>
+        /// <param name="redirect_uri"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public static string getSnsapi_userinfo_Link(string redirect_uri, string state = null)
+        {
+            string redirectURL = HttpUtility.UrlEncode(redirect_uri).ToLower();
+            string snsapi_Base_Link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + wechatAppid + "&redirect_uri=" + redirectURL;
+            snsapi_Base_Link = snsapi_Base_Link + "&response_type=code&scope=snsapi_userinfo&state=" + state + "#wechat_redirect";
+            return snsapi_Base_Link;
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="access_token"></param>
+        /// <param name="openid"></param>
+        /// <returns></returns>
+        public static Userinfo getUserinfo(string access_token, string openid)
+        {
+            Userinfo aut = new Userinfo();
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            string link = string.Format("https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN", access_token, openid);
+            var res = RequestHelper.SendRequest(link, "");
+            aut = serializer.Deserialize<Userinfo>(res);
+            return aut;
+        }
+
+
     }
-    public class Authorize
-    {
-        /// <summary>
-        /// 网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同
-        /// </summary>
-        public string access_token { get; set; }
 
-        /// <summary>
-        /// access_token接口调用凭证超时时间，单位（秒）
-        /// </summary>
-        public string expires_in { get; set; }
-
-        /// <summary>
-        /// 用户刷新access_token
-        /// </summary>
-        public string refresh_token { get; set; }
-
-        /// <summary>
-        /// 用户唯一标识，请注意，在未关注公众号时，用户访问公众号的网页，也会产生一个用户和公众号唯一的OpenID
-        /// </summary>
-        public string openid { get; set; }
-
-        /// <summary>
-        /// 用户授权的作用域，使用逗号（,）分隔
-        /// </summary>
-        public string scope { get; set; }
-    }
 }

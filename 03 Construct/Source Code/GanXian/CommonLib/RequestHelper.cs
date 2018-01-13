@@ -35,7 +35,7 @@ namespace CommonLib
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
                     //ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;
                     System.Net.WebResponse wrp = wrq.GetResponse();
-                    System.IO.StreamReader sr = new System.IO.StreamReader(wrp.GetResponseStream(), System.Text.Encoding.GetEncoding("gb2312"));
+                    System.IO.StreamReader sr = new System.IO.StreamReader(wrp.GetResponseStream(), System.Text.Encoding.GetEncoding("utf-8"));
                     strResult = sr.ReadToEnd();
                 }
                 catch (Exception ex)

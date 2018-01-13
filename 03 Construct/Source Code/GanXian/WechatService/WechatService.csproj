@@ -44,11 +44,11 @@
   <ItemGroup>
     <Compile Include="Biz\AuthorizeBiz.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Entity\Authorize.cs" />
+    <Compile Include="Entity\userinfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entity\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{6ff5efa9-ca43-4d4b-8a5a-e8f03ce34379}</Project>

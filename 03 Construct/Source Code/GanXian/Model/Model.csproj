@@ -113,6 +113,7 @@
     <Compile Include="stocks.cs" />
     <Compile Include="tablist.cs" />
     <Compile Include="typelist.cs" />
+    <Compile Include="users.cs" />
     <Compile Include="UserShopcartsInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

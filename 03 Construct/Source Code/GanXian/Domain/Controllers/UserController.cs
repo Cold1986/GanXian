@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Domain.Controllers
 {
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
         // GET: User
@@ -70,8 +70,33 @@ namespace Domain.Controllers
         /// 我的 页面
         /// </summary>
         /// <returns></returns>
-        public ActionResult UserHome()
+        public ActionResult UserHome(string code)
         {
+            #region 用户关注部分
+            try {
+                _Apilog.WriteLog("begin code: " + code);
+                Tuple<string, users> result = base.getUserInfoByAuthorize(code);
+                if (!string.IsNullOrEmpty(result.Item1))
+                {
+                    _Apilog.WriteLog("redirectURL: " + result.Item1);
+                    return Redirect(result.Item1);
+                }
+                else if (result.Item2 != null)
+                {
+                    ViewBag.userName = result.Item2.nickname;
+                    ViewBag.headImg = result.Item2.headimgurl;
+                    //return Redirect(result.Item2);
+                }
+            }
+            catch(Exception e)
+            {
+                _Apilog.WriteLog("exception:" + e.Message);
+            }
+            var res = base.getUserInfoByAuthorize(code);
+            #endregion
+
+
+            #region 热销推荐部分
             List<ProductsAndSalesNum> productsAndSalesNumList;
             var resCache = CacheHelper.GetCache("productsAndSalesNumList");
             if (resCache != null) productsAndSalesNumList = (List<ProductsAndSalesNum>)resCache;
@@ -87,6 +112,7 @@ namespace Domain.Controllers
             }
             productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).Take(4).ToList();
             return View(productsAndSalesNumList);
+            #endregion
         }
 
     }
