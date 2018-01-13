@@ -64,5 +64,14 @@ namespace Domain.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 我的 页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult UserHome()
+        {
+            return View();
+        }
+
     }
 }
