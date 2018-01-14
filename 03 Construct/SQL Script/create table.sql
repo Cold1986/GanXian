@@ -73,17 +73,23 @@ create table Users
 (
 userId int(8) NOT NULL AUTO_INCREMENT PRIMARY KEY comment '编号',
 openid nvarchar(40) null comment '微信openid',
--- userName nvarchar(40) null comment '用户名',
--- userPic nvarchar(100) null comment '用户头像',
-createDate datetime not null comment '插入时间', 
-status int null comment '状态', -- 0无效 1有效
+nickname nvarchar(100) null comment '用户昵称',
+sex varchar(2) null comment '用户的性别，值为1时是男性，值为2时是女性，值为0时是未知',
+province varchar(50) null comment '用户个人资料填写的省份',
+city varchar(50) null comment '普通用户个人资料填写的城市',
+country varchar(50) null comment '国家，如中国为CN',
+headimgurl varchar(500) null comment '用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像），用户没有头像时该项为空。若用户更换头像，原有头像URL将失效。',
+privilege varchar(500) null comment '用户特权信息，json 数组，如微信沃卡用户为（chinaunicom）',
+unionid varchar(200) null comment '只有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。',
+phone varchar(20) null comment '用户手机',
+createDate datetime not null comment '插入时间' default now(), 
+updateDate datetime  null comment '更新时间' default now(), 
+score varchar(200) null comment '用户积分',
+status int null comment '状态' default 1, -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
-column2 nvarchar(100) null, -- 备用字段2
-
--- 电话
--- 送货地址
-
+column2 nvarchar(100) null -- 备用字段2
 )
+CREATE INDEX Users_openid ON Users(openid(40));
 -- 用户地址
 -- 购物车
 create table ShoppingCart
