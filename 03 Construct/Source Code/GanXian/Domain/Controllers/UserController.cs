@@ -76,6 +76,7 @@ namespace Domain.Controllers
             try {
                 _Apilog.WriteLog("begin code: " + code);
                 Tuple<string, users> result = base.getUserInfoByAuthorize(code);
+                ViewBag.headImg = "~/images/noavatar.png";//缺省图片
                 if (!string.IsNullOrEmpty(result.Item1))
                 {
                     _Apilog.WriteLog("redirectURL: " + result.Item1);
@@ -85,7 +86,6 @@ namespace Domain.Controllers
                 {
                     ViewBag.userName = result.Item2.nickname;
                     ViewBag.headImg = result.Item2.headimgurl;
-                    //return Redirect(result.Item2);
                 }
             }
             catch(Exception e)
