@@ -22,8 +22,10 @@ namespace Domain.Controllers
         /// 用户收货地址页
         /// </summary>
         /// <returns></returns>
-        public ActionResult Addresslist()
+        public ActionResult Addresslist(string code, string fromURL)
         {
+            _Apilog.WriteLog("test from:" + fromURL);
+            ViewBag.fromURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "管理收货地址";
             return View();
@@ -33,8 +35,9 @@ namespace Domain.Controllers
         /// 用户添加新地址
         /// </summary>
         /// <returns></returns>
-        public ActionResult Addressnew()
+        public ActionResult Addressnew(string code, string fromURL)
         {
+            ViewBag.fromBaseURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "添加新地址";
             return View();
@@ -45,8 +48,9 @@ namespace Domain.Controllers
         /// 用户管理收货地址
         /// </summary>
         /// <returns></returns>
-        public ActionResult Addressedit()
+        public ActionResult Addressedit(string code, string fromURL)
         {
+            ViewBag.fromBaseURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "管理收货地址";
             return View();
@@ -73,7 +77,8 @@ namespace Domain.Controllers
         public ActionResult UserHome(string code)
         {
             #region 用户关注部分
-            try {
+            try
+            {
                 _Apilog.WriteLog("begin code: " + code);
                 Tuple<string, users> result = base.getUserInfoByAuthorize(code);
                 ViewBag.headImg = "~/images/noavatar.png";//缺省图片
@@ -88,7 +93,7 @@ namespace Domain.Controllers
                     ViewBag.headImg = result.Item2.headimgurl;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _Apilog.WriteLog("exception:" + e.Message);
             }

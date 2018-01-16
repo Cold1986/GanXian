@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Addressnew";
+    ViewBag.Title = "添加新地址";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 
@@ -25,9 +25,7 @@
 <footer class="footer">
     <div class="foot-con">
         <div class="foot-con_2">
-            <a href="addresslist.html" class="add-address">
-                保 存
-            </a>
+            @Html.ActionLink("保 存", "Addresslist", "User", new { fromURL = ViewBag.fromBaseURL }, new { target = "_self", name = "link", @class = "add-address" })
         </div>
     </div>
 </footer>

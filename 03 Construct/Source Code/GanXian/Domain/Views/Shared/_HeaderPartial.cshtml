@@ -28,7 +28,14 @@ else if (!string.IsNullOrEmpty(@ViewBag.PageName))
     <header class="header">
         <div class="fix_nav">
             <div class="nav_inner">
-                <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+                @if (!string.IsNullOrEmpty(@ViewBag.fromURL))
+                {
+                    <a class="nav-left back-icon" href="@ViewBag.fromURL">返回</a>
+                }
+                else
+                {
+                    <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+                }
                 <div class="tit">@ViewBag.PageName</div>
             </div>
         </div>

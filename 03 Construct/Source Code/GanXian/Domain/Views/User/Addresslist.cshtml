@@ -33,22 +33,19 @@
 <footer class="footer">
     <div class="foot-con">
         <div class="foot-con_2">
-            <a href="addressnew.html" class="add-address">
-                添加新地址
-            </a>
+            @Html.ActionLink("添加新地址", "Addressnew", "User", new { fromURL = ViewBag.fromURL }, new { target = "_self", name = "link", @class = "add-address" })
         </div>
     </div>
 </footer>
 <script>
-	$(".address-list").find($("input[type='radio']")).click(function(){
-		$(".address-list").find($("input[type='radio']")).parent(".address-panel").removeClass("default-address");
-		$(this).parent(".address-panel").addClass("default-address");
-	})
-	function deleteAddress(obj){
-		if(confirm("确认删除这个地址？")){
-			$(obj).parents("li").remove();
-		}
+    $(".address-list").find($("input[type='radio']")).click(function () {
+        $(".address-list").find($("input[type='radio']")).parent(".address-panel").removeClass("default-address");
+        $(this).parent(".address-panel").addClass("default-address");
+    })
+    function deleteAddress(obj) {
+        if (confirm("确认删除这个地址？")) {
+            $(obj).parents("li").remove();
+        }
 
-	}
+    }
 </script>
-

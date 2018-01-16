@@ -16,7 +16,7 @@
                     <div class="member_m_x">@ViewBag.userName</div>
                 </div>
                 <div class="member_m_r">
-                    <a href="addresslist.html">管理收货地址&gt;</a>
+                    @Html.ActionLink("管理收货地址", "Addresslist", "User", new { fromURL = @HttpContext.Current.Request.Path }, new { target = "_self", name = "link" })
                 </div>
             </div>
             <div class="list-group mb10">
@@ -68,14 +68,14 @@
                 <div class="tb_type tb_type_even clearfix">
                     @foreach (var item in Model)
                     {
-                        <a class="th_link" href=@string.Concat("../Products/index/", item.productId)>
-                            <img class="tb_pic" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic)) style="width:100%;">
-                            <div class="tb_info">
-                                <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
-                                <p class="p-origin"><em class="price">¥@Html.DisplayFor(modelItem => item.discountedPrice)</em></p>
-                                <p class="mb0"><del class="old-price">¥@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
-                            </div>
-                        </a>
+                    <a class="th_link" href=@string.Concat("../Products/index/", item.productId)>
+                        <img class="tb_pic" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic)) style="width:100%;">
+                        <div class="tb_info">
+                            <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
+                            <p class="p-origin"><em class="price">¥@Html.DisplayFor(modelItem => item.discountedPrice)</em></p>
+                            <p class="mb0"><del class="old-price">¥@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
+                        </div>
+                    </a>
                     }
                 </div>
             </div>
