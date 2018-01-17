@@ -88,7 +88,7 @@ namespace Domain.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                productsAndSalesNumList = productsAndSalesNumList.Where(w => w.remark.Contains(searchString)
+                productsAndSalesNumList = productsAndSalesNumList.Where(w => (!string.IsNullOrEmpty(w.remark) && w.remark.Contains(searchString))
                                                                         || w.productName.Contains(searchString)).ToList();
             }
 
