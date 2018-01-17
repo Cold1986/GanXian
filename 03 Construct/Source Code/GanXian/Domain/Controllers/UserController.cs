@@ -81,7 +81,7 @@ namespace Domain.Controllers
             {
                 _Apilog.WriteLog("begin code: " + code);
                 Tuple<string, users> result = base.getUserInfoByAuthorize(code);
-                ViewBag.headImg = "~/images/noavatar.png";//缺省图片
+                ViewBag.headImg = "../images/noavatar.png";//缺省图片
                 if (!string.IsNullOrEmpty(result.Item1))
                 {
                     _Apilog.WriteLog("redirectURL: " + result.Item1);
@@ -118,6 +118,12 @@ namespace Domain.Controllers
             productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).Take(4).ToList();
             return View(productsAndSalesNumList);
             #endregion
+        }
+
+        public JsonResult GetAllDistrict()
+        {
+            string JsonRes = string.Empty;
+            return Json(JsonRes);
         }
 
     }
