@@ -3590,3 +3590,35 @@ insert into `district` (`id`, `name`, `parent_id`, `initial`, `initials`, `pinyi
 insert into `district` (`id`, `name`, `parent_id`, `initial`, `initials`, `pinyin`, `extra`, `suffix`, `code`, `area_code`, `order`) values('7039','平桂','352','p','pg','pinggui','','区','','0774','2');
 insert into `district` (`id`, `name`, `parent_id`, `initial`, `initials`, `pinyin`, `extra`, `suffix`, `code`, `area_code`, `order`) values('7040','巴什','152','b','bs','bashi','','区','','0477','9');
 insert into `district` (`id`, `name`, `parent_id`, `initial`, `initials`, `pinyin`, `extra`, `suffix`, `code`, `area_code`, `order`) values('7041','叶集','231','y','yj','yeji','','区','','0564','8');
+
+
+-- 创建json 文件SQL
+ select  CONCAT("[", group_concat(json),"]")  from
+ (
+ -- 省
+  select case  when tb_cityJson.cityChild is not NULL then  CONCAT("{'id':'" ,id,"','name':'",name,"','child':",tb_cityJson.cityChild, "}")
+    when  tb_cityJson.cityChild is NULL then CONCAT("{'id':'" ,id,"','name':'",name, "'}") end
+    as json,
+	name,a.parent_id  FROM district a 
+ left join(
+	 select  CONCAT("[", group_concat(json),"]") as cityChild,parent_id from (
+		select case  when tb_countyJson.countyChild is not NULL then  CONCAT("{'id':'" ,b.id,"','name':'",b.name,"','child':",tb_countyJson.countyChild, "}")
+		when  tb_countyJson.countyChild is NULL then CONCAT("{'id':'" ,b.id,"','name':'",b.name, "'}") end
+		as json,
+		-- tb_countyJson.countyChild,
+		b.id,b.name,b.parent_id  FROM district b
+		inner join district a on a.id=b.parent_id
+		left join (
+			select  CONCAT("[", group_concat(json),"]") as countyChild,parent_id from (
+			  select CONCAT("{'id':'" ,c.id,"','name':'",c.name,"'}") as json,c.id,c.name,c.parent_id  FROM district c
+			 inner join district b on b.id=c.parent_id
+			inner join district a on a.id=b.parent_id
+			 where a.parent_id=0
+			 ) tb group by parent_id
+		) as tb_countyJson on b.id=tb_countyJson.parent_id
+		 where a.parent_id=0
+	) tb group by parent_id
+ ) as tb_cityJson on a.id=tb_cityJson.parent_id
+ where a.parent_id=0
+ ) tbAll group by parent_id
+ 
