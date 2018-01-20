@@ -53,7 +53,7 @@ namespace GanXian.BLL
                 using (IDbConnection conn = DapperHelper.MySqlConnection())
                 {
                     string sqlCommandText = @"insert into Users(openid,nickname,sex,province,city,country,headimgurl,privilege,unionid,createDate,updateDate,status) values(@openid,@nickname,@sex,@province,@city,@country,@headimgurl,@privilege,@unionid,@createDate,@updateDate,@status) ";
-                    conn.Query(sqlCommandText, user);
+                    conn.Execute(sqlCommandText, user);
                     res = true;
                 }
             }
@@ -98,6 +98,42 @@ namespace GanXian.BLL
 
         }
 
+        /// <summary>
+        /// 用户新增地址
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool insertUserAddress(useraddress user)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                IDbTransaction transaction = conn.BeginTransaction();
+                try
+                {
+                    if (user.SetAsDefault == "1")
+                    {
+                        //将该用户原先默认地址设为非默认
+                        string updateSQL = "update useraddress set SetAsDefault=0 where status=1 and SetAsDefault=1 and userOpenId=@userOpenId ";
+                        conn.Execute(updateSQL, user, transaction);
+                    }
+                    string sqlCommandText = @"insert into useraddress(userOpenId,receiver,province,city,county,detailAddress,Phone,SetAsDefault,createDate,status) values(@userOpenId,@receiver,@province,@city,@county,@detailAddress,@Phone,@SetAsDefault,@createDate,@status) ";
+                    conn.Execute(sqlCommandText, user, transaction);
+                    //提交事务
+                    transaction.Commit();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    //出现异常，事务Rollback
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+
 
         private string getAllDistrict()
         {
@@ -107,41 +143,41 @@ namespace GanXian.BLL
                 using (IDbConnection conn = DapperHelper.MySqlConnection())
                 {
                     //复制到mysql 中执行
- //                   string sqlCommandText = @" select  CONCAT("[", group_concat(json),"]")  from
- //(
- //-- 省
- // select case  when tb_cityJson.cityChild is not NULL then  CONCAT("{'id':'", id, "','name':'", name, "','child':", tb_cityJson.cityChild, "}")
- //   when  tb_cityJson.cityChild is NULL then CONCAT("{'id':'", id, "','name':'", name, "'}") end
- //   as json,
- //   name, a.parent_id  FROM district a
- //left join(
- //    select  CONCAT("[", group_concat(json), "]") as cityChild, parent_id from(
- //       select case  when tb_countyJson.countyChild is not NULL then  CONCAT("{'id':'", b.id, "','name':'", b.name, "','child':", tb_countyJson.countyChild, "}")
+                    //                   string sqlCommandText = @" select  CONCAT("[", group_concat(json),"]")  from
+                    //(
+                    //-- 省
+                    // select case  when tb_cityJson.cityChild is not NULL then  CONCAT("{'id':'", id, "','name':'", name, "','child':", tb_cityJson.cityChild, "}")
+                    //   when  tb_cityJson.cityChild is NULL then CONCAT("{'id':'", id, "','name':'", name, "'}") end
+                    //   as json,
+                    //   name, a.parent_id  FROM district a
+                    //left join(
+                    //    select  CONCAT("[", group_concat(json), "]") as cityChild, parent_id from(
+                    //       select case  when tb_countyJson.countyChild is not NULL then  CONCAT("{'id':'", b.id, "','name':'", b.name, "','child':", tb_countyJson.countyChild, "}")
 
- //       when  tb_countyJson.countyChild is NULL then CONCAT("{'id':'", b.id, "','name':'", b.name, "'}") end
- //       as json,
- //       --tb_countyJson.countyChild,
- //       b.id, b.name, b.parent_id  FROM district b
+                    //       when  tb_countyJson.countyChild is NULL then CONCAT("{'id':'", b.id, "','name':'", b.name, "'}") end
+                    //       as json,
+                    //       --tb_countyJson.countyChild,
+                    //       b.id, b.name, b.parent_id  FROM district b
 
- //       inner join district a on a.id = b.parent_id
+                    //       inner join district a on a.id = b.parent_id
 
- //       left join(
- //           select  CONCAT("[", group_concat(json), "]") as countyChild, parent_id from(
- //             select CONCAT("{'id':'", c.id, "','name':'", c.name, "'}") as json, c.id, c.name, c.parent_id  FROM district c
+                    //       left join(
+                    //           select  CONCAT("[", group_concat(json), "]") as countyChild, parent_id from(
+                    //             select CONCAT("{'id':'", c.id, "','name':'", c.name, "'}") as json, c.id, c.name, c.parent_id  FROM district c
 
- //            inner join district b on b.id = c.parent_id
+                    //            inner join district b on b.id = c.parent_id
 
- //           inner join district a on a.id = b.parent_id
+                    //           inner join district a on a.id = b.parent_id
 
- //            where a.parent_id = 0
- //            ) tb group by parent_id
- //       ) as tb_countyJson on b.id = tb_countyJson.parent_id
+                    //            where a.parent_id = 0
+                    //            ) tb group by parent_id
+                    //       ) as tb_countyJson on b.id = tb_countyJson.parent_id
 
- //        where a.parent_id = 0
- //   ) tb group by parent_id
- //) as tb_cityJson on a.id = tb_cityJson.parent_id
- //where a.parent_id = 0
- //) tbAll group by parent_id";
+                    //        where a.parent_id = 0
+                    //   ) tb group by parent_id
+                    //) as tb_cityJson on a.id = tb_cityJson.parent_id
+                    //where a.parent_id = 0
+                    //) tbAll group by parent_id";
                     //res = conn.ExecuteScalar(sqlCommandText).ToString();
                 }
             }

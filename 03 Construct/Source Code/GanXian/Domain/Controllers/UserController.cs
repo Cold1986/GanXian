@@ -37,10 +37,76 @@ namespace Domain.Controllers
         /// <returns></returns>
         public ActionResult Addressnew(string code, string fromURL)
         {
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
             ViewBag.fromBaseURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "添加新地址";
             return View();
+        }
+
+        /// <summary>
+        /// 添加地址
+        /// </summary>
+        /// <param name="receiver">收货人</param>
+        /// <param name="rPhone">联系电话</param>
+        /// <param name="district">所在地区</param>
+        /// <param name="detailAddress">详细地址</param>
+        /// <param name="setAsDefault">设为默认</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult AddressAdd(string receiver, string rPhone, string district, string detailAddress, string setAsDefault)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    useraddress user = new useraddress();
+                    user.userOpenId = userOpenId;
+                    user.receiver = receiver;
+                    user.Phone = rPhone;
+                    user.detailAddress = detailAddress;
+                    user.SetAsDefault = setAsDefault.ToLower() == "true" ? "1" : "0";
+                    user.status = 1;
+                    user.createDate = DateTime.Now;
+
+                    string[] tempDistrict = district.Split(',');//10,183,1116
+                    user.province = tempDistrict[0];
+                    if (tempDistrict.Length >= 2) user.city = tempDistrict[1];
+                    if (tempDistrict.Length >= 3) user.county = tempDistrict[2];
+
+                   
+                    UserBiz.CreateNew().insertUserAddress(user);
+
+                   
+
+                    res = "success";
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("UserController/AddressAdd 异常： " + e.Message);
+                }
+            }
+            else
+            {
+                _Apilog.WriteLog("UserController/AddressAdd 用户userOpenId 为空： ");
+            }
+            return Json(res);
         }
 
 
