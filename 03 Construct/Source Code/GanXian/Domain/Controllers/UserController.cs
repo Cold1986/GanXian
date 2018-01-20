@@ -24,11 +24,26 @@ namespace Domain.Controllers
         /// <returns></returns>
         public ActionResult Addresslist(string code, string fromURL)
         {
-            _Apilog.WriteLog("test from:" + fromURL);
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
             ViewBag.fromURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "管理收货地址";
-            return View();
+            List<useraddress> userAddressList = new List<useraddress>();
+            if (!string.IsNullOrEmpty(userOpenId)) userAddressList = UserBiz.CreateNew().getUserAddressList(userOpenId);
+            return View(userAddressList);
         }
 
         /// <summary>
@@ -89,11 +104,7 @@ namespace Domain.Controllers
                     if (tempDistrict.Length >= 2) user.city = tempDistrict[1];
                     if (tempDistrict.Length >= 3) user.county = tempDistrict[2];
 
-                   
                     UserBiz.CreateNew().insertUserAddress(user);
-
-                   
-
                     res = "success";
                 }
                 catch (Exception e)
@@ -114,12 +125,65 @@ namespace Domain.Controllers
         /// 用户管理收货地址
         /// </summary>
         /// <returns></returns>
-        public ActionResult Addressedit(string code, string fromURL)
+        public ActionResult Addressedit(string code, string fromURL, string addressId)
         {
             ViewBag.fromBaseURL = fromURL;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "管理收货地址";
             return View();
+        }
+
+        /// <summary>
+        /// 用户删除收货地址
+        /// </summary>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public ActionResult DeleteAddress(string addressId, string fromURL)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            try
+            {
+                if (!string.IsNullOrEmpty(userOpenId))
+                {
+                    UserBiz.CreateNew().deleteUserAddress(userOpenId, addressId);
+                }
+                else
+                {
+                    _Apilog.WriteLog("UserController 下的DeleteAddress 异常，userOpenId为空，addressId:" + addressId);
+                }
+            }
+            catch (Exception e)
+            {
+                _Apilog.WriteLog("UserController 下的DeleteAddress 异常，addressId:" + addressId + "异常: " + e.Message);
+            }
+            return RedirectToAction("Addresslist", "User", new { fromURL = fromURL });
+        }
+
+        /// <summary>
+        /// 将地址设为默认地址
+        /// </summary>
+        /// <param name="addressId">地址id</param>
+        /// <param name="fromURL"></param>
+        /// <returns></returns>
+        public ActionResult SetDefaultAddress(string addressId,string fromURL)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            try
+            {
+                if (!string.IsNullOrEmpty(userOpenId))
+                {
+                    UserBiz.CreateNew().setDefaultAddress(userOpenId, addressId);
+                }
+                else
+                {
+                    _Apilog.WriteLog("UserController SetDefaultAddress 异常，userOpenId为空，addressId:" + addressId);
+                }
+            }
+            catch (Exception e)
+            {
+                _Apilog.WriteLog("UserController 下的SetDefaultAddress 异常，addressId:" + addressId + "异常: " + e.Message);
+            }
+            return RedirectToAction("Addresslist", "User", new { fromURL = fromURL });
         }
 
         /// <summary>

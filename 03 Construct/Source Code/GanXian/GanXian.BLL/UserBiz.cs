@@ -133,7 +133,76 @@ namespace GanXian.BLL
             return res;
         }
 
+        /// <summary>
+        /// 获取用户收货地址信息
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <returns></returns>
+        public List<useraddress> getUserAddressList(string userOpenId)
+        {
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT a.userOpenId,a.Id,a.receiver,b.name as province,c.name as city ,d.name as county ,a.detailAddress,a.Phone,a.SetAsDefault 
+                                            FROM ganxian.useraddress a
+                                            inner join district b on a.province=b.id
+                                            left join district c on a.city=c.id
+                                            left join district d on a.county=d.id
+                                            where a.status=1 and userOpenId=@userOpenId order by a.SetAsDefault desc,a.Id";
+                List<useraddress> userAddressList = conn.Query<useraddress>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
+                return userAddressList;
+            }
+        }
 
+        /// <summary>
+        /// 删除收货地址
+        /// </summary>
+        /// <param name="userOpenId">用户微信openId</param>
+        /// <param name="addressId"地址id</param>
+        /// <returns></returns>
+        public bool deleteUserAddress(string userOpenId, string addressId)
+        {
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"update useraddress set status=0 where status=1 and userOpenId=@userOpenId and id=@id ";
+                    conn.Execute(sqlCommandText, new { userOpenId = userOpenId, id = addressId });
+                    res = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 将地址设为默认地址
+        /// </summary>
+        /// <param name="userOpenId">用户微信OpenId</param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public bool setDefaultAddress(string userOpenId, string addressId)
+        {
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"update useraddress set SetAsDefault=0 where status=1 and userOpenId=@userOpenId and SetAsDefault=1;
+                                                update useraddress set SetAsDefault=1 where status=1 and userOpenId=@userOpenId and id=@id;";
+                    conn.Execute(sqlCommandText, new { userOpenId = userOpenId, id = addressId });
+                    res = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
+        }
 
         private string getAllDistrict()
         {

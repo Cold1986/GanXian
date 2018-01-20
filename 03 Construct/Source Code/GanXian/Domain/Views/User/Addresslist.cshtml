@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<GanXian.Model.useraddress>
 @{
     ViewBag.Title = "管理收货地址";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -6,27 +6,30 @@
 
 <div class="container" style="max-width:768px;margin:0 auto;">
     <div class="row">
-
         <ul class="address-list">
-            <li>
-                <p class="address-info">阿三<span>1311131111</span></p>
-                <p>上海市某某区某某路1000号101室上海市某某区某某路1000号101室</p>
-                <div class="address-panel default-address">
-                    <input type="radio" name="default" id="default1" checked=""><label for="default1">默认地址</label>
-                    <span onclick="deleteAddress(this)">删除</span>
-                    <span onclick="location.href='addressedit.html'">编辑</span>
-                </div>
-            </li>
-            <li>
-                <p class="address-info">阿四<span>1311131112</span></p>
-                <p>上海市某某区某某路1000号102室上海市某某区某某路1000号101室</p>
-                <div class="address-panel">
-                    <input type="radio" name="default" id="default2"><label for="default2">设为默认</label>
-                    <span onclick="deleteAddress(this)">删除</span>
-                    <span onclick="location.href='addressedit.html'">编辑</span>
-                </div>
-            </li>
-
+            @foreach (var item in Model)
+            {
+                <li>
+                    <p class="address-info">@Html.DisplayFor(modelItem => item.receiver)<span>@Html.DisplayFor(modelItem => item.Phone)</span></p>
+                    <p>@string.Concat(item.province, item.city, item.county, item.detailAddress)</p>
+                    @if (item.SetAsDefault == "1")
+                    {
+                        <div class="address-panel default-address">
+                            <input type="radio" name="default" id="default1" checked=""><label for="default1">默认地址</label>
+                            @Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px" })
+                            @Html.ActionLink("编辑", "Addressedit", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="address-panel">
+                            <input type="radio" name="default" id="default2"><label for="default2">@Html.ActionLink("设为默认", "SetDefaultAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new {  })</label>
+                            @Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px" })
+                            @Html.ActionLink("编辑", "Addressedit", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px" })
+                        </div>
+                    }
+                </li>
+            }
         </ul>
     </div>
 </div>
