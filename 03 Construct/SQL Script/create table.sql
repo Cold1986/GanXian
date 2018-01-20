@@ -91,6 +91,23 @@ column2 nvarchar(100) null -- 备用字段2
 )
 CREATE INDEX Users_openid ON Users(openid(40));
 -- 用户地址
+
+create table UserAddress
+(
+Id int(8) not null auto_increment primary key comment'编号',
+userOpenId nvarchar(50) not null comment '用户微信openid',
+receiver nvarchar(30) null comment '收货人',
+province varchar(40) null comment '省份',
+city varchar(40) null comment '市',
+county varchar(40) null comment  '县',
+detailAddress nvarchar(400) null comment '详细地址', -- 用户地址
+Phone nvarchar(20) null comment '联系电话',-- 用户号码
+SetAsDefault varchar(2) default '0' comment '设为默认 0否 1是',
+createDate datetime not null comment '插入时间' default now(), 
+status int null comment '状态' default 1, -- 0无效 1有效
+column1 nvarchar(100) null, -- 备用字段1
+column2 nvarchar(100) null -- 备用字段2
+)
 -- 购物车
 create table ShoppingCart
 (
