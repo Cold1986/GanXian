@@ -104,6 +104,7 @@ detailAddress nvarchar(400) null comment '详细地址', -- 用户地址
 Phone nvarchar(20) null comment '联系电话',-- 用户号码
 SetAsDefault varchar(2) default '0' comment '设为默认 0否 1是',
 createDate datetime not null comment '插入时间' default now(), 
+updateDate datetime  null comment '更新时间' default now(), 
 status int null comment '状态' default 1, -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
@@ -116,7 +117,7 @@ userOpenId nvarchar(50) not null comment '用户微信openid',
 productId int(4) not null comment '产品编号',
 num int(4) not null comment '购买数量',
 createDate datetime not null comment '插入时间' default now(), 
-status int null comment '状态', -- 0无效 1有效
+status int null comment '状态', -- 0无效 1有效 2已转为订单
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
@@ -127,11 +128,12 @@ create table SalesSlip
 salesId int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  -- 销售单号
 salesNo varchar(40) not null comment '销售编号',-- 界面显示
 userOpenId varchar(40) null, -- 用户微信openid,
+receiver nvarchar(30) null comment '收货人',
 province varchar(40) null comment '省份',
 city varchar(40) null comment '市',
 county varchar(40) null comment  '县',
-userAddress nvarchar(400), -- 用户地址
-userPhone nvarchar(20),-- 用户号码
+detailAddress nvarchar(400) null comment '详细地址', -- 用户地址
+Phone nvarchar(20) null comment '联系电话',-- 此单联系电话
 amount decimal(10,2) null, -- 总金额
 postage decimal(5,2) null comment '邮费',
 wechatSalesId varchar(40) null,-- 微信交易id
