@@ -134,6 +134,40 @@ namespace GanXian.BLL
         }
 
         /// <summary>
+        /// 更新用户收货地址
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public bool updateUserAddress(useraddress user)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                IDbTransaction transaction = conn.BeginTransaction();
+                try
+                {
+                    if (user.SetAsDefault == "1")
+                    {
+                        //将该用户原先默认地址设为非默认
+                        string updateSQL = "update useraddress set SetAsDefault=0 where status=1 and SetAsDefault=1 and userOpenId=@userOpenId ";
+                        conn.Execute(updateSQL, user, transaction);
+                    }
+                    string sqlCommandText = @"update useraddress set receiver=@receiver,province=@province,city=@city,county=@county,detailAddress=@detailAddress,Phone=@Phone,SetAsDefault=@SetAsDefault,updateDate=@updateDate where status=1 and userOpenId=@userOpenId and id=@Id";
+                    conn.Execute(sqlCommandText, user, transaction);
+                    //提交事务
+                    transaction.Commit();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    //出现异常，事务Rollback
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+        /// <summary>
         /// 获取用户收货地址信息
         /// </summary>
         /// <param name="userOpenId"></param>

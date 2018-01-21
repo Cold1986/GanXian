@@ -25,7 +25,15 @@
         <li>
             <textarea placeholder="请输入详细地址" id="detailAddress">@Model.detailAddress</textarea>
         </li>
-        <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2"></li>
+
+        @if (Model.SetAsDefault == "1")
+        {
+            <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2" checked></li>
+        }
+        else
+        {
+            <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2"></li>
+        }
     </ul>
 
     @*<div class="address-edit-delete" onclick="deleteAddress(this)">@Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = Model.Id, fromURL = ViewBag.fromBaseURL }, new {@class= "address-edit-delete" })</div>*@
@@ -34,9 +42,7 @@
 <footer class="footer">
     <div class="foot-con">
         <div class="foot-con_2">
-            <a href="addresslist.html" class="add-address">
-                保 存
-            </a>
+            @Html.ActionLink("保 存", "Addresslist", "User", new { fromURL = ViewBag.fromBaseURL }, new { target = "_self", name = "link", @class = "add-address" })
         </div>
     </div>
 </footer>
@@ -76,13 +82,64 @@
         }
         area1.value = [x, y, z];//控制初始位置，注意：该方法并不会影响到input的value
 
-
-
         function deleteAddress(obj) {
             if (confirm("确认删除这个地址？")) {
                 location.href = "addresslist.html"
             }
 
         }
+
+        $('.add-address').click(function () {
+            if ($('#receiver').val().trim() == "") {
+                alert("收货人不能为空");
+                return false;
+            }
+            if ($('#rPhone').val().trim() == "") {
+                alert("联系电话不能为空");
+                return false;
+            }
+            if ($('#value1').val().trim() == "") {
+                alert("所在地区不能为空");
+                return false;
+            }
+            if ($('#detailAddress').val().trim() == "") {
+                alert("详细地址不能为空");
+                return false;
+            }
+            var pattern1 = /^1[34578]\d{9}$/; //手机
+            var pattern2 = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/; //固定电话
+            if (!pattern1.test($('#rPhone').val())
+                && !pattern2.test($('#rPhone').val())) {
+                alert("联系电话不正确，请重新输入");
+                return false;
+            }
+
+            $(this).attr("disabled");
+            $.ajax({
+                url: "AddressUpdate",
+                data: {
+                    "id": '@Model.Id',
+                    "receiver": $('#receiver').val(),
+                    "rPhone": $('#rPhone').val(),
+                    "district": $('#value1').val(),
+                    "detailAddress": $('#detailAddress').val(),
+                    "setAsDefault": $('#default2').prop('checked')
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                },
+                success: function (retData) {
+                    if (retData == 'false') {
+                        alert("更新失败，请稍后尝试");
+                        return false;
+                    }
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        });
     </script>
 }

@@ -120,6 +120,57 @@ namespace Domain.Controllers
             return Json(res);
         }
 
+        /// <summary>
+        /// 修改收货地址
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <param name="rPhone"></param>
+        /// <param name="district"></param>
+        /// <param name="detailAddress"></param>
+        /// <param name="setAsDefault"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult AddressUpdate(string id, string receiver, string rPhone, string district, string detailAddress, string setAsDefault)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    useraddress user = new useraddress();
+                    user.Id = Convert.ToInt32(id);
+                    user.userOpenId = userOpenId;
+                    user.receiver = receiver;
+                    user.Phone = rPhone;
+                    user.detailAddress = detailAddress;
+                    user.SetAsDefault = setAsDefault.ToLower() == "true" ? "1" : "0";
+                    user.status = 1;
+                    user.updateDate = DateTime.Now;
+
+                    string[] tempDistrict = district.Split(',');//10,183,1116
+                    user.province = tempDistrict[0];
+                    user.city = "";
+                    user.county = "";
+                    if (tempDistrict.Length >= 2) user.city = tempDistrict[1];
+                    if (tempDistrict.Length >= 3) user.county = tempDistrict[2];
+
+                    UserBiz.CreateNew().updateUserAddress(user);
+                    res = "success";
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("UserController/AddressAdd 异常： " + e.Message);
+                }
+            }
+            else
+            {
+                _Apilog.WriteLog("UserController/AddressAdd 用户userOpenId 为空： ");
+            }
+            return Json(res);
+        }
+
 
         /// <summary>
         /// 用户管理收货地址
