@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using GanXian.Model;
 using GanXian.BLL;
 using WechatService.Biz;
+using Domain.Models;
 
 namespace Domain.Controllers
 {
@@ -237,12 +238,78 @@ namespace Domain.Controllers
             return Json(res);
         }
 
-        public ActionResult Checkout(string orderId)
+        /// <summary>
+        /// 结算页面
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public ActionResult Checkout(string orderId, string code)
         {
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+            if (string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(userOpenId))
+            {
+                return RedirectToAction("OrderList", "Order");
+            }
+
+            CheckOutModels checkOutModels = new CheckOutModels();
+            useraddress userRes = new useraddress();
+            salesslip userSalesSlip = new salesslip();
+
+            userSalesSlip = OrderBiz.CreateNew().getCheckOutInfo(orderId, userOpenId);
+            if (userSalesSlip == null)//查不到销售单
+            {
+                return RedirectToAction("OrderList", "Order");//查不到销售单,跳转至订单列表页面
+            }
+            else if (userSalesSlip.status == 0)//0未付款 1已付款 2待发货 3 待收货 4 已完成
+            {
+                #region 用户收货地址部分
+                if (!string.IsNullOrEmpty(userSalesSlip.province) && !string.IsNullOrEmpty(userSalesSlip.receiver)) //先看该订单用户是否已经设置收货地址，没有设置过则读取默认地址，还没有则为空
+                {
+                    userRes.receiver = userSalesSlip.receiver;
+                    userRes.Phone = userSalesSlip.Phone;
+                    userRes.province = userSalesSlip.province;
+                    userRes.city = userSalesSlip.city;
+                    userRes.county = userSalesSlip.county;
+                    userRes.detailAddress = userSalesSlip.detailAddress;
+                }
+                else
+                {
+                    var userAddressList = UserBiz.CreateNew().getUserAddressList(userOpenId);
+                    if (userAddressList.Any())
+                    {
+                        userRes = userAddressList.Find(x => x.SetAsDefault == "1");
+                    }
+                    if (userRes == null)
+                    {
+                        userRes = new useraddress();
+                        userRes.receiver = userRes.Phone = userRes.province = userRes.city = userRes.county = userRes.detailAddress = "";
+                    }
+                }
+                #endregion
+            }
+            else//订单状态不为 未付款，需要跳转到对应页面
+            {
+                return RedirectToAction("OrderList", "Order");//to do..
+            }
             _Apilog.WriteLog(orderId);
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "结算";
-            return View();
+            checkOutModels.UserAddress = userRes;
+            return View(checkOutModels);
         }
 
         /// <summary>

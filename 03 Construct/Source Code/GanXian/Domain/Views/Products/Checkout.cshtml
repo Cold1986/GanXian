@@ -1,4 +1,4 @@
-﻿
+﻿@model Domain.Models.CheckOutModels
 @{
     ViewBag.Title = "结算";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -8,12 +8,11 @@
 <div class="maincontainer checkout">
     <div class="container" style="max-width:768px;margin:0 auto;">
         <div class="row">
-
             <div class="list-group mb10">
                 <div class="list-group-item tip address">
-                    <a href="addresslist.html">
-                        <p>收货人：测试<span>13412312312</span></p>
-                        <p>收货地址：上海市 某某区 某某路 1000号 101室</p>
+                    <a href="@string.Concat("/GanXian/User/Addresslist?fromURL=", @HttpContext.Current.Request.RawUrl)">
+                        <p>收货人：<label id="receiver">@Model.UserAddress.receiver</label> <span id="Phone" style="font-weight: bold;">@Model.UserAddress.Phone</span></p>
+                        <p>收货地址：<label id="province">@Model.UserAddress.province</label> <label id="city">@Model.UserAddress.city</label> <label id="county">@Model.UserAddress.county</label> <label id="detailAddress">@Model.UserAddress.detailAddress</label></p>
                     </a>
                 </div>
                 <ul class="product-list">

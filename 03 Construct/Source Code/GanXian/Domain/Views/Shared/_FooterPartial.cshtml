@@ -35,7 +35,8 @@
                     <i class="navIcon shop"></i>
                     <span class="text">购物车</span>
                 </a>
-                @if (ViewContext.RouteData.Values["controller"].ToString().ToLower() == "user")
+                @if (ViewContext.RouteData.Values["controller"].ToString().ToLower() == "user"
+                    || ViewContext.RouteData.Values["controller"].ToString().ToLower() == "order")
                 {
                     <a href="~/User/UserHome" class="active">
                         <i class="navIcon member"></i>

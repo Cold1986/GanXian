@@ -1,5 +1,6 @@
 ﻿using CommonLib;
 using Dapper;
+using GanXian.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -70,7 +71,7 @@ namespace GanXian.BLL
                     string updateShoppingcartSQL = "";
                     for (int i = 0; i < prods.Length; i++)
                     {
-                        insertSales2ProductsSQL += "insert into Sales2Products(salesId,productId,num,createDate,status) select @salesId,productId,num,now(),0 from shoppingcart where status=1 and userOpenId=@userOpenId and productId ="+prods[i]+";";
+                        insertSales2ProductsSQL += "insert into Sales2Products(salesId,productId,num,createDate,status) select @salesId,productId,num,now(),0 from shoppingcart where status=1 and userOpenId=@userOpenId and productId =" + prods[i] + ";";
                         updateShoppingcartSQL += "update shoppingcart set status=2,column1=now() where status=1 and userOpenId=@userOpenId and productId =" + prods[i] + ";";
                     }
                     string salesId = conn.ExecuteScalar(insertSalesSlipSQL, new { salesNo = salesNo, userOpenId = userOpenId }, transaction, null, null).ToString();
@@ -89,6 +90,22 @@ namespace GanXian.BLL
                 }
             }
             return res;
+        }
+
+        /// <summary>
+        /// 获取订单结算信息
+        /// </summary>
+        /// <param name="orderId">订单编号</param>
+        /// <param name="userOpenId">用户微信OpenId</param>
+        public salesslip getCheckOutInfo(string orderId, string userOpenId)
+        {
+            salesslip userSalesSlip = new salesslip();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where salesNo=@orderId and userOpenId=@userOpenId";
+                userSalesSlip = conn.Query<salesslip>(sqlCommandText, new { orderId = orderId, userOpenId = userOpenId }).FirstOrDefault();
+            }
+            return userSalesSlip;
         }
     }
 }

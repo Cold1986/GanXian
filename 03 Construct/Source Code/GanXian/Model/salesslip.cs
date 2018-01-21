@@ -13,11 +13,12 @@ namespace GanXian.Model
 		private int _salesid;
 		private string _salesno;
 		private string _useropenid;
+		private string _receiver;
 		private string _province;
 		private string _city;
 		private string _county;
-		private string _useraddress;
-		private string _userphone;
+		private string _detailaddress;
+		private string _phone;
 		private decimal? _amount;
 		private decimal? _postage;
 		private string _wechatsalesid;
@@ -52,6 +53,14 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
+		public string receiver
+		{
+			set{ _receiver=value;}
+			get{return _receiver;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
 		public string province
 		{
 			set{ _province=value;}
@@ -76,18 +85,18 @@ namespace GanXian.Model
 		/// <summary>
 		/// 
 		/// </summary>
-		public string userAddress
+		public string detailAddress
 		{
-			set{ _useraddress=value;}
-			get{return _useraddress;}
+			set{ _detailaddress=value;}
+			get{return _detailaddress;}
 		}
 		/// <summary>
 		/// 
 		/// </summary>
-		public string userPhone
+		public string Phone
 		{
-			set{ _userphone=value;}
-			get{return _userphone;}
+			set{ _phone=value;}
+			get{return _phone;}
 		}
 		/// <summary>
 		/// 
