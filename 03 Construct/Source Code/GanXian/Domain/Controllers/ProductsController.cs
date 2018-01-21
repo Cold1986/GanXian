@@ -305,15 +305,18 @@ namespace Domain.Controllers
                         userRes.receiver = userRes.Phone = userRes.province = userRes.city = userRes.county = userRes.detailAddress = "";
                     }
                 }
-                if (userRes.province.IndexOf("上海") >= 0
-                    || userRes.province.IndexOf("江苏") >= 0
-                    || userRes.province.IndexOf("浙江") >= 0)
+                if (!string.IsNullOrEmpty(userRes.province))
                 {
-                    postage = SFJZF;
-                }
-                else
-                {
-                    postage = SFNonJZF;
+                    if (userRes.province.IndexOf("上海") >= 0
+                        || userRes.province.IndexOf("江苏") >= 0
+                        || userRes.province.IndexOf("浙江") >= 0)
+                    {
+                        postage = SFJZF;
+                    }
+                    else
+                    {
+                        postage = SFNonJZF;
+                    }
                 }
 
                 #endregion
