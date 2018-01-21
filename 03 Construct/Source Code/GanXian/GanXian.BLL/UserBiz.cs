@@ -256,5 +256,34 @@ namespace GanXian.BLL
             }
             return res;
         }
+
+        /// <summary>
+        /// 根据用户收货地址id获取具体信息
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public useraddress_extension getUserAddressById(string userOpenId, string addressId)
+        {
+            useraddress_extension userAddressInfo = new useraddress_extension();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string sqlCommandText = @"SELECT a.*,b.name as provinceName,c.name as cityName ,d.name as countyName 
+                                                FROM ganxian.useraddress a
+                                                inner join district b on a.province = b.id
+                                                left join district c on a.city = c.id
+                                                left join district d on a.county = d.id
+                                                where a.status = 1 and userOpenId =@userOpenId and a.id=@id ";
+                    userAddressInfo = conn.Query<useraddress_extension>(sqlCommandText, new { userOpenId = userOpenId, id = addressId }).FirstOrDefault();
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return userAddressInfo;
+        }
     }
 }

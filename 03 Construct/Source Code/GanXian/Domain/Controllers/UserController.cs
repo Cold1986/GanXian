@@ -127,10 +127,34 @@ namespace Domain.Controllers
         /// <returns></returns>
         public ActionResult Addressedit(string code, string fromURL, string addressId)
         {
-            ViewBag.fromBaseURL = fromURL;
-            ViewBag.FooterType = "custom";
-            ViewBag.PageName = "管理收货地址";
-            return View();
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+            #region 收货地址部分
+            if (string.IsNullOrEmpty(addressId))
+            {
+                return RedirectToAction("Addresslist", "User", new { fromURL = fromURL });
+            }
+            else
+            {
+                useraddress_extension userAddress = UserBiz.CreateNew().getUserAddressById(userOpenId, addressId);
+                ViewBag.fromBaseURL = fromURL;
+                ViewBag.FooterType = "custom";
+                ViewBag.PageName = "管理收货地址";
+                return View(userAddress);
+            }
+            #endregion
         }
 
         /// <summary>
@@ -165,7 +189,7 @@ namespace Domain.Controllers
         /// <param name="addressId">地址id</param>
         /// <param name="fromURL"></param>
         /// <returns></returns>
-        public ActionResult SetDefaultAddress(string addressId,string fromURL)
+        public ActionResult SetDefaultAddress(string addressId, string fromURL)
         {
             string userOpenId = base.getUserOpenIdFromCookie();
             try
