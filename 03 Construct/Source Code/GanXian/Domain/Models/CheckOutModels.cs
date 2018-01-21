@@ -9,5 +9,7 @@ namespace Domain.Models
     public class CheckOutModels
     {
         public useraddress UserAddress { get; set; }
+
+        public List<UserShopcartsInfo> UserOrderInfo { get; set; }
     }
 }

@@ -107,5 +107,41 @@ namespace GanXian.BLL
             }
             return userSalesSlip;
         }
+
+        /// <summary>
+        /// 获取用户未付款订单
+        /// </summary>
+        /// <param name="salesId"></param>
+        /// <param name="userOpenId"></param>
+        /// <returns></returns>
+        public List<UserShopcartsInfo> getUnpaidOrderInfo(int salesId)
+        {
+            List<UserShopcartsInfo> res;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                //c.status 0未付款 1已付款 2待发货 3 待收货 4 已完成
+                string sqlCommandText = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
+                                            inner join products b on a.productid=b.productid
+                                            where  b.status=1 and a.salesId=@salesId
+                                            order by a.createDate desc";
+                res = conn.Query<UserShopcartsInfo>(sqlCommandText, new { salesId = salesId }).ToList();
+                if (res.Any())
+                {
+                    res.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                    foreach (var item in res)
+                    {
+                        System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                        foreach (System.Reflection.PropertyInfo item2 in pro)
+                        {
+                            if (item2.Name == item.showPic)
+                            {
+                                item.showPic = item2.GetValue(item).ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
     }
 }

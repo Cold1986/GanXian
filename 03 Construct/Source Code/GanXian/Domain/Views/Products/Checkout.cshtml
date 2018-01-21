@@ -16,37 +16,20 @@
                     </a>
                 </div>
                 <ul class="product-list">
-                    <li>
-                        <a href="views.html">
-                            <img src="~img/product01.jpg">
-                            <p>小眼带鱼</p>
-                            <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="views.html">
-                            <img src="~img/product02.jpg">
-                            <p>方头鱼</p>
-                            <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="views.html">
-                            <img src="~img/product03.jpg">
-                            <p>东海小眼带鱼</p>
-                            <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="views.html">
-                            <img src="~img/product04.jpg">
-                            <p>方头鱼</p>
-                            <div><span class="p-price">￥21.50</span><span>x1</span></div>
-                        </a>
-                    </li>
+                    @foreach (var item in Model.UserOrderInfo)
+                    {
+                        <li>
+                            <a href=@string.Concat("index/", item.productId)>
+                                <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic))>
+                                <p>@item.productName</p>
+                                <div class=""><span class="p-price">@string.Concat("￥", item.discountedPrice)</span><span>@string.Concat("x", item.num)</span></div>
+                            </a>
+                        </li>
+                    }
+
                 </ul>
                 <div class="order-list-info">
-                    <p>共<span class="red">5</span>件商品 合计：<span class="red">￥120.00</span><br>运费：<span class="red">￥12.00</span></p>
+                    <p>共<span class="red">@Model.UserOrderInfo.Count</span>件商品 合计：<span class="red">@string.Concat("￥", ViewBag.productsPrice)</span><br>运费：<span class="red">@string.Concat("￥", ViewBag.postage)</span></p>
                 </div>
             </div>
 
@@ -57,7 +40,7 @@
 <footer class="footer checkout">
     <div class="foot-con">
         <div class="foot-con_2">
-            <p>共<span class="red">5</span>件商品 合计<span class="red">￥132.00</span></p>
+            <p>共<span class="red">@Model.UserOrderInfo.Count</span>件商品 合计<span class="red">@string.Concat("￥", ViewBag.totalCost)</span></p>
             <div class="buy-btn-fix"><button type="button" class="btn btn-danger btn-buy">结算</button></div>
         </div>
     </div>

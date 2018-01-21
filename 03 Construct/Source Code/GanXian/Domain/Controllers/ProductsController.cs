@@ -267,7 +267,13 @@ namespace Domain.Controllers
 
             CheckOutModels checkOutModels = new CheckOutModels();
             useraddress userRes = new useraddress();
+            List<UserShopcartsInfo> userUnpaidOrderInfo = new List<UserShopcartsInfo>();
             salesslip userSalesSlip = new salesslip();
+
+            decimal productsPrice = 0;
+            decimal postage = 0;
+            decimal SFJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:JZH"]);//顺丰江浙沪快递费
+            decimal SFNonJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:NonJZH"]);//顺丰非江浙沪快递费
 
             userSalesSlip = OrderBiz.CreateNew().getCheckOutInfo(orderId, userOpenId);
             if (userSalesSlip == null)//查不到销售单
@@ -299,13 +305,37 @@ namespace Domain.Controllers
                         userRes.receiver = userRes.Phone = userRes.province = userRes.city = userRes.county = userRes.detailAddress = "";
                     }
                 }
+                if (userRes.province.IndexOf("上海") >= 0
+                    || userRes.province.IndexOf("江苏") >= 0
+                    || userRes.province.IndexOf("浙江") >= 0)
+                {
+                    postage = SFJZF;
+                }
+                else
+                {
+                    postage = SFNonJZF;
+                }
+
+                #endregion
+
+                #region 订单产品部分
+                userUnpaidOrderInfo = OrderBiz.CreateNew().getUnpaidOrderInfo(userSalesSlip.salesId);
+                checkOutModels.UserOrderInfo = userUnpaidOrderInfo;
+
+                foreach (var i in userUnpaidOrderInfo)
+                {
+                    productsPrice += i.productTotalPrice ?? 0;
+                }
                 #endregion
             }
             else//订单状态不为 未付款，需要跳转到对应页面
             {
                 return RedirectToAction("OrderList", "Order");//to do..
             }
-            _Apilog.WriteLog(orderId);
+            //_Apilog.WriteLog(orderId);
+            ViewBag.productsPrice = productsPrice;
+            ViewBag.postage = postage;
+            ViewBag.totalCost = productsPrice + postage;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "结算";
             checkOutModels.UserAddress = userRes;
