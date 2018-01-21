@@ -197,8 +197,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\back_icon.png" />
     <Content Include="Content\images\edit.png" />
+    <Content Include="Content\images\forward.png" />
     <Content Include="Content\images\icon.png" />
     <Content Include="Content\images\loading.gif" />
+    <Content Include="Content\images\location.png" />
     <Content Include="Content\LArea.css" />
     <Content Include="Content\logistics.css" />
     <Content Include="Content\member.css" />
@@ -215,8 +217,10 @@
     <Content Include="images\back_icon.png" />
     <Content Include="images\bot_top_arrow.png" />
     <Content Include="images\checkIcont.png" />
+    <Content Include="images\forward.png" />
     <Content Include="images\icon.png" />
     <Content Include="images\loading.gif" />
+    <Content Include="images\location.png" />
     <Content Include="images\member_bg.png" />
     <Content Include="images\member_img16.png" />
     <Content Include="images\member_mp_img.png" />
