@@ -137,13 +137,14 @@ Phone nvarchar(20) null comment '联系电话',-- 此单联系电话
 amount decimal(10,2) null, -- 总金额
 postage decimal(5,2) null comment '邮费',
 wechatSalesId varchar(40) null,-- 微信交易id
-createDate datetime not null comment '插入时间' default now(), 
+createDate datetime not null comment '创建时间' default now(), 
+payDate datetime  null comment '付款时间' ,
+deliveryDate datetime null comment '发货时间',
 status int null comment '状态', -- 0未付款 1已付款 2待发货 3 待收货 4 已完成
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
 
-drop table Sales2Products
 -- 销售单产品明细表
 create table Sales2Products
 (
@@ -162,4 +163,15 @@ column2 nvarchar(100) null -- 备用字段2
 
 )
 -- 购物记录
+create table OrderLog
+(
+id  int(8) not  NULL AUTO_INCREMENT PRIMARY KEY comment '编号',  -- 自增
+salesNo varchar(40) not null comment '销售编号',-- 界面显示
+message nvarchar(1000) null comment '消息内容',
+msgType varchar(2) null comment '消息类型 0 正常记录，1 失败，2 异常记录',
+createDate datetime not null comment '插入时间' default now(), 
+status int null comment '状态', -- 0未付款 1已付款
+column1 nvarchar(100) null, -- 备用字段1
+column2 nvarchar(100) null -- 备用字段2
+)
 -- 收藏
