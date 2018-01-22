@@ -15,6 +15,7 @@ namespace Domain.Controllers
     public class ProductsController : BaseController
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
+        public LogHelper _Orderlog = new LogHelper("OrderLog");// 考虑到以后日志查询的可查询性，记录内容   salesNo|message|msgType
         // GET: Products
         public ActionResult Index(int id, string code)
         {
@@ -343,6 +344,34 @@ namespace Domain.Controllers
             ViewBag.PageName = "结算";
             checkOutModels.UserAddress = userRes;
             return View(checkOutModels);
+        }
+
+        [HttpPost]
+        public JsonResult PayOrder(string receiver, string phone, string province, string city, string county, string detailAddress, string orderId)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId) && !string.IsNullOrEmpty(orderId))
+            {
+                _Orderlog.WriteLog(orderId + " | " + "用户: " + userOpenId + " 开始付款 | " + (int)EnumOrderLogType.normal);
+                //try
+                //{
+                //    string salesNo = Guid.NewGuid().ToString();
+                //    OrderBiz.CreateNew().createOrder(prodId, num, userOpenId, salesNo);
+                //    res = salesNo;
+                //}
+                //catch (Exception e)
+                //{
+                //    res = "fail";
+                //    _Apilog.WriteLog("ProductsController/CreateOrder 异常： " + e.Message);
+                //}
+            }
+            else
+            {
+                _Apilog.WriteLog("ProductsController/PayOrder 用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId);
+                _Orderlog.WriteLog(orderId + " | " + "用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId + "| " + (int)EnumOrderLogType.fail);
+            }
+            return Json(res);
         }
 
         /// <summary>

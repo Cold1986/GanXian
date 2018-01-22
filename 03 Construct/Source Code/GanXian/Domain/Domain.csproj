@@ -282,6 +282,7 @@
     <Content Include="Scripts\login.js" />
     <Content Include="Scripts\prodDetail.js" />
     <Content Include="Scripts\prodSort.js" />
+    <Content Include="Scripts\Products\checkout.js" />
     <Content Include="Scripts\Products\myProdDetail.js" />
     <Content Include="Scripts\Products\shopCart.js" />
     <Content Include="Scripts\randomimage.js" />

@@ -103,6 +103,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="district.cs" />
+    <Compile Include="EnumLogType.cs" />
+    <Compile Include="orderlog.cs" />
     <Compile Include="products.cs" />
     <Compile Include="products2Tab.cs" />
     <Compile Include="products2tabs.cs" />
