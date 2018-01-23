@@ -34,7 +34,7 @@ else if (!string.IsNullOrEmpty(@ViewBag.PageName))
                 }
                 else
                 {
-                    <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+                    <a class="nav-left back-icon" href="javascript:history.go(-1);">返回</a>
                 }
                 <div class="tit">@ViewBag.PageName</div>
             </div>

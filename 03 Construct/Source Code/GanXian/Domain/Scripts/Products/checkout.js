@@ -7,6 +7,14 @@
         var county = $('#county').html();
         var detailAddress = $('#detailAddress').html();
         var orderId = GetQueryString('orderId');
+
+        if (receiver.trim() == "" || phone.trim() == ""
+            || province.trim() == "" || city.trim == ""
+            || detailAddress.trim() == "" || orderId.trim == "") {
+            alert('请先填写收货地址');
+            return false;
+        }
+
         $.ajax({
             url: "PayOrder",
             data: {
@@ -24,10 +32,8 @@
             error: function (data) {
             },
             success: function (retData) {
-                if (retData == 'false') {
-                    alert("购买失败，请稍后尝试");
-                    return false;
-                }
+                alert(retData);
+                window.location.href = "../Order/OrderList";
             },
             complete: function () {
                 $('.add-address').removeAttr("disabled"); //设置变灰按钮  

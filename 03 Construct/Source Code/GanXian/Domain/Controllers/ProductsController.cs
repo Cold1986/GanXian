@@ -347,29 +347,101 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult PayOrder(string receiver, string phone, string province, string city, string county, string detailAddress, string orderId)
+        public JsonResult PayOrder(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId)
         {
             string userOpenId = base.getUserOpenIdFromCookie();
             string res = "fail";
-            if (!string.IsNullOrEmpty(userOpenId) && !string.IsNullOrEmpty(orderId))
+            try
             {
-                _Orderlog.WriteLog(orderId + " | " + "用户: " + userOpenId + " 开始付款 | " + (int)EnumOrderLogType.normal);
-                //try
-                //{
-                //    string salesNo = Guid.NewGuid().ToString();
-                //    OrderBiz.CreateNew().createOrder(prodId, num, userOpenId, salesNo);
-                //    res = salesNo;
-                //}
-                //catch (Exception e)
-                //{
-                //    res = "fail";
-                //    _Apilog.WriteLog("ProductsController/CreateOrder 异常： " + e.Message);
-                //}
+                if (!string.IsNullOrEmpty(userOpenId) && !string.IsNullOrEmpty(orderId))
+                {
+                    _Orderlog.WriteLog(orderId + " | " + "用户: " + userOpenId + " 开始付款 | " + (int)EnumOrderLogType.normal);
+                    salesslip userSalesSlip = new salesslip();
+                    useraddress userRes = new useraddress();
+                    List<UserShopcartsInfo> userUnpaidOrderInfo = new List<UserShopcartsInfo>();
+                    decimal productsPrice = 0;
+                    decimal postage = 0;
+                    decimal SFJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:JZH"]);//顺丰江浙沪快递费
+                    decimal SFNonJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:NonJZH"]);//顺丰非江浙沪快递费
+                    userSalesSlip = OrderBiz.CreateNew().getCheckOutInfo(orderId, userOpenId);
+                    if (userSalesSlip == null)//查不到销售单
+                    {
+                        res = "订单不存在";//查不到销售单,跳转至订单列表页面
+                    }
+                    else if (userSalesSlip.status == 0)//0未付款 1已付款 2待发货 3 待收货 4 已完成
+                    {
+                        #region 邮费计算
+                        if (!string.IsNullOrEmpty(province))
+                        {
+                            if (province.IndexOf("上海") >= 0
+                                || province.IndexOf("江苏") >= 0
+                                || province.IndexOf("浙江") >= 0)
+                            {
+                                postage = SFJZF;
+                            }
+                            else
+                            {
+                                postage = SFNonJZF;
+                            }
+                        }
+                        #endregion
+                        #region 订单产品部分
+                        userUnpaidOrderInfo = OrderBiz.CreateNew().getUnpaidOrderInfo(userSalesSlip.salesId);
+
+                        foreach (var i in userUnpaidOrderInfo)
+                        {
+                            productsPrice += i.productTotalPrice ?? 0;
+                        }
+                        #endregion
+
+                        #region 更新记录
+                        salesslip newOrder = new salesslip();
+                        newOrder.salesId = userSalesSlip.salesId;
+                        newOrder.salesNo = orderId;
+                        newOrder.userOpenId = userOpenId;
+                        newOrder.receiver = receiver;
+                        newOrder.province = province;
+                        newOrder.city = city;
+                        newOrder.county = county;
+                        newOrder.detailAddress = detailAddress;
+                        newOrder.Phone = rPhone;
+                        newOrder.amount = productsPrice;
+                        newOrder.postage = postage;
+                        newOrder.payDate = System.DateTime.Now;
+                        newOrder.status = 1;
+
+                        string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userUnpaidOrderInfo);
+                        newOrder.column1 = remark;
+
+                        if (OrderBiz.CreateNew().userPaidOrder(newOrder))
+                        {
+                            _Orderlog.WriteLog(orderId + " | " + "用户支付成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
+                            res = "支付成功";
+                        }
+                        else
+                        {
+                            _Orderlog.WriteLog(orderId + " | " + "用户支付失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
+                            res = "付款失败";
+                        }
+                        #endregion
+                    }
+                    else//订单状态不为 未付款，需要跳转到对应页面
+                    {
+                        res = "订单已支付";
+                    }
+
+                }
+                else
+                {
+                    _Apilog.WriteLog("ProductsController/PayOrder 用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId);
+                    _Orderlog.WriteLog(orderId + " | " + "用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId + "| " + (int)EnumOrderLogType.fail);
+                }
             }
-            else
+            catch (Exception e)
             {
-                _Apilog.WriteLog("ProductsController/PayOrder 用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId);
-                _Orderlog.WriteLog(orderId + " | " + "用户userOpenId 或 orderId 为空, 用户userOpenId: " + userOpenId + " orderId: " + orderId + "| " + (int)EnumOrderLogType.fail);
+                _Apilog.WriteLog("ProductsController/PayOrder 异常: " + userOpenId + " orderId: " + orderId + e.Message);
+                _Orderlog.WriteLog(orderId + " | " + "支付异常: " + e.Message + e.Source + "| " + (int)EnumOrderLogType.error);
+
             }
             return Json(res);
         }
