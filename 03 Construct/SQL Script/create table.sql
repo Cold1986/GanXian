@@ -141,8 +141,8 @@ createDate datetime not null comment '创建时间' default now(),
 payDate datetime  null comment '付款时间' ,
 deliveryDate datetime null comment '发货时间',
 status int null comment '状态', -- 0未付款 1已付款 2待发货 3 待收货 4 已完成
-column1 nvarchar(100) null, -- 备用字段1
-column2 nvarchar(100) null -- 备用字段2
+column1 nvarchar(2000) null, -- 备用字段1
+column2 nvarchar(2000) null -- 备用字段2
 )
 
 -- 销售单产品明细表
