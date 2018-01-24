@@ -48,6 +48,10 @@ namespace Domain.Controllers
                     TimeSpan ts = expiredDate - start;
                     CacheHelper.SetCache("product_" + id.ToString(), products, ts);
                 }
+                else
+                {
+                    return RedirectToAction("Category");
+                }
             }
             ViewBag.PageName = "商品详情";
             return View(products);
@@ -281,7 +285,7 @@ namespace Domain.Controllers
             {
                 return RedirectToAction("OrderList", "Order");//查不到销售单,跳转至订单列表页面
             }
-            else if (userSalesSlip.status == 0)//0未付款 1已付款 2待发货 3 待收货 4 已完成
+            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
             {
                 #region 用户收货地址部分
                 if (!string.IsNullOrEmpty(userSalesSlip.province) && !string.IsNullOrEmpty(userSalesSlip.receiver)) //先看该订单用户是否已经设置收货地址，没有设置过则读取默认地址，还没有则为空
@@ -368,7 +372,7 @@ namespace Domain.Controllers
                     {
                         res = "订单不存在";//查不到销售单,跳转至订单列表页面
                     }
-                    else if (userSalesSlip.status == 0)//0未付款 1已付款 2待发货 3 待收货 4 已完成
+                    else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
                     {
                         #region 邮费计算
                         if (!string.IsNullOrEmpty(province))

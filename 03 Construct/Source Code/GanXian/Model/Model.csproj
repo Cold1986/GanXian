@@ -118,6 +118,7 @@
     <Compile Include="typelist.cs" />
     <Compile Include="useraddress.cs" />
     <Compile Include="useraddress_extension.cs" />
+    <Compile Include="UserOrderListInfo.cs" />
     <Compile Include="users.cs" />
     <Compile Include="UserShopcartsInfo.cs" />
   </ItemGroup>

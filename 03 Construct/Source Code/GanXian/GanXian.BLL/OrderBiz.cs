@@ -119,7 +119,7 @@ namespace GanXian.BLL
             List<UserShopcartsInfo> res;
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                //c.status 0未付款 1已付款 2待发货 3 待收货 4 已完成
+                //c.status0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
                 string sqlCommandText = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
                                             inner join products b on a.productid=b.productid
                                             where  b.status=1 and a.salesId=@salesId
@@ -168,6 +168,113 @@ namespace GanXian.BLL
                 }
             }
             return res;
+        }
+
+        /// <summary>
+        /// 获取用户订单信息
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <returns></returns>
+        public List<UserOrderListInfo> getUserOrderListInfo(string userOpenId)
+        {
+            List<UserOrderListInfo> userOrderList = new List<UserOrderListInfo>();
+            List<UserShopcartsInfo> orderProductList = new List<UserShopcartsInfo>();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId";
+                userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
+
+                foreach (var userOrder in userOrderList)
+                {
+                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
+                    #region status==0 未付款情况
+                    if (userOrder.status == 0)
+                    {
+                        decimal totalPrice = 0;//总价，未付款时需要关联产品表获取当前价格
+                        string sqlCommandTextStatus0 = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
+                                            inner join products b on a.productid=b.productid
+                                            where  b.status=1 and a.salesId=@salesId
+                                            order by a.createDate desc";
+                        var resStatus0 = conn.Query<UserShopcartsInfo>(sqlCommandTextStatus0, new { salesId = userOrder.salesId }).ToList();
+                        if (resStatus0.Any())
+                        {
+                            resStatus0.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                            foreach (var item in resStatus0)
+                            {
+                                totalPrice += item.productTotalPrice ?? 0;
+                                System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                                foreach (System.Reflection.PropertyInfo item2 in pro)
+                                {
+                                    if (item2.Name == item.showPic)
+                                    {
+                                        item.showPic = item2.GetValue(item).ToString();
+                                    }
+                                }
+                            }
+                        }
+                        userOrder.Order2ProductsList = resStatus0;
+                        userOrder.amount = totalPrice;
+                        //userOrder.postage
+                    }
+                    #endregion
+                    #region 已付款处理
+                    else if (userOrder.status == 1 || userOrder.status == 2 || userOrder.status == 3)
+                    {
+                        //已发货一周后变为已完成状态
+                        if (userOrder.status == 2 && userOrder.deliveryDate != null)
+                        {
+                            if (DateTime.Now.AddDays(-7) > userOrder.deliveryDate)
+                            {
+                                string sqlCommandTextUpdateOrder = "update salesslip set status=3 ,column2=now() where salesId=@salesId";
+                                conn.Execute(sqlCommandTextUpdateOrder, new { salesId = userOrder.salesId });
+                            }
+                        }
+
+
+                        string sqlCommandTextStatus123 = @"SELECT a.num ,b.`productId`,
+                                                        b.`productName`,
+                                                        b.`specs`,
+                                                        a.`originalPrice`,
+                                                        a.`discountedPrice`,
+                                                        b.`discountedExpiredDate`,
+                                                        b.`pic1`,
+                                                        b.`pic2`,
+                                                        b.`pic3`,
+                                                        b.`pic4`,
+                                                        b.`showPic`,
+                                                        b.`origin`,
+                                                        a.`nw`,
+                                                        b.`storageCondition`,
+                                                        b.`remark`,
+                                                        b.`createDate`,
+                                                        b.`status`,
+                                                        b.`column1`,
+                                                        b.`column2` FROM ganxian.sales2products a 
+                                            inner join products b on a.productid=b.productid
+                                            where a.salesId=@salesId
+                                            order by a.createDate desc";
+                        var resStatus123 = conn.Query<UserShopcartsInfo>(sqlCommandTextStatus123, new { salesId = userOrder.salesId }).ToList();
+                        if (resStatus123.Any())
+                        {
+                            resStatus123.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                            foreach (var item in resStatus123)
+                            {
+                                System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                                foreach (System.Reflection.PropertyInfo item2 in pro)
+                                {
+                                    if (item2.Name == item.showPic)
+                                    {
+                                        item.showPic = item2.GetValue(item).ToString();
+                                    }
+                                }
+                            }
+                        }
+                        userOrder.Order2ProductsList = resStatus123;
+                    }
+                    #endregion
+                }
+            }
+            return userOrderList;
         }
     }
 }
