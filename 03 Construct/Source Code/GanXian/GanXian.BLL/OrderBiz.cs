@@ -181,7 +181,7 @@ namespace GanXian.BLL
             List<UserShopcartsInfo> orderProductList = new List<UserShopcartsInfo>();
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId";
+                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId order by salesid desc";
                 userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
 
                 foreach (var userOrder in userOrderList)
