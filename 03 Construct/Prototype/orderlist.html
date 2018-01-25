@@ -1,0 +1,238 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<script charset="utf-8" src="js/jquery.min.js?v=01291"></script>
+<script charset="utf-8" src="js/global.js?v=01291"></script>
+<script charset="utf-8" src="js/bootstrap.min.js?v=01291"></script>
+<script charset="utf-8" src="js/template.js?v=01291"></script>
+<link rel="stylesheet" href="css/bootstrap.css?v=01291">
+<link rel="stylesheet" href="css/style.css?v=1?v=01291">
+<link rel="stylesheet" href="css/order3.css?v=01291">
+<link rel="stylesheet" href="css/member.css?v=01291">
+<link rel="stylesheet" href="css/orderlist.css">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="yes" name="apple-touch-fullscreen">
+<meta content="telephone=no" name="format-detection">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+<title>我的订单</title>
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<header class="header">
+    <div class="fix_nav">
+        <div style="max-width:768px;margin:0 auto;background:#000000;position: relative;">
+            <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+            <div class="tit" style="font-size:18px;">我的订单</div>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="max-width:768px;margin:0 auto;">
+	<div class="row">
+				
+		<div class="list-group">
+			<div class="list-group-item tip order-panel mb10">
+				<a href="orderlist.html" class="focus">全部订单</a>
+				<a href="orderlist.html">未付款</a>
+				<a href="orderlist.html">待发货</a>
+				<a href="orderlist.html">已发货</a>
+				<a href="orderlist.html">已完成</a>
+			</div>
+			<!--未付款订单-->
+			<div class="order order-unpaid">
+				<div class="order-list-title">
+					<p>订单号：gx123456</p><p class="red">未付款</p>
+				</div>
+				<ul class="product-list">
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product01.jpg">
+	                        <p>小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product02.jpg">
+	                        <p>方头鱼</p>
+	                        <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product03.jpg">
+	                        <p>东海小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product04.jpg">
+	                        <p>方头鱼</p>
+	                        <div><span class="p-price">￥21.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	            </ul>
+				<div class="order-list-info">
+					<p>共<span class="red">5</span>件商品 共<span class="red">￥132.00</span> （含运费 ￥12.00）</p>
+					<p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+				</div>    			
+			</div>
+			<!--end-->
+			<!--待发货订单-->
+			<div class="order order-unshipped">
+				<div class="order-list-title">
+					<p>订单号：gx1234563</p><p class="red">待发货</p>
+				</div>
+				<ul class="product-list">
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product01.jpg">
+	                        <p>小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product02.jpg">
+	                        <p>方头鱼</p>
+	                        <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product03.jpg">
+	                        <p>东海小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product04.jpg">
+	                        <p>方头鱼</p>
+	                        <div><span class="p-price">￥21.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	            </ul>
+				<div class="order-list-info">
+					<p>共<span class="red">5</span>件商品 共<span class="red">￥132.00</span> （含运费 ￥12.00）</p>
+					<p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+				</div>    			
+			</div>
+			<!--end-->
+			<!--已发货订单-->
+			<div class="order order-in-delivery">
+				<div class="order-list-title">
+					<p>订单号：gx1234561</p><p class="red">已发货</p>
+				</div>
+				<ul class="product-list">
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product01.jpg">
+	                        <p>小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product02.jpg">
+	                        <p>方头鱼</p>
+	                        <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product03.jpg">
+	                        <p>东海小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product04.jpg">
+	                        <p>方头鱼</p>
+	                        <div><span class="p-price">￥21.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	            </ul>
+				<div class="order-list-info">
+					<p>共<span class="red">5</span>件商品 共<span class="red">￥132.00</span> （含运费 ￥12.00）</p>
+					<p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+				</div>    			
+			</div>
+			<!--end-->
+			<!--已完成订单-->
+			<div class="order order-completed">
+				<div class="order-list-title">
+					<p>订单号：gx1234562</p><p class="red">已完成</p>
+				</div>
+				<ul class="product-list">
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product01.jpg">
+	                        <p>小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥13.50</span><span>x2</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product02.jpg">
+	                        <p>方头鱼</p>
+	                        <div class=""><span class="p-price">￥24.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product03.jpg">
+	                        <p>东海小眼带鱼</p>
+	                        <div class=""><span class="p-price">￥31.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="views.html">
+	                        <img src="img/product04.jpg">
+	                        <p>方头鱼</p>
+	                        <div><span class="p-price">￥21.50</span><span>x1</span></div>
+	                    </a>
+	                </li>
+	            </ul>
+				<div class="order-list-info">
+					<p>共<span class="red">5</span>件商品 共<span class="red">￥132.00</span> （含运费 ￥12.00）</p>
+					<p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+				</div>    			
+			</div>
+			<!--end-->
+		</div>
+	</div>
+</div>
+<footer class="footer">
+  <div class="foot-con">
+	<div class="foot-con_2">
+		<a href="index.html">
+			<i class="navIcon home"></i>
+			<span class="text">首页</span>
+		</a>
+		<a href="category.html">
+			<i class="navIcon sort"></i>
+			<span class="text">分类</span>
+		</a>
+		<a href="shopcart.html">
+			<i class="navIcon shop"></i>
+			<span class="text">购物车</span>		
+		</a>
+		<a href="userhome.html" class="active">
+			<i class="navIcon member"></i>
+			<span class="text">我的</span>
+		</a>
+	</div>
+  </div>
+</footer>
+</body>
+</html>
