@@ -9,11 +9,11 @@
 
         <div class="list-group">
             <div class="list-group-item tip order-panel mb10">
-                <a href="orderlist.html" class="focus">全部订单</a>
-                <a href="orderlist.html">未付款</a>
-                <a href="orderlist.html">待发货</a>
-                <a href="orderlist.html">已发货</a>
-                <a href="orderlist.html">已完成</a>
+                @Html.ActionLink("全部订单", "OrderList", "Order", new { status = "all" }, new { })
+                @Html.ActionLink("未付款", "OrderList", "Order", new { status = "0" }, new { })
+                @Html.ActionLink("待发货", "OrderList", "Order", new { status = "1" }, new { })
+                @Html.ActionLink("已发货", "OrderList", "Order", new { status = "2" }, new { })
+                @Html.ActionLink("已完成", "OrderList", "Order", new { status = "3" }, new { })
             </div>
             @foreach (var item in Model)
             {
@@ -39,7 +39,10 @@
                         </ul>
                         <div class="order-list-info">
                             <p>共<span class="red">@item.Order2ProductsList.Count</span>件商品 共<span class="red">@string.Concat("￥", item.amount)</span> （运费 ￥12.00起）</p>
-                            <p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+                            <p>
+                                <button type="button" onclick="location.href=@string.Concat("'../Products/Checkout?orderId=",item.salesNo,"'")">付款</button>
+                                <button type="button" onclick="deleteOrder(this,'@item.salesNo')">删除</button>
+                            </p>
                         </div>
                     </div>
                     <!--end-->
@@ -54,18 +57,20 @@
                         <ul class="product-list">
                             @foreach (var item2 in item.Order2ProductsList)
                             {
-                            <li>
-                                <a href=@string.Concat("../products/index/", item2.productId)>
-                                    <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
-                                    <p>@item2.productName</p>
-                                    <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>)
-                                </a>
-                            </li>
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
                             }
                         </ul>
                         <div class="order-list-info">
                             <p>共<span class="red">@item.Order2ProductsList.Count</span>件商品 共<span class="red">@string.Concat("￥", item.amount)</span> （@string.Concat("运费 ￥", item.postage)）</p>
-                            <p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+                            <p>
+                                <button type="button" onclick="location.href='order.html'">订单详情</button>
+                            </p>
                         </div>
                     </div>
                     <!--end-->
@@ -80,18 +85,21 @@
                         <ul class="product-list">
                             @foreach (var item2 in item.Order2ProductsList)
                             {
-                            <li>
-                                <a href=@string.Concat("../products/index/", item2.productId)>
-                                    <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
-                                    <p>@item2.productName</p>
-                                    <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>)
-                                </a>
-                            </li>
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
                             }
                         </ul>
                         <div class="order-list-info">
                             <p>共<span class="red">@item.Order2ProductsList.Count</span>件商品 共<span class="red">@string.Concat("￥", item.amount)</span> （@string.Concat("运费 ￥", item.postage)）</p>
-                            <p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+                            <p>
+                                <button type="button" onclick="location.href='logistics.html'">查看物流</button>
+                                <button type="button" onclick="location.href='order.html'">订单详情</button>
+                            </p>
                         </div>
                     </div>
                     <!--end-->
@@ -106,18 +114,21 @@
                         <ul class="product-list">
                             @foreach (var item2 in item.Order2ProductsList)
                             {
-                            <li>
-                                <a href=@string.Concat("../products/index/", item2.productId)>
-                                    <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
-                                    <p>@item2.productName</p>
-                                    <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>)
-                                </a>
-                            </li>
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
                             }
                         </ul>
                         <div class="order-list-info">
                             <p>共<span class="red">@item.Order2ProductsList.Count</span>件商品 共<span class="red">@string.Concat("￥", item.amount)</span> （@string.Concat("运费 ￥", item.postage)）</p>
-                            <p><button type="button" onclick="location.href='pay.html'">付款</button><button type="button" onclick="location.href='logistics.html'">查看物流</button><button type="button" onclick="location.href='order.html'">订单详情</button></p>
+                            <p>
+                                <button type="button" onclick="location.href='logistics.html'">查看物流</button>
+                                <button type="button" onclick="location.href='order.html'">订单详情</button>
+                            </p>
                         </div>
                     </div>
                     <!--end-->
@@ -126,3 +137,7 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/Scripts/Order/OrderList.js" charset="utf-8"></script>
+}

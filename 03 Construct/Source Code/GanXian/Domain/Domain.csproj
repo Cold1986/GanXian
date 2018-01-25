@@ -280,6 +280,7 @@
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\login.js" />
+    <Content Include="Scripts\Order\OrderList.js" />
     <Content Include="Scripts\prodDetail.js" />
     <Content Include="Scripts\prodSort.js" />
     <Content Include="Scripts\Products\checkout.js" />

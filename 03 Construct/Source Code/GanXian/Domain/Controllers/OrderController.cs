@@ -17,7 +17,13 @@ namespace Domain.Controllers
             return View();
         }
 
-        public ActionResult OrderList(string code)
+        /// <summary>
+        /// 获取用户订单列表
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="status">0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除取消订单</param>
+        /// <returns></returns>
+        public ActionResult OrderList(string code, string status)
         {
             #region 用户信息部分
             string userOpenId = string.Empty;
@@ -36,6 +42,10 @@ namespace Domain.Controllers
             try
             {
                 userOrderList = OrderBiz.CreateNew().getUserOrderListInfo(userOpenId);
+                if (status.ToLower() != "all")
+                {
+                    userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
+                }
             }
             catch (Exception e)
             {
@@ -43,6 +53,28 @@ namespace Domain.Controllers
             }
             ViewBag.PageName = "我的订单";
             return View(userOrderList);
+        }
+
+        [HttpPost]
+        public JsonResult deleteOrder(string orderId)
+        {
+            string res = "fail";
+            string userOpenId = base.getUserOpenIdFromCookie();
+
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    res = "success";
+                    OrderBiz.CreateNew().delOrder(userOpenId, orderId);
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("OrderController/deleteOrder 异常： " + e.Message);
+                }
+            }
+            return Json(res);
         }
     }
 }

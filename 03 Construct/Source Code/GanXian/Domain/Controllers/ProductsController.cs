@@ -338,7 +338,7 @@ namespace Domain.Controllers
             }
             else//订单状态不为 未付款，需要跳转到对应页面
             {
-                return RedirectToAction("OrderList", "Order");//to do..
+                return RedirectToAction("OrderList", "Order", new { status = userSalesSlip.status });
             }
             //_Apilog.WriteLog(orderId);
             ViewBag.productsPrice = productsPrice;

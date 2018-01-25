@@ -108,7 +108,7 @@
 	margin-bottom: 0;
 }
 
-.order-unpaid .order-list-info p button:nth-child(2) {
+/*.order-unpaid .order-list-info p button:nth-child(2) {
 	display: none;
 }
 .order-unshipped .order-list-info p button:nth-child(1), .order-unshipped .order-list-info p button:nth-child(2) {
@@ -119,7 +119,7 @@
 }
 .order-completed .order-list-info p button:nth-child(1) {
 	display: none;
-}
+}*/
 
 
 /* checkout */

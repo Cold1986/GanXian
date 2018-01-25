@@ -32,7 +32,7 @@ namespace GanXian.BLL
                 IDbTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    string insertSalesSlipSQL = "insert into SalesSlip(salesNo,userOpenId,createDate,status) values(@salesNo,@userOpenId,now(),0);select @@IDENTITY;";
+                    string insertSalesSlipSQL = "insert into SalesSlip(salesNo,userOpenId,createDate,status,column2) values(@salesNo,@userOpenId,now(),0,now());select @@IDENTITY;";
                     string insertSales2ProductsSQL = "insert into Sales2Products(salesId,productId,num,createDate,status) values(@salesId,@productId,@num,now(),0)";
                     string salesId = conn.ExecuteScalar(insertSalesSlipSQL, new { salesNo = salesNo, userOpenId = userOpenId }, transaction, null, null).ToString();
                     conn.Execute(insertSales2ProductsSQL, new { salesId = salesId, productId = productId, num = num }, transaction, null, null);
@@ -66,7 +66,7 @@ namespace GanXian.BLL
                 try
                 {
                     string[] prods = prodIds.Split(',');
-                    string insertSalesSlipSQL = "insert into SalesSlip(salesNo,userOpenId,createDate,status) values(@salesNo,@userOpenId,now(),0);select @@IDENTITY;";
+                    string insertSalesSlipSQL = "insert into SalesSlip(salesNo,userOpenId,createDate,status,column2) values(@salesNo,@userOpenId,now(),0,now());select @@IDENTITY;";
                     string insertSales2ProductsSQL = "";
                     string updateShoppingcartSQL = "";
                     for (int i = 0; i < prods.Length; i++)
@@ -152,7 +152,7 @@ namespace GanXian.BLL
                 IDbTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    string updateSalesSlipSQL = "update salesslip set receiver=@receiver,province=@province,city=@city,county=@county,detailAddress=@detailAddress,Phone=@Phone,amount=@amount,postage=@postage,payDate=@payDate,status=@status,column1=@column1 where salesId=@salesId and salesNo=@salesNo and userOpenId = @userOpenId";
+                    string updateSalesSlipSQL = "update salesslip set receiver=@receiver,province=@province,city=@city,county=@county,detailAddress=@detailAddress,Phone=@Phone,amount=@amount,postage=@postage,payDate=@payDate,status=@status,column1=@column1,column2=@payDate where salesId=@salesId and salesNo=@salesNo and userOpenId = @userOpenId";
                     string updateSales2ProductsSQL = "update sales2products a inner join products b on a.productid=b.productid  set a.originalPrice=b.originalPrice,a.discountedPrice=b.discountedPrice,a.nw=b.nw,a.status=1 where a.salesId = @salesId";
                     conn.Execute(updateSalesSlipSQL, paidOrder, transaction).ToString();
                     conn.Execute(updateSales2ProductsSQL, paidOrder, transaction).ToString();
@@ -181,7 +181,7 @@ namespace GanXian.BLL
             List<UserShopcartsInfo> orderProductList = new List<UserShopcartsInfo>();
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId order by salesid desc";
+                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId and display =1  order by column2 desc, salesid desc";
                 userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
 
                 foreach (var userOrder in userOrderList)
@@ -227,6 +227,7 @@ namespace GanXian.BLL
                             {
                                 string sqlCommandTextUpdateOrder = "update salesslip set status=3 ,column2=now() where salesId=@salesId";
                                 conn.Execute(sqlCommandTextUpdateOrder, new { salesId = userOrder.salesId });
+                                userOrder.status = 3;
                             }
                         }
 
@@ -275,6 +276,31 @@ namespace GanXian.BLL
                 }
             }
             return userOrderList;
+        }
+
+        /// <summary>
+        /// 用户取消订单
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public bool delOrder(string userOpenId, string orderId)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set status=4,display=0,column2=now() where status=0 and salesNo=@salesNo and userOpenId = @userOpenId";
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = orderId, userOpenId = userOpenId }).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
         }
     }
 }
