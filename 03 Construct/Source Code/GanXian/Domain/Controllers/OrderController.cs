@@ -12,9 +12,46 @@ namespace Domain.Controllers
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(string orderId, string code)
         {
-            return View();
+            if (string.IsNullOrEmpty(orderId))
+            {
+                return RedirectToAction("OrderList");//查不到销售单,跳转至订单列表页面
+            }
+
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+            GanXian.Model.UserOrderListInfo userOrderList = new GanXian.Model.UserOrderListInfo();
+            try
+            {
+                userOrderList = OrderBiz.CreateNew().getUserOrderListInfo(userOpenId, orderId).FirstOrDefault();
+                if (userOrderList == null)
+                {
+                    return RedirectToAction("OrderList");//查不到销售单,跳转至订单列表页面
+                }
+                else
+                {
+                    ViewBag.totalPrice = userOrderList.amount + userOrderList.postage;
+                }
+            }
+            catch (Exception e)
+            {
+                _Apilog.WriteLog("OrderController Index 异常：" + e.Message);
+            }
+            ViewBag.PageName = "订单详情";
+            return View(userOrderList);
         }
 
         /// <summary>

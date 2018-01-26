@@ -175,15 +175,22 @@ namespace GanXian.BLL
         /// </summary>
         /// <param name="userOpenId"></param>
         /// <returns></returns>
-        public List<UserOrderListInfo> getUserOrderListInfo(string userOpenId)
+        public List<UserOrderListInfo> getUserOrderListInfo(string userOpenId, string salesNo = "")
         {
             List<UserOrderListInfo> userOrderList = new List<UserOrderListInfo>();
             List<UserShopcartsInfo> orderProductList = new List<UserShopcartsInfo>();
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId and display =1  order by column2 desc, salesid desc";
-                userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
-
+                if (string.IsNullOrEmpty(salesNo))
+                {
+                    string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId and display =1  order by column2 desc, salesid desc";
+                    userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId }).ToList();
+                }
+                else
+                {
+                    string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and userOpenId=@userOpenId and display =1 and salesNo=@salesNo  order by column2 desc, salesid desc";
+                    userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { userOpenId = userOpenId, salesNo = salesNo }).ToList();
+                }
                 foreach (var userOrder in userOrderList)
                 {
                     //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
