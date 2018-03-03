@@ -45,7 +45,9 @@ namespace GanXian.BLL
         {
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string sqlCommandText = @"select IFNULL(b.num,0) soldNum,a.* from products a 
+                string sqlCommandText = @"select IFNULL(b.num,0) soldNum,a.* ,d.typeName from products a 
+                                            left join products2tabs c on c.productId=a.productId
+                                            inner join tablist d on c.tabId=d.tabId
                                             left join (select sum(num) as num ,productid from sales2products group by productid) as b on a.productid=b.productid
                                             where a.status=1";
                 List<ProductsAndSalesNum> productsAndSalesNum = conn.Query<ProductsAndSalesNum>(sqlCommandText, new { }).ToList();
@@ -69,6 +71,17 @@ namespace GanXian.BLL
                 }
                 return productsAndSalesNum;
             }
+        }
+
+        public List<tablist> getAllTabList()
+        {
+            List<tablist> tabList = new List<tablist>();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                tabList = conn.Query<tablist>(@"SELECT a.* FROM ganxian.tablist a
+                                                                where a.isShow=1 and a.status=1 and exists(select 1 from products2tabs b where status=1 and b.tabId=a.tabId) order by a.sort,a.createDate", new { }).ToList();
+            }
+            return tabList;
         }
 
         /// <summary>

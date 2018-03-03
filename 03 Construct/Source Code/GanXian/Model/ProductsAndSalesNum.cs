@@ -10,5 +10,10 @@ namespace GanXian.Model
         /// 销售量
         /// </summary>
         public int soldNum { get; set; }
+
+        /// <summary>
+        /// 产品类型
+        /// </summary>
+        public string typeName { get; set; }
     }
 }

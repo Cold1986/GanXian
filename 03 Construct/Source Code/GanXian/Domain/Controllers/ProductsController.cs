@@ -70,7 +70,7 @@ namespace Domain.Controllers
             return Json("success");
         }
 
-        public ActionResult Category(string sortOrder, string searchString)
+        public ActionResult Category(string sortOrder, string searchString, string typeName)
         {
             List<ProductsAndSalesNum> productsAndSalesNumList;
             var resCache = CacheHelper.GetCache("productsAndSalesNumList");
@@ -85,6 +85,9 @@ namespace Domain.Controllers
                     CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
                 }
             }
+
+
+            ViewBag.TypeName = string.IsNullOrEmpty(typeName) ? "all" : typeName;
             ViewBag.SortMethod = "defaultSort";
             ViewBag.ReleaseDateSortParm = sortOrder == "date" ? "date_desc" : "date";
             ViewBag.SalesSortParm = sortOrder == "sales" ? "sales_desc" : "sales";
@@ -96,6 +99,12 @@ namespace Domain.Controllers
             {
                 productsAndSalesNumList = productsAndSalesNumList.Where(w => (!string.IsNullOrEmpty(w.remark) && w.remark.Contains(searchString))
                                                                         || w.productName.Contains(searchString)).ToList();
+            }
+
+            //过滤类型
+            if (!string.IsNullOrEmpty(typeName) && typeName.ToLower() != "all")
+            {
+                productsAndSalesNumList = productsAndSalesNumList.Where(w => (!string.IsNullOrEmpty(w.typeName) && w.typeName.Equals(typeName))).ToList();
             }
 
             switch (sortOrder)
@@ -134,7 +143,11 @@ namespace Domain.Controllers
 
             ViewBag.PageType = "ProductsPage";
             ViewBag.PageName = "产品列表";
-            return View(productsAndSalesNumList);
+            CategoryViewModel viewModel = new CategoryViewModel();
+            viewModel.productsAndSalesNum = productsAndSalesNumList;
+            viewModel.tabList = ProductsBiz.CreateNew().getAllTabList();
+
+            return View(viewModel);
         }
 
         [HttpPost]
