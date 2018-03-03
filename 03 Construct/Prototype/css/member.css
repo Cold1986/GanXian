@@ -639,3 +639,12 @@ a{font-size: 12px;}
 	border-width: 1px 0 1px 0;
 	padding: 8px 10px;
 }
+
+/* 选择收货地址 */
+.address-select li {
+	margin-bottom: 0;
+	border-bottom: 1px solid #efefef;
+}
+.address-select li:last-child {
+	border-bottom: 0;
+}
