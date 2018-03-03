@@ -893,3 +893,25 @@ input:focus, textarea:focus, isindex:focus, keygen:focus, select:focus {outline-
 .share-block{display:block!important;}
 .share_txt{color:#fff;font-size:2em;float:left;text-align:left;margin-left:20px;}
 .share_txt img{border:0;height:25px;vertical-align:top;width:25px;display:inline-block;margin:5px 0;}
+
+/* 侧边分类导航 */
+.side-nav {
+  position: fixed;
+  z-index: 200;
+  bottom: 30%;
+  right: 10px;
+  border: 1px solid #ccc;
+  opacity: 0.9;
+}
+.side-nav a {
+  display: block;
+  width: 2em;
+  padding: 10px;
+  box-sizing: content-box;
+  background: #f1f1f1;
+  border-bottom: 1px solid #ccc;
+}
+.side-nav a:last-child {
+  border-bottom: 0;
+}
+
