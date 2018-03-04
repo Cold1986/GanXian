@@ -10,7 +10,7 @@
         <div class="row">
             <div class="list-group mb10">
                 <div class="list-group-item tip address">
-                    <a href="@string.Concat("/GanXian/User/Addresslist?fromURL=", @HttpContext.Current.Request.RawUrl)">
+                    <a href="@string.Concat("/GanXian/User/AddressSelect?fromURL=", @HttpContext.Current.Request.RawUrl)">
                         <p>收货人：<label id="receiver">@Model.UserAddress.receiver</label> <span id="Phone" style="font-weight: bold;">@Model.UserAddress.Phone</span></p>
                         <p>收货地址：<label id="province">@Model.UserAddress.province</label> <label id="city">@Model.UserAddress.city</label> <label id="county">@Model.UserAddress.county</label> <label id="detailAddress">@Model.UserAddress.detailAddress</label></p>
                     </a>

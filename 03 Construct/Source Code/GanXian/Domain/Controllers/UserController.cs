@@ -46,6 +46,29 @@ namespace Domain.Controllers
             return View(userAddressList);
         }
 
+        public ActionResult AddressSelect(string code,string fromURL)
+        {
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+            ViewBag.fromURL = fromURL;
+            List<useraddress> userAddressList = new List<useraddress>();
+            if (!string.IsNullOrEmpty(userOpenId)) userAddressList = UserBiz.CreateNew().getUserAddressList(userOpenId);
+
+            return View(userAddressList);
+        }
+
         /// <summary>
         /// 用户添加新地址
         /// </summary>
@@ -70,6 +93,32 @@ namespace Domain.Controllers
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "添加新地址";
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult SelAddress(string receiver, string rPhone,string province,string city,string county, string detailAddress, string orderId)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            salesslip userSalesSlip = new salesslip();
+            string res = "fail";
+            try
+            {
+                userSalesSlip = OrderBiz.CreateNew().getCheckOutInfo(orderId, userOpenId);
+
+                userSalesSlip.receiver = receiver;
+                userSalesSlip.province = province;
+                userSalesSlip.city = city;
+                userSalesSlip.county = county;
+                userSalesSlip.detailAddress = detailAddress;
+                userSalesSlip.Phone = rPhone;
+
+                OrderBiz.CreateNew().userUpdateOrderAddress(userSalesSlip);
+            }
+            catch(Exception ex)
+            {
+                _Apilog.WriteLog("ProductsController/SelAddress 异常: " + userOpenId + " orderId: " + orderId + ex.Message);
+            }
+            return Json(res);
         }
 
         /// <summary>

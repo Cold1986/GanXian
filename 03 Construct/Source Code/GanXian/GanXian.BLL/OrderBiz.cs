@@ -108,6 +108,8 @@ namespace GanXian.BLL
             return userSalesSlip;
         }
 
+
+
         /// <summary>
         /// 获取用户未付款订单
         /// </summary>
@@ -156,6 +158,30 @@ namespace GanXian.BLL
                     string updateSales2ProductsSQL = "update sales2products a inner join products b on a.productid=b.productid  set a.originalPrice=b.originalPrice,a.discountedPrice=b.discountedPrice,a.nw=b.nw,a.status=1 where a.salesId = @salesId";
                     conn.Execute(updateSalesSlipSQL, paidOrder, transaction).ToString();
                     conn.Execute(updateSales2ProductsSQL, paidOrder, transaction).ToString();
+                    //提交事务
+                    transaction.Commit();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    //出现异常，事务Rollback
+                    transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+        public bool userUpdateOrderAddress(salesslip paidOrder)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                IDbTransaction transaction = conn.BeginTransaction();
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set receiver=@receiver,province=@province,city=@city,county=@county,detailAddress=@detailAddress,Phone=@Phone where salesId=@salesId and salesNo=@salesNo and userOpenId = @userOpenId";
+                    conn.Execute(updateSalesSlipSQL, paidOrder, transaction).ToString();
                     //提交事务
                     transaction.Commit();
                     res = true;
