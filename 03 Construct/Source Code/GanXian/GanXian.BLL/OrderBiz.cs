@@ -121,7 +121,7 @@ namespace GanXian.BLL
             List<UserShopcartsInfo> res;
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                //c.status0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
+                //c.status0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
                 string sqlCommandText = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
                                             inner join products b on a.productid=b.productid
                                             where  b.status=1 and a.salesId=@salesId
@@ -155,7 +155,7 @@ namespace GanXian.BLL
                 try
                 {
                     string updateSalesSlipSQL = "update salesslip set receiver=@receiver,province=@province,city=@city,county=@county,detailAddress=@detailAddress,Phone=@Phone,amount=@amount,postage=@postage,payDate=@payDate,status=@status,column1=@column1,column2=@payDate where salesId=@salesId and salesNo=@salesNo and userOpenId = @userOpenId";
-                    string updateSales2ProductsSQL = "update sales2products a inner join products b on a.productid=b.productid  set a.originalPrice=b.originalPrice,a.discountedPrice=b.discountedPrice,a.nw=b.nw,a.status=1 where a.salesId = @salesId";
+                    string updateSales2ProductsSQL = "update sales2products a inner join products b on a.productid=b.productid  set a.originalPrice=b.originalPrice,a.discountedPrice=b.discountedPrice,a.nw=b.nw,a.status=@status where a.salesId = @salesId";
                     conn.Execute(updateSalesSlipSQL, paidOrder, transaction).ToString();
                     conn.Execute(updateSales2ProductsSQL, paidOrder, transaction).ToString();
                     //提交事务
@@ -219,7 +219,9 @@ namespace GanXian.BLL
                 }
                 foreach (var userOrder in userOrderList)
                 {
-                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
+                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
+                    //to do... 预付款 需要先更新成0 or 1
+
                     #region status==0 未付款情况
                     if (userOrder.status == 0)
                     {

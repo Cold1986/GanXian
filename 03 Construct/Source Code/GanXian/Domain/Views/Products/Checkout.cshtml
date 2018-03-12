@@ -45,7 +45,156 @@
         </div>
     </div>
 </footer>
+<script>
 
-@section Scripts {
-    <script charset="utf-8" src="~/Scripts/Products/checkout.js"></script>
-}
+    $(function () {
+        $('.btn-buy').click(function () {
+            var receiver = $("#receiver").html();
+            var phone = $('#Phone').html();
+            var province = $('#province').html();
+            var city = $('#city').html();
+            var county = $('#county').html();
+            var detailAddress = $('#detailAddress').html();
+            var orderId = GetQueryString('orderId');
+
+            if (receiver.trim() == "" || phone.trim() == ""
+                || province.trim() == "" || city.trim == ""
+                || detailAddress.trim() == "" || orderId.trim == "") {
+                alert('请先填写收货地址');
+                return false;
+            }
+
+            $.ajax({
+                url: "PayOrder",
+                data: {
+                    "receiver": receiver,
+                    "rPhone": phone,
+                    "province": province,
+                    "city": city,
+                    "county": county,
+                    "detailAddress": detailAddress,
+                    "orderId": orderId
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                },
+                success: function (retData) {
+                    //alert(retData);
+                    callpay();
+                    //alert(retData);
+                    //window.location.href = "../Order/OrderList";
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        })
+    })
+
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    //调用微信JS api 支付
+    function jsApiCall() {
+        var receiver = $("#receiver").html();
+        var phone = $('#Phone').html();
+        var province = $('#province').html();
+        var city = $('#city').html();
+        var county = $('#county').html();
+        var detailAddress = $('#detailAddress').html();
+        var orderId = GetQueryString('orderId');
+
+        WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        @Html.Raw(ViewBag.wxJsApiParam),//json串
+         function (res) {
+             WeixinJSBridge.log(res.err_msg);
+             //alert(res.err_code + res.err_desc + res.err_msg);
+             if (res.err_msg == "get_brand_wcpay_request:ok") {
+                 $.ajax({
+                     url: "PayOrder",
+                     data: {
+                         "receiver": receiver,
+                         "rPhone": phone,
+                         "province": province,
+                         "city": city,
+                         "county": county,
+                         "detailAddress": detailAddress,
+                         "orderId": orderId,
+                         "toStatus":1
+                     },
+                     type: 'post',
+                     async: false, //默认为true 异步
+                     dataType: 'json',
+                     error: function (data) {
+                     },
+                     success: function (retData) {
+                         alert("支付成功");
+                         window.location.href = "../Order/OrderList";
+                     },
+                     complete: function () {
+                         $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                     }
+                 });
+             }
+             else{
+                 //更新成0
+                 $.ajax({
+                     url: "PayOrder",
+                     data: {
+                         "receiver": receiver,
+                         "rPhone": phone,
+                         "province": province,
+                         "city": city,
+                         "county": county,
+                         "detailAddress": detailAddress,
+                         "orderId": orderId,
+                         "toStatus":0
+                     },
+                     type: 'post',
+                     async: false, //默认为true 异步
+                     dataType: 'json',
+                     error: function (data) {
+                     },
+                     success: function (retData) {
+
+                     },
+                     complete: function () {
+                         $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                     }
+                 });
+                 if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                     alert('取消支付');
+                 }
+                 else if(res.err_msg == 'get_brand_wcpay_request:fail'){
+                     alert('支付失败');
+                 }
+             }
+         }
+         );
+    }
+
+    function callpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }
+            else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }
+        else {
+            jsApiCall();
+        }
+    }
+</script>
+
+@*@section Scripts {
+        <script charset="utf-8" src="~/Scripts/Products/checkout.js"></script>
+    }*@

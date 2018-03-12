@@ -18,7 +18,8 @@ namespace Domain.Controllers
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
         // GET: Base
-        private static string isWechatTest = System.Configuration.ConfigurationSettings.AppSettings["isWechatTest"];
+        protected string isWechatTest = System.Configuration.ConfigurationSettings.AppSettings["isWechatTest"];
+        protected string isPayTest = System.Configuration.ConfigurationSettings.AppSettings["isPayTest"];
 
         /// <summary>
         /// 微信静默授权

@@ -14,7 +14,7 @@
             alert('请先填写收货地址');
             return false;
         }
-
+        
         $.ajax({
             url: "PayOrder",
             data: {
@@ -32,14 +32,17 @@
             error: function (data) {
             },
             success: function (retData) {
-                alert(retData);
-                window.location.href = "../Order/OrderList";
+                callpay();
+                //alert(retData);
+                //window.location.href = "../Order/OrderList";
             },
             complete: function () {
                 $('.add-address').removeAttr("disabled"); //设置变灰按钮  
             }
         });
     })
+
+
 })
 
 

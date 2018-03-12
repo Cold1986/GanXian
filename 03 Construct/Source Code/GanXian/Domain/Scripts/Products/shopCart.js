@@ -258,8 +258,10 @@ function submitShopCart() {
                 alert("添加失败，请稍后尝试");
             }
             else {
-                window.location.href = "Checkout?orderId=" + data;
-            }
+                //alert(window.location.href.slice(0, window.location.href.lastIndexOf('/') + 1).toLowerCase() + "Checkout?orderId=" + data);
+                window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/') + 1).toLowerCase() + "Checkout?orderId=" + data;
+                //window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/').toLowerCase()) + "Checkout?orderId=" + data;// "Checkout?orderId=" + data;
+                }
         },
         complete: function () {
             $(".btn-buy").removeAttr("disabled"); //设置变灰按钮  

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LitJson">
+      <HintPath>..\CommonDll\LitJson.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -43,9 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Biz\AuthorizeBiz.cs" />
+    <Compile Include="Biz\JsApiPay.cs" />
+    <Compile Include="Biz\WxPayApi.cs" />
+    <Compile Include="Biz\WxPayData.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Config\WxPayConfig.cs" />
     <Compile Include="Entity\Authorize.cs" />
     <Compile Include="Entity\userinfo.cs" />
+    <Compile Include="Exception\WxPayException.cs" />
+    <Compile Include="HttpService\HttpService.cs" />
+    <Compile Include="Log\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

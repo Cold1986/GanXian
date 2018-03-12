@@ -298,7 +298,11 @@ namespace Domain.Controllers
             {
                 return RedirectToAction("OrderList", "Order");//查不到销售单,跳转至订单列表页面
             }
-            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
+            else if (userSalesSlip.status == 5)
+            {
+                //to do 需要修改成0 or 1
+            }
+            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
             {
                 #region 用户收货地址部分
                 if (!string.IsNullOrEmpty(userSalesSlip.province) && !string.IsNullOrEmpty(userSalesSlip.receiver)) //先看该订单用户是否已经设置收货地址，没有设置过则读取默认地址，还没有则为空
@@ -353,6 +357,31 @@ namespace Domain.Controllers
             {
                 return RedirectToAction("OrderList", "Order", new { status = userSalesSlip.status });
             }
+
+
+
+            //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
+            JsApiPay jsApiPay = new JsApiPay();
+            jsApiPay.openid = userOpenId;
+            jsApiPay.total_fee = base.isPayTest == "false" ? decimal.ToInt32(productsPrice * 100 + postage * 100) : 1;//测试环境默认支付1分
+
+            //JSAPI支付预处理
+            try
+            {
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
+                ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数    
+                _Apilog.WriteLog("ProductsController/Checkout 用户userOpenId: " + userOpenId + " wxJsApiParam : " + ViewBag.wxJsApiParam);
+                //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
+                //在页面上显示订单信息
+            }
+            catch (Exception ex)
+            {
+                //Response.Write("<span style='color:#FF0000;font-size:20px'>" + "下单失败，请返回重试" + "</span>");
+                //submit.Visible = false;
+            }
+
+
+
             //_Apilog.WriteLog(orderId);
             ViewBag.productsPrice = productsPrice;
             ViewBag.postage = postage;
@@ -364,7 +393,7 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult PayOrder(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId)
+        public JsonResult PayOrder(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId,string toStatus)
         {
             string userOpenId = base.getUserOpenIdFromCookie();
             string res = "fail";
@@ -385,7 +414,7 @@ namespace Domain.Controllers
                     {
                         res = "订单不存在";//查不到销售单,跳转至订单列表页面
                     }
-                    else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除
+                    else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
                     {
                         #region 邮费计算
                         if (!string.IsNullOrEmpty(province))
@@ -425,22 +454,37 @@ namespace Domain.Controllers
                         newOrder.amount = productsPrice;
                         newOrder.postage = postage;
                         newOrder.payDate = System.DateTime.Now;
-                        newOrder.status = 1;
+                        newOrder.status = 5;//预付款  实际付款后会再更新成1
 
                         string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userUnpaidOrderInfo);
                         newOrder.column1 = remark;
 
                         if (OrderBiz.CreateNew().userPaidOrder(newOrder))
                         {
-                            _Orderlog.WriteLog(orderId + " | " + "用户支付成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
+                            _Orderlog.WriteLog(orderId + " | " + "用户预支付成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
                             res = "支付成功";
                         }
                         else
                         {
-                            _Orderlog.WriteLog(orderId + " | " + "用户支付失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
+                            _Orderlog.WriteLog(orderId + " | " + "用户预支付失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
                             res = "付款失败";
                         }
                         #endregion
+                    }
+                    else if (userSalesSlip.status == 5)
+                    {
+                        userSalesSlip.status = Convert.ToInt32(toStatus);
+                        string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userSalesSlip);
+                        if (OrderBiz.CreateNew().userPaidOrder(userSalesSlip))
+                        {
+                            _Orderlog.WriteLog(orderId + " | " + "用户订单状态更新成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(userSalesSlip) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
+                            res = "用户订单状态更新成功";
+                        }
+                        else
+                        {
+                            _Orderlog.WriteLog(orderId + " | " + "用户订单状态更新失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(userSalesSlip) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
+                            res = "用户订单状态更新失败";
+                        }
                     }
                     else//订单状态不为 未付款，需要跳转到对应页面
                     {
@@ -525,6 +569,62 @@ namespace Domain.Controllers
             }
             return Json(res);
         }
+
+        public ActionResult JsApiPayPage(string code)
+        {
+            //ViewBag.wxJsApiParam = "test";
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
+
+            string openid = userOpenId;
+            string total_fee = "1";//test
+            //检测是否给当前页面传递了相关参数
+            //if (string.IsNullOrEmpty(openid) || string.IsNullOrEmpty(total_fee))
+            //{
+            //    Response.Write("<span style='color:#FF0000;font-size:20px'>" + "页面传参出错,请返回重试" + "</span>");
+            //    Log.Error(this.GetType().ToString(), "This page have not get params, cannot be inited, exit...");
+            //    submit.Visible = false;
+            //    return;
+            //}
+
+            //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
+            JsApiPay jsApiPay = new JsApiPay();
+            jsApiPay.openid = openid;
+            jsApiPay.total_fee = int.Parse(total_fee);//分
+
+            //JSAPI支付预处理
+            try
+            {
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
+                ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数                    
+                //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
+                //在页面上显示订单信息
+                Response.Write("<span style='color:#00CD00;font-size:20px'>订单详情：</span><br/>");
+                Response.Write("<span style='color:#00CD00;font-size:20px'>" + unifiedOrderResult.ToPrintStr() + "</span>");
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<span style='color:#FF0000;font-size:20px'>" + "下单失败，请返回重试" + "</span>");
+                //submit.Visible = false;
+            }
+
+
+            return View();
+        }
+
+
 
     }
 }

@@ -58,7 +58,7 @@ namespace Domain.Controllers
         /// 获取用户订单列表
         /// </summary>
         /// <param name="code"></param>
-        /// <param name="status">0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除取消订单</param>
+        /// <param name="status">0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除取消订单 5 预付款</param>
         /// <returns></returns>
         public ActionResult OrderList(string code, string status)
         {
@@ -79,6 +79,7 @@ namespace Domain.Controllers
             try
             {
                 userOrderList = OrderBiz.CreateNew().getUserOrderListInfo(userOpenId);
+                //to do.. 判断有无预付款状态，需要更新成0或1
                 if (status.ToLower() != "all")
                 {
                     userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
