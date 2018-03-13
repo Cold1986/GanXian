@@ -393,7 +393,7 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult PayOrder(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId,string toStatus)
+        public JsonResult PayOrder(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId, string toStatus)
         {
             string userOpenId = base.getUserOpenIdFromCookie();
             string res = "fail";
@@ -553,9 +553,29 @@ namespace Domain.Controllers
             {
                 try
                 {
-                    string salesNo = Guid.NewGuid().ToString();
-                    OrderBiz.CreateNew().createOrderFromShopcart(prodIds, userOpenId, salesNo);
-                    res = salesNo;
+                    //订单付款页面用户回退购物车页面，然后再创单时实际没有商品，规避此类垃圾数据
+                    string[] prods = prodIds.Split(',');
+                    bool prodExist = false;
+                    for (int i = 0; i < prods.Length; i++)
+                    {
+                        shoppingcart checkResult = ShopCartBiz.CreateNew().checkProdExistInCarts(userOpenId, prods[i]);
+                        if(checkResult!=null)
+                        {
+                            prodExist = true;
+                            break;
+                        }
+                    }
+
+                    if (prodExist)
+                    {
+                        string salesNo = Guid.NewGuid().ToString();
+                        OrderBiz.CreateNew().createOrderFromShopcart(prodIds, userOpenId, salesNo);
+                        res = salesNo;
+                    }
+                    else
+                    {
+                        res = "noProds";
+                    }
                 }
                 catch (Exception e)
                 {

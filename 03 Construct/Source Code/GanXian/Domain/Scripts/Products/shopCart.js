@@ -254,14 +254,18 @@ function submitShopCart() {
         error: function (data) {
         },
         success: function (data) {
-            if (data == 'false') {
+            if (data == 'fail') {
                 alert("添加失败，请稍后尝试");
+            }
+            else if (data == 'noProds') {
+                alert('此次购物物品已经生成订单');
+                window.location.href = "../Order/OrderList?status=0";
             }
             else {
                 //alert(window.location.href.slice(0, window.location.href.lastIndexOf('/') + 1).toLowerCase() + "Checkout?orderId=" + data);
                 window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/') + 1).toLowerCase() + "Checkout?orderId=" + data;
                 //window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/').toLowerCase()) + "Checkout?orderId=" + data;// "Checkout?orderId=" + data;
-                }
+            }
         },
         complete: function () {
             $(".btn-buy").removeAttr("disabled"); //设置变灰按钮  
