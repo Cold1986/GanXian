@@ -99,7 +99,8 @@ function buyNow() {
                 alert("添加失败，请稍后尝试");
             }
             else {
-                window.location.href = "../Checkout?orderId=" + retData;
+                window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/index') + 1).toLowerCase() + "Checkout?orderId=" + retData;
+                //window.location.href = "../Checkout?orderId=" + retData;
             }
         },
         complete: function () {
