@@ -16,6 +16,7 @@ namespace Domain.Controllers
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
         public LogHelper _Orderlog = new LogHelper("OrderLog");// 考虑到以后日志查询的可查询性，记录内容   salesNo|message|msgType
+        private double orderExpiredMins = Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["orderExpiredMins"]);
         // GET: Products
         public ActionResult Index(int id, string code)
         {
@@ -304,8 +305,13 @@ namespace Domain.Controllers
             {
                 //to do 需要修改成0 or 1
             }
-            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
+            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已过期
             {
+                if (DateTime.Now.AddMinutes(-orderExpiredMins) > userSalesSlip.createDate)//订单已失效，为了减少数据库操作，这边做跳转；
+                {
+                    return RedirectToAction("OrderList", "Order", new { status = "all" });
+                }
+
                 #region 用户收货地址部分
                 if (!string.IsNullOrEmpty(userSalesSlip.province) && !string.IsNullOrEmpty(userSalesSlip.receiver)) //先看该订单用户是否已经设置收货地址，没有设置过则读取默认地址，还没有则为空
                 {
@@ -370,7 +376,7 @@ namespace Domain.Controllers
             //JSAPI支付预处理
             try
             {
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(orderId);
                 ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数    
                 _Apilog.WriteLog("ProductsController/Checkout 用户userOpenId: " + userOpenId + " wxJsApiParam : " + ViewBag.wxJsApiParam);
                 //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
@@ -417,71 +423,82 @@ namespace Domain.Controllers
                     {
                         res = "订单不存在";//查不到销售单,跳转至订单列表页面
                     }
-                    else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
+                    else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已过期
                     {
-                        #region 邮费计算
-                        if (!string.IsNullOrEmpty(province))
+                        if (DateTime.Now.AddMinutes(-orderExpiredMins) > userSalesSlip.createDate)//订单已失效，为了减少数据库操作，这边做跳转；
                         {
-                            if (province.IndexOf("上海") >= 0
-                                || province.IndexOf("江苏") >= 0
-                                || province.IndexOf("浙江") >= 0)
+                            res = "订单已过期";//前端页面会做跳转,数据更新部分统一放到了订单列表
+                        }
+                        else {
+                            #region 邮费计算
+                            if (!string.IsNullOrEmpty(province))
                             {
-                                postage = SFJZF;
+                                if (province.IndexOf("上海") >= 0
+                                    || province.IndexOf("江苏") >= 0
+                                    || province.IndexOf("浙江") >= 0)
+                                {
+                                    postage = SFJZF;
+                                }
+                                else
+                                {
+                                    postage = SFNonJZF;
+                                }
+                            }
+                            #endregion
+                            #region 订单产品部分
+                            userUnpaidOrderInfo = OrderBiz.CreateNew().getUnpaidOrderInfo(userSalesSlip.salesId);
+
+                            foreach (var i in userUnpaidOrderInfo)
+                            {
+                                productsPrice += i.productTotalPrice ?? 0;
+                            }
+                            #endregion
+
+                            #region 更新记录
+                            salesslip newOrder = new salesslip();
+                            newOrder.salesId = userSalesSlip.salesId;
+                            newOrder.salesNo = orderId;
+                            newOrder.userOpenId = userOpenId;
+                            newOrder.receiver = receiver;
+                            newOrder.province = province;
+                            newOrder.city = city;
+                            newOrder.county = county;
+                            newOrder.detailAddress = detailAddress;
+                            newOrder.Phone = rPhone;
+                            newOrder.amount = productsPrice;
+                            newOrder.postage = postage;
+                            newOrder.payDate = System.DateTime.Now;
+                            newOrder.status = 5;//预付款  实际付款后会再更新成1
+
+                            string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userUnpaidOrderInfo);
+                            newOrder.column1 = remark;
+
+                            if (OrderBiz.CreateNew().userPaidOrder(newOrder))
+                            {
+                                _Orderlog.WriteLog(orderId + " | " + "用户预支付成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
+                                res = "success";
                             }
                             else
                             {
-                                postage = SFNonJZF;
+                                _Orderlog.WriteLog(orderId + " | " + "用户预支付失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
+                                res = "付款失败";
                             }
+                            #endregion
                         }
-                        #endregion
-                        #region 订单产品部分
-                        userUnpaidOrderInfo = OrderBiz.CreateNew().getUnpaidOrderInfo(userSalesSlip.salesId);
-
-                        foreach (var i in userUnpaidOrderInfo)
-                        {
-                            productsPrice += i.productTotalPrice ?? 0;
-                        }
-                        #endregion
-
-                        #region 更新记录
-                        salesslip newOrder = new salesslip();
-                        newOrder.salesId = userSalesSlip.salesId;
-                        newOrder.salesNo = orderId;
-                        newOrder.userOpenId = userOpenId;
-                        newOrder.receiver = receiver;
-                        newOrder.province = province;
-                        newOrder.city = city;
-                        newOrder.county = county;
-                        newOrder.detailAddress = detailAddress;
-                        newOrder.Phone = rPhone;
-                        newOrder.amount = productsPrice;
-                        newOrder.postage = postage;
-                        newOrder.payDate = System.DateTime.Now;
-                        newOrder.status = 5;//预付款  实际付款后会再更新成1
-
-                        string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userUnpaidOrderInfo);
-                        newOrder.column1 = remark;
-
-                        if (OrderBiz.CreateNew().userPaidOrder(newOrder))
-                        {
-                            _Orderlog.WriteLog(orderId + " | " + "用户预支付成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
-                            res = "支付成功";
-                        }
-                        else
-                        {
-                            _Orderlog.WriteLog(orderId + " | " + "用户预支付失败！,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(newOrder) + "详情： " + remark + "| " + (int)EnumOrderLogType.fail);
-                            res = "付款失败";
-                        }
-                        #endregion
                     }
                     else if (userSalesSlip.status == 5)
                     {
                         userSalesSlip.status = Convert.ToInt32(toStatus);
+                        if (Convert.ToInt32(toStatus) == 0)
+                        {
+                            userSalesSlip.payDate = null;
+                        }
+
                         string remark = Newtonsoft.Json.JsonConvert.SerializeObject(userSalesSlip);
                         if (OrderBiz.CreateNew().userPaidOrder(userSalesSlip))
                         {
                             _Orderlog.WriteLog(orderId + " | " + "用户订单状态更新成功,订单: " + Newtonsoft.Json.JsonConvert.SerializeObject(userSalesSlip) + "详情： " + remark + "| " + (int)EnumOrderLogType.normal);
-                            res = "用户订单状态更新成功";
+                            res = "success";// "用户订单状态更新成功";
                         }
                         else
                         {
@@ -562,7 +579,7 @@ namespace Domain.Controllers
                     for (int i = 0; i < prods.Length; i++)
                     {
                         shoppingcart checkResult = ShopCartBiz.CreateNew().checkProdExistInCarts(userOpenId, prods[i]);
-                        if(checkResult!=null)
+                        if (checkResult != null)
                         {
                             prodExist = true;
                             break;

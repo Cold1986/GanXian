@@ -82,9 +82,14 @@
                 },
                 success: function (retData) {
                     //alert(retData);
-                    callpay();
-                    //alert(retData);
-                    //window.location.href = "../Order/OrderList";
+                    if(retData=="success"){
+                        callpay();
+                    }
+                    else
+                    {
+                        alert(retData);
+                        window.location.href = "../Order/OrderList";
+                    }
                 },
                 complete: function () {
                     $('.add-address').removeAttr("disabled"); //设置变灰按钮

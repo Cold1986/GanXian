@@ -219,12 +219,24 @@ namespace GanXian.BLL
                 }
                 foreach (var userOrder in userOrderList)
                 {
-                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
+                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已失效
                     //to do... 预付款 需要先更新成0 or 1
 
-                    #region status==0 未付款情况
-                    if (userOrder.status == 0)
+                    #region status==0 未付款，已失效情况
+                    if (userOrder.status == 0 || userOrder.status == 5 || userOrder.status == 6)
                     {
+                        //未付款订单30分钟后失效
+                        if (userOrder.status == 0)
+                        {
+                            double mins= Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["orderExpiredMins"]);
+                            if (DateTime.Now.AddMinutes(-mins) > userOrder.createDate)
+                            {
+                                string sqlCommandTextUpdateOrder = "update salesslip set status=6 ,column2=now() where salesId=@salesId";
+                                conn.Execute(sqlCommandTextUpdateOrder, new { salesId = userOrder.salesId });
+                                userOrder.status = 6;
+                            }
+                        }
+
                         decimal totalPrice = 0;//总价，未付款时需要关联产品表获取当前价格
                         string sqlCommandTextStatus0 = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
                                             inner join products b on a.productid=b.productid

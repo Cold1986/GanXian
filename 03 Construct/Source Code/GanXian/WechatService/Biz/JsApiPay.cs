@@ -12,7 +12,7 @@ namespace WechatService.Biz
 {
     public class JsApiPay
     {
-       
+
 
         /// <summary>
         /// openid用于调用统一下单接口
@@ -137,13 +137,13 @@ namespace WechatService.Biz
          * @return 统一下单结果
          * @失败时抛异常WxPayException
          */
-        public WxPayData GetUnifiedOrderResult()
+        public WxPayData GetUnifiedOrderResult(string trade_no = "")
         {
             //统一下单
             WxPayData data = new WxPayData();
             data.SetValue("body", "test");
             //data.SetValue("attach", "test");
-            data.SetValue("out_trade_no", WxPayApi.GenerateOutTradeNo());
+            data.SetValue("out_trade_no", string.IsNullOrEmpty(trade_no) ? WxPayApi.GenerateOutTradeNo() : trade_no);
             data.SetValue("total_fee", total_fee);
             data.SetValue("time_start", DateTime.Now.ToString("yyyyMMddHHmmss"));
             data.SetValue("time_expire", DateTime.Now.AddMinutes(10).ToString("yyyyMMddHHmmss"));
