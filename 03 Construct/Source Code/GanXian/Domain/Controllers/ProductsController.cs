@@ -54,6 +54,7 @@ namespace Domain.Controllers
                 }
             }
             ViewBag.PageName = "商品详情";
+            ViewBag.ProjectUrl = base.projectURL;
             return View(products);
             #endregion
         }
@@ -146,7 +147,7 @@ namespace Domain.Controllers
             CategoryViewModel viewModel = new CategoryViewModel();
             viewModel.productsAndSalesNum = productsAndSalesNumList;
             viewModel.tabList = ProductsBiz.CreateNew().getAllTabList();
-
+            ViewBag.ProjectUrl = base.projectURL;
             return View(viewModel);
         }
 
@@ -205,6 +206,7 @@ namespace Domain.Controllers
             if (!string.IsNullOrEmpty(userOpenId)) userShopcartsInfoList = ShopCartBiz.CreateNew().getUserShopcartsInfo(userOpenId);
 
             ViewBag.PageName = "购物车";
+            ViewBag.ProjectUrl = base.projectURL;
             return View(userShopcartsInfoList);
         }
 
@@ -388,6 +390,7 @@ namespace Domain.Controllers
             ViewBag.totalCost = productsPrice + postage;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "结算";
+            ViewBag.ProjectUrl = base.projectURL;
             checkOutModels.UserAddress = userRes;
             return View(checkOutModels);
         }

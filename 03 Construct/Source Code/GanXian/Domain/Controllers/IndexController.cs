@@ -8,13 +8,13 @@ using System.Web.Mvc;
 
 namespace Domain.Controllers
 {
-    public class IndexController : Controller
+    public class IndexController : BaseController
     {
         // GET: Index
         public ActionResult Index()
         {
             ViewBag.PageType = "ProductsPage";
-
+            ViewBag.ProjectUrl = base.projectURL;
             List<products2Tab> products2TabList = new List<products2Tab>();
             var resCache = CacheHelper.GetCache("homepageProductList");
             if (resCache != null) products2TabList = (List<products2Tab>) resCache;

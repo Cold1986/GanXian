@@ -29,7 +29,7 @@
                             {
                                 <li>
                                     <a href=@string.Concat("../products/index/", item2.productId)>
-                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl,  item2.showPic)>
                                         <p>@item2.productName</p>
                                         <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
                                     </a>
@@ -59,7 +59,7 @@
                             {
                                 <li>
                                     <a href=@string.Concat("../products/index/", item2.productId)>
-                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl,  item2.showPic)>
                                         <p>@item2.productName</p>
                                         <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
                                     </a>
@@ -87,7 +87,7 @@
                             {
                                 <li>
                                     <a href=@string.Concat("../products/index/", item2.productId)>
-                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
                                         <p>@item2.productName</p>
                                         <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
                                     </a>
@@ -116,7 +116,7 @@
                             {
                                 <li>
                                     <a href=@string.Concat("../products/index/", item2.productId)>
-                                        <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", item2.showPic)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
                                         <p>@item2.productName</p>
                                         <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
                                     </a>

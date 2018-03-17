@@ -49,7 +49,7 @@
                     @foreach (var products in item.Products)
                     {
                         <a class="th_link" href=@string.Concat("products/index/", products.productId)>
-                            <img class="tb_pic" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => products.showPic)) style="width:100%;">
+                            <img class="tb_pic" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(modelItem => products.showPic)) style="width:100%;">
                             <div class="tb_info">
                                 <p class="p-title">@products.productName</p>
                                 <p class="p-origin"><em class="price">¥@products.discountedPrice</em></p>

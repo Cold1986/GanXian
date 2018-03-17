@@ -57,7 +57,7 @@
                         {
                             <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                                 <a href="#">
-                                    <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(model => model.pic4))>
+                                    <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(model => model.pic4))>
                                 </a>
                             </li>
                         }

@@ -17,7 +17,7 @@
                             <span></span>
                         </label>
                     </div>
-                    <div class="p-pic"><a href=@string.Concat("index/", item.productId)><img class="img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic))></a></div>
+                    <div class="p-pic"><a href=@string.Concat("index/", item.productId)><img class="img-responsive" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(modelItem => item.showPic))></a></div>
                     <div class="p-info">
                         <a href=@string.Concat("index/", item.productId)><p class="p-title">@item.productName</p></a>
                         <p class="p-attr">

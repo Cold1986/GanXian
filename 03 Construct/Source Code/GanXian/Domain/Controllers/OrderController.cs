@@ -51,6 +51,7 @@ namespace Domain.Controllers
                 _Apilog.WriteLog("OrderController Index 异常：" + e.Message);
             }
             ViewBag.PageName = "订单详情";
+            ViewBag.ProjectUrl = base.projectURL;
             return View(userOrderList);
         }
 
@@ -90,6 +91,7 @@ namespace Domain.Controllers
                 _Apilog.WriteLog("OrderController 的OrderList 异常：" + e.Message);
             }
             ViewBag.PageName = "我的订单";
+            ViewBag.ProjectUrl = base.projectURL;
             return View(userOrderList);
         }
 

@@ -370,6 +370,7 @@ namespace Domain.Controllers
                 }
             }
             productsAndSalesNumList = productsAndSalesNumList.OrderByDescending(s => s.soldNum).Take(4).ToList();
+            ViewBag.ProjectUrl = base.projectURL;
             return View(productsAndSalesNumList);
             #endregion
         }

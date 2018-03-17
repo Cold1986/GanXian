@@ -20,7 +20,7 @@
                     {
                         <li>
                             <a href=@string.Concat("index/", item.productId)>
-                                <img src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.showPic))>
+                                <img src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(modelItem => item.showPic))>
                                 <p>@item.productName</p>
                                 <div class=""><span class="p-price">@string.Concat("￥", item.discountedPrice)</span><span>@string.Concat("x", item.num)</span></div>
                             </a>

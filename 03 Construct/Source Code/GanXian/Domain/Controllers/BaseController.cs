@@ -21,6 +21,8 @@ namespace Domain.Controllers
         protected string isWechatTest = System.Configuration.ConfigurationSettings.AppSettings["isWechatTest"];
         protected string isPayTest = System.Configuration.ConfigurationSettings.AppSettings["isPayTest"];
 
+        protected string projectURL = System.Configuration.ConfigurationSettings.AppSettings["projectUrl"];
+
         /// <summary>
         /// 微信静默授权
         /// </summary>
