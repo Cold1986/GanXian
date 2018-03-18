@@ -44,6 +44,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="aliyun-net-sdk-core">
+      <HintPath>..\CommonDll\aliyun-net-sdk-core.dll</HintPath>
+    </Reference>
+    <Reference Include="aliyun-net-sdk-dysmsapi">
+      <HintPath>..\CommonDll\aliyun-net-sdk-dysmsapi.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\CommonDll\log4net.dll</HintPath>
     </Reference>
@@ -379,6 +385,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AliyunSMSService\AliyunSMSService.csproj">
+      <Project>{6ced7e80-880a-4a44-a9f5-059206b4e0b8}</Project>
+      <Name>AliyunSMSService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonLib\CommonLib.csproj">
       <Project>{6ff5efa9-ca43-4d4b-8a5a-e8f03ce34379}</Project>
       <Name>CommonLib</Name>
