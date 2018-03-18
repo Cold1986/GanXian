@@ -376,7 +376,7 @@ namespace Domain.Controllers
             //JSAPI支付预处理
             try
             {
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(orderId);
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(orderId.Replace("-", ""));
                 ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数    
                 _Apilog.WriteLog("ProductsController/Checkout 用户userOpenId: " + userOpenId + " wxJsApiParam : " + ViewBag.wxJsApiParam);
                 //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
