@@ -303,9 +303,9 @@ namespace Domain.Controllers
             }
             else if (userSalesSlip.status == 5)
             {
-                //to do 需要修改成0 or 1
+                userSalesSlip.status = OrderBiz.CreateNew().dealExpectionOrder(userSalesSlip.salesNo);
             }
-            else if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已过期
+            if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已过期
             {
                 if (DateTime.Now.AddMinutes(-orderExpiredMins) > userSalesSlip.createDate)//订单已失效，为了减少数据库操作，这边做跳转；
                 {

@@ -64,6 +64,10 @@
       <Project>{53995dbb-9836-4647-ad22-865884fdeb9e}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WechatService\WechatService.csproj">
+      <Project>{a5fc745f-240a-4cce-a567-aff8b4f90678}</Project>
+      <Name>WechatService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

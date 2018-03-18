@@ -7,6 +7,8 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using WechatService.Biz;
 
 namespace GanXian.BLL
 {
@@ -196,6 +198,36 @@ namespace GanXian.BLL
             return res;
         }
 
+        public int dealExpectionOrder(string salesNo)
+        {
+            int status = 0;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string queryRes = OrderQuery.Run("", salesNo.Replace("-", "")); //调用订单查询业务逻辑
+                string[] qRes = queryRes.Split(new[] { "<br>" }, StringSplitOptions.None);
+                foreach (var q in qRes)
+                {
+                    if (q.IndexOf("trade_state") >= 0)
+                    {
+                        string trade_state = q.Split('=')[1];
+                        if (trade_state.ToLower() == "success")
+                        {
+                            string sqlCommandTextUpdateOrder = "update salesslip set status=1 where salesNo=@salesNo";
+                            conn.Execute(sqlCommandTextUpdateOrder, new { salesNo = salesNo });
+                            status = 1;
+                        }
+                        else
+                        {
+                            string sqlCommandTextUpdateOrder = "update salesslip set status=0,paydate=NULL where salesNo=@salesNo";
+                            conn.Execute(sqlCommandTextUpdateOrder, new { salesNo = salesNo });
+                            status = 0;
+                        }
+                    }
+                }
+            }
+            return status;
+        }
+
         /// <summary>
         /// 获取用户订单信息
         /// </summary>
@@ -220,15 +252,19 @@ namespace GanXian.BLL
                 foreach (var userOrder in userOrderList)
                 {
                     //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已失效
-                    //to do... 预付款 需要先更新成0 or 1
-
+                    #region 异常数据情况
+                    if (userOrder.status == 5)
+                    {
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo);
+                    }
+                    #endregion
                     #region status==0 未付款，已失效情况
-                    if (userOrder.status == 0 || userOrder.status == 5 || userOrder.status == 6)
+                    if (userOrder.status == 0 || userOrder.status == 6)
                     {
                         //未付款订单30分钟后失效
                         if (userOrder.status == 0)
                         {
-                            double mins= Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["orderExpiredMins"]);
+                            double mins = Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["orderExpiredMins"]);
                             if (DateTime.Now.AddMinutes(-mins) > userOrder.createDate)
                             {
                                 string sqlCommandTextUpdateOrder = "update salesslip set status=6 ,column2=now() where salesId=@salesId";

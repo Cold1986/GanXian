@@ -80,7 +80,6 @@ namespace Domain.Controllers
             try
             {
                 userOrderList = OrderBiz.CreateNew().getUserOrderListInfo(userOpenId);
-                //to do.. 判断有无预付款状态，需要更新成0或1
                 if (status.ToLower() != "all")
                 {
                     userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Biz\AuthorizeBiz.cs" />
     <Compile Include="Biz\JsApiPay.cs" />
+    <Compile Include="Biz\OrderQuery.cs" />
     <Compile Include="Biz\WxPayApi.cs" />
     <Compile Include="Biz\WxPayData.cs" />
     <Compile Include="Class1.cs" />
