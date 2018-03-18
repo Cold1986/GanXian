@@ -181,6 +181,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IndexController.cs" />
@@ -192,6 +193,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\CheckOutModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -200,6 +202,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\admin\global.css" />
+    <Content Include="Content\admin\login.css" />
+    <Content Include="Content\admin\reset.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\aim-sprites.png" />
@@ -222,6 +227,13 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\addIcon.png" />
+    <Content Include="images\admin\arrow.png" />
+    <Content Include="images\admin\login-bg.jpg" />
+    <Content Include="images\admin\logistics.png" />
+    <Content Include="images\admin\logo.png" />
+    <Content Include="images\admin\stars.png" />
+    <Content Include="images\admin\t.png" />
+    <Content Include="images\admin\topbar-bg.png" />
     <Content Include="images\aim-sprites.png" />
     <Content Include="images\back_icon.png" />
     <Content Include="images\bot_top_arrow.png" />
@@ -370,6 +382,7 @@
     <Content Include="Views\Order\Index.cshtml" />
     <Content Include="Views\User\AddressSelect.cshtml" />
     <Content Include="Views\Products\JsApiPayPage.cshtml" />
+    <Content Include="Views\Admin\login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

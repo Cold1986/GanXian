@@ -36,7 +36,15 @@ namespace Domain
                         "~/Content/LArea.css",
                       "~/Content/order3.css"));
 
+            bundles.Add(new StyleBundle("~/Content/css/adminLayout").Include(
+                      "~/Content/admin/reset.css",
+                       "~/Content/admin/global.css",
+                     "~/Content/admin/login.css"));
 
+            bundles.Add(new ScriptBundle("~/bundles/myJqueryval").Include(
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.validate*")
+                        );
         }
     }
 }
