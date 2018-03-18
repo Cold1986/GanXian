@@ -4,7 +4,7 @@ h1, h2, h3, h4, h5, h6, p, figure, form, blockquote, ul, ol, li, dl, dd, label, 
 }
 body {
 	background: #f5f5f5;
-	min-width: 960px;
+	min-width: 1280px;
 }
 .blue {
 	color: #1495ff;
@@ -44,7 +44,7 @@ select {
 	-webkit-appearance:none;
 	padding: 0 30px 0 10px;
 	background: url("../image/arrow.png") no-repeat scroll right center #ececec;
-	border: 1px solid #999;
+	border: 1px solid #d1d1d1;
 	border-radius: 5px;
 	height: 26px;
 	font-size: 12px;
