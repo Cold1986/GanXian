@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Attribute;
+using Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Domain.Controllers
 {
+    [Authorization]//如果将此特性加在Controller上，那么访问这个Controller里面的方法都需要验证用户登录状态
     public class AdminController : Controller
     {
         // GET: Admin
@@ -16,6 +18,7 @@ namespace Domain.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult login()
         {
             return View();
@@ -25,7 +28,7 @@ namespace Domain.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(AdminLoginViewModels model, string returnUrl)
+        public async Task<ActionResult> login(AdminLoginViewModels model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
@@ -34,22 +37,26 @@ namespace Domain.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            //switch (result)
-            //{
-            //    case SignInStatus.Success:
-            //        return RedirectToLocal(returnUrl);
-            //    case SignInStatus.LockedOut:
-            //        return View("Lockout");
-            //    case SignInStatus.RequiresVerification:
-            //        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-            //    case SignInStatus.Failure:
-            //    default:
-            //        ModelState.AddModelError("", "Invalid login attempt.");
-            //        return View(model);
-            //}
-            ModelState.AddModelError("", "账号或密码错误");
+            if (model.Account == "Admin" && model.Password == "Good2018@")
+            {
+                HttpContext.Session["LoginedUser"] = "adminUser";
+                return RedirectToLocal(returnUrl);
+            }
+            else
+            {
+                ModelState.AddModelError("", "账号或密码错误");
+            }
+ 
             return View(model);
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Admin");
         }
     }
 }
