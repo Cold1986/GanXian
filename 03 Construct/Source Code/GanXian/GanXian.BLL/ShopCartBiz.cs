@@ -41,15 +41,15 @@ namespace GanXian.BLL
         /// <param name="prodId">商品Id</param>
         /// <param name="num">添加数量</param> 
         /// <returns>true 成功 false 失败</returns>
-        public bool AddProdInCarts(string userOpenId, string prodId, int num)
+        public bool AddProdInCarts(string userOpenId, string prodId, int num, string prodPrice)
         {
             bool res = false;
             try
             {
                 using (IDbConnection conn = DapperHelper.MySqlConnection())
                 {
-                    string sqlCommandText = @"insert into ShoppingCart(userOpenId,productId,num,status) values(@userOpenId,@productId,@num,1) ";
-                    conn.Query(sqlCommandText, new { userOpenId = userOpenId, productId = prodId, num = num });
+                    string sqlCommandText = @"insert into ShoppingCart(userOpenId,productId,num,status,createdTimePrice) values(@userOpenId,@productId,@num,1,@prodPrice) ";
+                    conn.Query(sqlCommandText, new { userOpenId = userOpenId, productId = prodId, num = num, prodPrice = prodPrice });
                     res = true;
                 }
             }
@@ -67,15 +67,15 @@ namespace GanXian.BLL
         /// <param name="prodId">产品Id</param>
         /// <param name="num">数量</param>
         /// <returns></returns>
-        public bool UpdateProdInCarts(string userOpenId, string prodId, int num)
+        public bool UpdateProdInCarts(string userOpenId, string prodId, int num, string prodPrice)
         {
             bool res = false;
             try
             {
                 using (IDbConnection conn = DapperHelper.MySqlConnection())
                 {
-                    string sqlCommandText = @"Update ShoppingCart set num=@num where userOpenId=@userOpenId and productId=@productId and status=1 ";
-                    conn.Query(sqlCommandText, new { userOpenId = userOpenId, productId = prodId, num = num });
+                    string sqlCommandText = @"Update ShoppingCart set num=@num,createdTimePrice=@prodPrice where userOpenId=@userOpenId and productId=@productId and status=1 ";
+                    conn.Query(sqlCommandText, new { userOpenId = userOpenId, productId = prodId, num = num, prodPrice = prodPrice });
                     res = true;
                 }
             }

@@ -41,6 +41,7 @@
         $(this).attr("disabled", "true"); //设置变灰按钮  
         var prodId = $("#currProdId").val();//商品Id
         var prodCount = $("#prodCount").val();//购买数量
+        var prodPrice = $("#prodCash").html().replace('¥','');
         if (prodCount == 0) {
             return;
         }
@@ -49,7 +50,8 @@
             url: "../AddShopcart",
             data: {
                 "prodId": prodId,
-                "num": prodCount
+                "num": prodCount,
+                "prodPrice": prodPrice
             },
             type: 'post',
             async: false, //默认为true 异步   

@@ -153,7 +153,7 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddShopcart(string prodId, int num)
+        public JsonResult AddShopcart(string prodId, int num,string prodPrice)
         {
             string res = string.Empty;
             string userOpenId = base.getUserOpenIdFromCookie();
@@ -170,11 +170,11 @@ namespace Domain.Controllers
                     if (userShopcart != null)
                     {
                         int addNum = userShopcart.num + num;
-                        shopcartBiz.UpdateProdInCarts(userOpenId, prodId, addNum);
+                        shopcartBiz.UpdateProdInCarts(userOpenId, prodId, addNum, prodPrice);
                     }
                     else
                     {
-                        shopcartBiz.AddProdInCarts(userOpenId, prodId, num);
+                        shopcartBiz.AddProdInCarts(userOpenId, prodId, num, prodPrice);
                     }
                     res = shopcartBiz.getUserCartsNum(userOpenId).ToString();
                 }
