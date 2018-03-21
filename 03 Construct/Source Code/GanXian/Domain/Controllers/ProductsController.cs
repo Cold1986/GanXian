@@ -296,6 +296,7 @@ namespace Domain.Controllers
             decimal SFJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:JZH"]);//顺丰江浙沪快递费
             decimal SFNonJZF = Convert.ToDecimal(System.Configuration.ConfigurationSettings.AppSettings["sf:NonJZH"]);//顺丰非江浙沪快递费
 
+            string wechatBody = string.Empty;
             userSalesSlip = OrderBiz.CreateNew().getCheckOutInfo(orderId, userOpenId);
             if (userSalesSlip == null)//查不到销售单
             {
@@ -357,6 +358,7 @@ namespace Domain.Controllers
 
                 foreach (var i in userUnpaidOrderInfo)
                 {
+                    wechatBody += i.productName + "*" + i.num.ToString() + ";";
                     productsPrice += i.productTotalPrice ?? 0;
                 }
                 #endregion
@@ -376,7 +378,8 @@ namespace Domain.Controllers
             //JSAPI支付预处理
             try
             {
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(orderId.Replace("-", ""));
+
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(wechatBody, orderId.Replace("-", ""));
                 ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数    
                 _Apilog.WriteLog("ProductsController/Checkout 用户userOpenId: " + userOpenId + " wxJsApiParam : " + ViewBag.wxJsApiParam);
                 //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
@@ -609,62 +612,5 @@ namespace Domain.Controllers
             }
             return Json(res);
         }
-
-        public ActionResult JsApiPayPage(string code)
-        {
-            //ViewBag.wxJsApiParam = "test";
-            #region 用户信息部分
-            string userOpenId = string.Empty;
-            Tuple<string, string> result = base.getUserOpenId(code);
-            if (!string.IsNullOrEmpty(result.Item1))
-            {
-                userOpenId = result.Item1;
-            }
-            else if (!string.IsNullOrEmpty(result.Item2))
-            {
-                return Redirect(result.Item2);
-            }
-            ViewBag.userOpenId = userOpenId;
-            #endregion
-
-            string openid = userOpenId;
-            string total_fee = "1";//test
-            //检测是否给当前页面传递了相关参数
-            //if (string.IsNullOrEmpty(openid) || string.IsNullOrEmpty(total_fee))
-            //{
-            //    Response.Write("<span style='color:#FF0000;font-size:20px'>" + "页面传参出错,请返回重试" + "</span>");
-            //    Log.Error(this.GetType().ToString(), "This page have not get params, cannot be inited, exit...");
-            //    submit.Visible = false;
-            //    return;
-            //}
-
-            //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
-            JsApiPay jsApiPay = new JsApiPay();
-            jsApiPay.openid = openid;
-            jsApiPay.total_fee = int.Parse(total_fee);//分
-
-            //JSAPI支付预处理
-            try
-            {
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult();
-                ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数                    
-                //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
-                //在页面上显示订单信息
-                Response.Write("<span style='color:#00CD00;font-size:20px'>订单详情：</span><br/>");
-                Response.Write("<span style='color:#00CD00;font-size:20px'>" + unifiedOrderResult.ToPrintStr() + "</span>");
-
-            }
-            catch (Exception ex)
-            {
-                Response.Write("<span style='color:#FF0000;font-size:20px'>" + "下单失败，请返回重试" + "</span>");
-                //submit.Visible = false;
-            }
-
-
-            return View();
-        }
-
-
-
     }
 }

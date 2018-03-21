@@ -137,11 +137,11 @@ namespace WechatService.Biz
          * @return 统一下单结果
          * @失败时抛异常WxPayException
          */
-        public WxPayData GetUnifiedOrderResult(string trade_no = "")
+        public WxPayData GetUnifiedOrderResult(string wechatBody,string trade_no = "")
         {
             //统一下单
             WxPayData data = new WxPayData();
-            data.SetValue("body", "test");
+            data.SetValue("body", wechatBody);
             //data.SetValue("attach", "test");
             data.SetValue("out_trade_no", string.IsNullOrEmpty(trade_no) ? WxPayApi.GenerateOutTradeNo() : trade_no);
             data.SetValue("total_fee", total_fee);
