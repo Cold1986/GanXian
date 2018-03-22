@@ -35,7 +35,10 @@ namespace GanXian.BLL
                 try
                 {
                     string insertSalesSlipSQL = "insert into SalesSlip(salesNo,userOpenId,createDate,status,column2) values(@salesNo,@userOpenId,now(),0,now());select @@IDENTITY;";
-                    string insertSales2ProductsSQL = "insert into Sales2Products(salesId,productId,num,createDate,status) values(@salesId,@productId,@num,now(),0)";
+                    string insertSales2ProductsSQL = @"insert into Sales2Products(salesId,productId,num,createDate,status,createdTimePrice) 
+                                                        select @salesId, @productId, @num, now(), 0, discountedPrice from products a
+                                                        where a.status = 1 and a.productId = @productId
+                                                        ";
                     string salesId = conn.ExecuteScalar(insertSalesSlipSQL, new { salesNo = salesNo, userOpenId = userOpenId }, transaction, null, null).ToString();
                     conn.Execute(insertSales2ProductsSQL, new { salesId = salesId, productId = productId, num = num }, transaction, null, null);
                     //提交事务
@@ -73,7 +76,10 @@ namespace GanXian.BLL
                     string updateShoppingcartSQL = "";
                     for (int i = 0; i < prods.Length; i++)
                     {
-                        insertSales2ProductsSQL += "insert into Sales2Products(salesId,productId,num,createDate,status) select @salesId,productId,num,now(),0 from shoppingcart where status=1 and userOpenId=@userOpenId and productId =" + prods[i] + ";";
+                        insertSales2ProductsSQL += @"insert into Sales2Products(salesId,productId,num,createDate,status,createdTimePrice) 
+                                                    select @salesId, a.productId,num,now(),0,b.discountedPrice from shoppingcart a
+                                                    inner join products b on a.productId = b.productId
+                                                    where a.status = 1 and b.status = 1 and userOpenId = @userOpenId and a.productId = " + prods[i] + ";";
                         updateShoppingcartSQL += "update shoppingcart set status=2,column1=now() where status=1 and userOpenId=@userOpenId and productId =" + prods[i] + ";";
                     }
                     string salesId = conn.ExecuteScalar(insertSalesSlipSQL, new { salesNo = salesNo, userOpenId = userOpenId }, transaction, null, null).ToString();

@@ -19,6 +19,7 @@ namespace GanXian.Model
 		private int _num;
 		private string _salesprice;
 		private DateTime _createdate;
+		private decimal? _createdtimeprice;
 		private int? _status;
 		private string _column1;
 		private string _column2;
@@ -93,6 +94,14 @@ namespace GanXian.Model
 		{
 			set{ _createdate=value;}
 			get{return _createdate;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public decimal? createdTimePrice
+		{
+			set{ _createdtimeprice=value;}
+			get{return _createdtimeprice;}
 		}
 		/// <summary>
 		/// 
