@@ -56,7 +56,12 @@ namespace Domain.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction("product", "Admin");
+        }
+
+        public ActionResult product()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "后台管理系统";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section style {
+    <link href="~/Content/admin/product.css" rel="stylesheet" />
+}
+<div class="content">
+    <h2>产品列表</h2>
+    <div class="filter border-gray">
+        <div class="title border-bottom-gray"><i class="icon ion-android-search"></i>筛选条件</div>
+        <div class="filter-inner">
+            <ul class="filter-content clearfix">
+                <li>
+                    <label>SKU</label>
+                    <input type="text"></input>
+                </li>
+                <li>
+                    <label>产品名称</label>
+                    <input type="text"></input>
+                </li>
+            </ul>
+            <div class="control">
+                <Section>
+                    <button class="btn">清空</button>
+                    <button class="btn">查询</button>
+                </Section>
+            </div>
+        </div>
+    </div>
+    <div class="results">
+        <div class="results-header">
+            <table id="resultTableHead" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="15%">SKU</td>
+                        <td width="20%">产品名称</td>
+                        <td width="15%">规格</td>
+                        <td width="12%">原价</td>
+                        <td width="12%">折扣价</td>
+                        <td width="12%">库存</td>
+                        <td width="14%">操作</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="results-inner">
+            <table id="resultTable" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="15%">&nbsp;</td>
+                        <td width="20%">&nbsp;</td>
+                        <td width="15%">&nbsp;</td>
+                        <td width="12%">&nbsp;</td>
+                        <td width="12%">&nbsp;</td>
+                        <td width="12%">&nbsp;</td>
+                        <td width="14%">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GS0001</td>
+                        <td><input type="text" value="小眼带鱼" /></td>
+                        <td><input type="text" value="5-7两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="197" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="179" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0002</td>
+                        <td><input type="text" value="小眼带鱼12" /></td>
+                        <td><input type="text" value="3-5两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="177" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="159" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0003</td>
+                        <td><input type="text" value="小眼带鱼23" /></td>
+                        <td><input type="text" value="3两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="155" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="132" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="88" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0004</td>
+                        <td><input type="text" value="小眼带鱼22" /></td>
+                        <td><input type="text" value="4两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="355" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="288" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0005</td>
+                        <td><input type="text" value="小眼带鱼33" /></td>
+                        <td><input type="text" value="5-8两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="275" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="200" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0006</td>
+                        <td><input type="text" value="小眼带鱼44" /></td>
+                        <td><input type="text" value="5-7两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="275" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="154" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0007</td>
+                        <td><input type="text" value="小眼带鱼55" /></td>
+                        <td><input type="text" value="7两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="289" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="244" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0008</td>
+                        <td><input type="text" value="小眼带鱼66" /></td>
+                        <td><input type="text" value="2两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="145" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="122" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                    <tr>
+                        <td>GS0009</td>
+                        <td><input type="text" value="小眼带鱼77" /></td>
+                        <td><input type="text" value="3-5两/条" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="57" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="35" /></td>
+                        <td><input type='text' onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " value="100" /></td>
+                        <td class="operation"><i class="icon ion-edit"></i><i class="icon ion-trash-a"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn add">新增</button>
+</div>
+

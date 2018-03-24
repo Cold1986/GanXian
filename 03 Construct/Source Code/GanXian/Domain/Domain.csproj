@@ -204,10 +204,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\admin\global.css" />
+    <Content Include="Content\admin\ionicons.min.css" />
     <Content Include="Content\admin\login.css" />
+    <Content Include="Content\admin\product.css" />
     <Content Include="Content\admin\reset.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\ionicons.svg" />
     <Content Include="Content\images\aim-sprites.png" />
     <Content Include="Content\images\back_icon.png" />
     <Content Include="Content\images\edit.png" />
@@ -216,6 +219,13 @@
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\location.png" />
     <Content Include="Content\images\search.jpg" />
+    <Content Include="Content\image\arrow.png" />
+    <Content Include="Content\image\login-bg.jpg" />
+    <Content Include="Content\image\logistics.png" />
+    <Content Include="Content\image\logo.png" />
+    <Content Include="Content\image\stars.png" />
+    <Content Include="Content\image\t.png" />
+    <Content Include="Content\image\topbar-bg.png" />
     <Content Include="Content\LArea.css" />
     <Content Include="Content\logistics.css" />
     <Content Include="Content\member.css" />
@@ -295,6 +305,9 @@
     <Content Include="img\WeChat Image_2017113013414422.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\fonts\ionicons.eot" />
+    <Content Include="Content\fonts\ionicons.ttf" />
+    <Content Include="Content\fonts\ionicons.woff" />
     <None Include="Properties\PublishProfiles\GanXian.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\category.js" />
@@ -384,6 +397,8 @@
     <Content Include="Views\User\AddressSelect.cshtml" />
     <Content Include="Views\Products\JsApiPayPage.cshtml" />
     <Content Include="Views\Admin\login.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Admin\product.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

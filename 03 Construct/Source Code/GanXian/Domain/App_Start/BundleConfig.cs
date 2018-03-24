@@ -39,7 +39,7 @@ namespace Domain
             bundles.Add(new StyleBundle("~/Content/css/adminLayout").Include(
                       "~/Content/admin/reset.css",
                        "~/Content/admin/global.css",
-                     "~/Content/admin/login.css"));
+                       "~/Content/admin/ionicons.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/myJqueryval").Include(
                         "~/Scripts/jquery-{version}.js",

@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <title>@ViewBag.Title - 象山蓝鲸</title>
+    @Styles.Render("~/Content/css/adminLayout")
+    @Scripts.Render("~/bundles/myJqueryval")
+    @RenderSection("scripts", required: false)
+    @RenderSection("style", required: false)
+</head>
+<body>
+    <header>
+        <h1>后台管理系统</h1>
+    </header>
+    <div class="main">
+        <aside>
+            <ul>
+                <li>
+                    <a href="product" class="focus"><i class="icon ion-android-restaurant"></i>产品管理</a>
+                </li>
+                <li>
+                    <a href="order"><i class="icon ion-clipboard"></i>订单管理</a>
+                </li>
+            </ul>
+        </aside>
+        @RenderBody()
+    </div>
+    @RenderSection("popup", required: false)
+</body>
+</html>
