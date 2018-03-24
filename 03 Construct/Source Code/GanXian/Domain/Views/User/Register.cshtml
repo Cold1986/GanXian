@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "会员注册";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
 }
 <script type="text/javascript">
-		var error = '';
+    var error = '';
 </script>
 <style>
     #code {
@@ -29,41 +29,123 @@
     <div class="container itemdetail mini-innner">
         <div class="row">
             <div class="col-md-12 tal mt20">
-                <form id="theForm" name="theForm" class="form-signin" action="/p/j_spring_security_check" method="POST">
-                    <input type="hidden" id="returnUrl" name="returnUrl" value="http://m.legendshop.cn/p/orderDetails" />
-
-                    <input name="j_username" id="username" type="text" style="margin-bottom: -2px;-webkit-appearance:none; " class="form-control" placeholder="请输入您的手机号" message="账号" required="true" autofocus="" tabindex="1">
-                    <br>
-                    <input id="code" name="j_code" class="form-control" placeholder="请输入验证码" message="验证码" required="true" style="-webkit-appearance:none;" autocomplete="off" tabindex="2"><input type="button" class="btn" tabindex="3" onclick="sendCode(this)" value="获取验证码" id="getCode" />
-                    <div class="clear" style="margin-bottom: 20px"></div>
-                    <div><button type="button" class="btn btn-info btn-block" id="register" onclick="" tabindex="4">注 册</button></div>
-                </form>
+                <input type="hidden" id="userOpenId" value=@ViewBag.userOpenId />
+                <input name="j_username" id="phone" type="text" style="margin-bottom: -2px;-webkit-appearance:none; " class="form-control" placeholder="请输入您的手机号" message="账号" required="true" autofocus="" tabindex="1">
+                <br>
+                <input id="code" name="j_code" class="form-control" placeholder="请输入验证码" message="验证码" required="true" style="-webkit-appearance:none;" autocomplete="off" tabindex="2"><input type="button" class="btn" tabindex="3" value="获取验证码" id="getCode" />
+                <div class="clear" style="margin-bottom: 20px"></div>
+                <div><button type="button" class="btn btn-info btn-block" id="register" onclick="" tabindex="4">注 册</button></div>
+                <div class="clear" style="margin-bottom: 20px"></div>
+                @if (!ViewBag.NeedRegister)
+                {
+                    <div><button type="button" class="btn btn-info btn-block" id="registerLater" tabindex="4">以后注册</button></div>
+                }
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-var contextPath = '';
-var clock = '';
-var nums = 60;
-var btn;
-function sendCode(thisBtn){
-  btn = thisBtn;
-  btn.disabled = true; //将按钮置为不可点击
-  btn.value = nums+'秒后可重新获取';
-  clock = setInterval(doLoop, 1000); //一秒执行一次
-  }
-  function doLoop()
-  {
-  nums--;
-  if(nums > 0){
-  btn.value = nums+'秒后可重新获取';
-  }else{
-  clearInterval(clock); //清除js定时器
-  btn.disabled = false;
-  btn.value = '点击发送验证码';
-  nums = 10; //重置时间
-  }
-}
-</script>
 
+
+    $(function () {
+        $('#registerLater').click(function () {
+            window.location.href = "../../" + GetQueryString("fromUrl").slice(1) + "?ignoreRegister=1";
+        });
+
+        $('#getCode').click(function () {
+            var pattern1 = /^1[34578]\d{9}$/; //手机
+            if (!pattern1.test($('#phone').val().trim())) {
+                alert("联系电话不正确，请重新输入");
+                return false;
+            }
+            sendCode(this);
+            $.ajax({
+                url: "SendSMS",
+                data: {
+                    "Phone": $('#phone').val().trim(),
+                    "OpenId": $('#userOpenId').val()
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                },
+                success: function (retData) {
+                    alert('请查收短信验证码，并尽快完成验证。');
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        })
+
+        $('#register').click(function () {
+            var pattern1 = /^1[34578]\d{9}$/; //手机
+            if (!pattern1.test($('#phone').val().trim())) {
+                alert("联系电话不正确，请重新输入");
+                return false;
+            }
+            if ($('#code').val().trim() == '' || $('#code').val().trim().length != 6) {
+                alert('验证码不正确');
+                return false;
+            }
+
+            $.ajax({
+                url: "CheckSMS",
+                data: {
+                    "Phone": $('#phone').val().trim(),
+                    "SMS": $('#code').val().trim(),
+                    "OpenId": $('#userOpenId').val()
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                    alert(data);
+                },
+                success: function (retData) {
+                    if (retData == "success") {
+                        alert('验证成功。');
+                        window.location.href = "../../" + GetQueryString("fromUrl").slice(1);
+                    }
+                    else {
+                        alert(retData);
+                    }
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        })
+
+        var contextPath = '';
+        var clock = '';
+        var nums = 60;
+        var btn;
+        function sendCode(thisBtn) {
+            btn = thisBtn;
+            btn.disabled = true; //将按钮置为不可点击
+            btn.value = nums + '秒后可重新获取';
+            clock = setInterval(doLoop, 1000); //一秒执行一次
+        }
+        function doLoop() {
+            nums--;
+            if (nums > 0) {
+                btn.value = nums + '秒后可重新获取';
+            } else {
+                clearInterval(clock); //清除js定时器
+                btn.disabled = false;
+                btn.value = '点击发送验证码';
+                nums = 60; //重置时间
+            }
+        }
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+    });
+
+
+</script>

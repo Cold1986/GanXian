@@ -1,4 +1,6 @@
-﻿using CommonLib;
+﻿using Aliyun.Acs.Dysmsapi.Model.V20170525;
+using AliyunSMSService;
+using CommonLib;
 using GanXian.BLL;
 using GanXian.Model;
 using System;
@@ -12,6 +14,7 @@ namespace Domain.Controllers
     public class UserController : BaseController
     {
         public LogHelper _Apilog = new LogHelper("ApiLog");
+        public LogHelper _SMSlog = new LogHelper("SMSlog");
         // GET: User
         public ActionResult Index()
         {
@@ -46,7 +49,7 @@ namespace Domain.Controllers
             return View(userAddressList);
         }
 
-        public ActionResult AddressSelect(string code,string fromURL)
+        public ActionResult AddressSelect(string code, string fromURL)
         {
             #region 用户信息部分
             string userOpenId = string.Empty;
@@ -96,7 +99,7 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult SelAddress(string receiver, string rPhone,string province,string city,string county, string detailAddress, string orderId)
+        public JsonResult SelAddress(string receiver, string rPhone, string province, string city, string county, string detailAddress, string orderId)
         {
             string userOpenId = base.getUserOpenIdFromCookie();
             salesslip userSalesSlip = new salesslip();
@@ -114,7 +117,7 @@ namespace Domain.Controllers
 
                 OrderBiz.CreateNew().userUpdateOrderAddress(userSalesSlip);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _Apilog.WriteLog("ProductsController/SelAddress 异常: " + userOpenId + " orderId: " + orderId + ex.Message);
             }
@@ -315,12 +318,24 @@ namespace Domain.Controllers
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <returns></returns>
-        public ActionResult Register(string returnUrl)
+        public ActionResult Register(string returnUrl, string needRegister, string code)
         {
+            #region 用户信息部分
+            string userOpenId = string.Empty;
+            Tuple<string, string> result = base.getUserOpenId(code);
+            if (!string.IsNullOrEmpty(result.Item1))
+            {
+                userOpenId = result.Item1;
+            }
+            else if (!string.IsNullOrEmpty(result.Item2))
+            {
+                return Redirect(result.Item2);
+            }
+            ViewBag.userOpenId = userOpenId;
+            #endregion
             //加个开关来控制是否需要 用户注册
-
-            ViewBag.FooterType = "会员注册";
-            ViewBag.PageName = "管理收货地址";
+            ViewBag.PageName = "会员注册";
+            ViewBag.NeedRegister = needRegister == "1" ? true : false;
             return View();
         }
 
@@ -328,7 +343,7 @@ namespace Domain.Controllers
         /// 我的 页面
         /// </summary>
         /// <returns></returns>
-        public ActionResult UserHome(string code)
+        public ActionResult UserHome(string code, string ignoreRegister)
         {
             #region 用户关注部分
             try
@@ -354,6 +369,13 @@ namespace Domain.Controllers
             var res = base.getUserInfoByAuthorize(code);
             #endregion
 
+            #region 绑定手机部分
+            //用户未点击跳过注册 并且电话为空
+            if (string.IsNullOrEmpty(ignoreRegister) && string.IsNullOrEmpty(res.Item2.phone))
+            {
+                return RedirectToAction("Register", "User", new { needRegister = "0", fromUrl = Request.RawUrl });//跳转到注册页面，但不是必须注册 
+            }
+            #endregion
 
             #region 热销推荐部分
             List<ProductsAndSalesNum> productsAndSalesNumList;
@@ -381,5 +403,129 @@ namespace Domain.Controllers
             return Json(JsonRes);
         }
 
+        [HttpPost]
+        public JsonResult SendSMS(string Phone, string OpenId)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                userOpenId = OpenId;
+            }
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+                    String accessKeyId = System.Configuration.ConfigurationSettings.AppSettings["aliSMS:accessKeyId"];
+                    String accessKeySecret = System.Configuration.ConfigurationSettings.AppSettings["aliSMS:accessKeySecret"];
+
+                    SendSmsRequest request = new SendSmsRequest();
+                    //必填:待发送手机号。支持以逗号分隔的形式进行批量调用，批量上限为1000个手机号码,批量调用相对于单条调用及时性稍有延迟,验证码类型的短信推荐使用单条调用的方式
+                    request.PhoneNumbers = Phone;
+                    //必填:短信签名-可在短信控制台中找到
+                    request.SignName = System.Configuration.ConfigurationSettings.AppSettings["aliSMS:SignName"];
+                    //必填:短信模板-可在短信控制台中找到
+                    request.TemplateCode = System.Configuration.ConfigurationSettings.AppSettings["aliSMS:TemplateCode"];
+                    //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+                    string content = Str(6, true);
+                    request.TemplateParam = "{\"code\":\"" + content + "\"}";
+                    //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
+                    request.OutId = System.DateTime.Now.ToLongTimeString();
+                    SendSmsResponse response = null;
+                    _SMSlog.WriteLog("发送短信给" + Phone + ": " + Newtonsoft.Json.JsonConvert.SerializeObject(request));
+                    response = SendSMSBiz.sendSms(accessKeyId, accessKeySecret, request);
+                    _SMSlog.WriteLog("发送短信给" + Phone + "结果: " + Newtonsoft.Json.JsonConvert.SerializeObject(response));
+
+                    TimeSpan ts = DateTime.Now.AddMinutes(5) - DateTime.Now;
+                    CacheHelper.SetCache("smsInfo" + userOpenId + Phone, content, ts);
+
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("UserController/SendSMS 异常： " + e.Message);
+                }
+            }
+            else
+            {
+                _Apilog.WriteLog("UserController/SendSMS 用户userOpenId 为空： ");
+            }
+            return Json(res);
+        }
+
+        public JsonResult CheckSMS(string Phone, string SMS, string OpenId)
+        {
+            string userOpenId = base.getUserOpenIdFromCookie();
+            if (string.IsNullOrEmpty(userOpenId))
+            {
+                userOpenId = OpenId;
+            }
+            string res = "fail";
+            if (!string.IsNullOrEmpty(userOpenId))
+            {
+                try
+                {
+
+                    string strCache = CacheHelper.GetCache("smsInfo" + userOpenId + Phone).ToString();
+                    if (string.IsNullOrEmpty(strCache))
+                    {
+                        res = "验证码已失效";
+                    }
+                    else
+                    {
+                        if (SMS != strCache)
+                        {
+                            res = "验证码不正确";
+                        }
+                        else
+                        {
+                            //注册成功
+                            //更新数据库
+                            //删除缓存
+                            users user = new users();
+                            user.phone = Phone;
+                            user.openid = OpenId;
+                            UserBiz.CreateNew().updateUserPhone(user);
+                            CacheHelper.RemoveCacheByKey("userInfo" + userOpenId);
+                            res = "success";
+                        }
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    res = "fail";
+                    _Apilog.WriteLog("UserController/SendSMS 异常： " + e.Message);
+                }
+            }
+            else
+            {
+                _Apilog.WriteLog("UserController/SendSMS 用户userOpenId 为空： ");
+            }
+            return Json(res);
+        }
+
+        /// <summary>
+        /// 生成随机字母与数字或字符
+        /// </summary>
+        /// <param name="Length">生成长度</param>
+        /// <param name="Sleep">是否要在生成前将当前线程阻止以避免重复</param>
+        /// <returns></returns>
+        private string Str(int Length, bool Sleep)
+        {
+            if (Sleep)
+                System.Threading.Thread.Sleep(3);
+            char[] Pattern = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            string result = "";
+            int n = Pattern.Length;
+            System.Random random = new Random(~unchecked((int)DateTime.Now.Ticks));
+            for (int i = 0; i < Length; i++)
+            {
+                int rnd = random.Next(0, n);
+                result += Pattern[rnd];
+
+            }
+            return result;
+        }
     }
 }

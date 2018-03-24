@@ -93,9 +93,23 @@ namespace GanXian.BLL
 
         }
 
-        public void updateUserPhone()
+        public bool updateUserPhone(users user)
         {
-
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"update Users set phone=@phone where openid =@openid ";
+                    conn.Query(sqlCommandText, user);
+                    res = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
         }
 
         /// <summary>

@@ -286,6 +286,33 @@ namespace Domain.Controllers
                 return RedirectToAction("OrderList", "Order");
             }
 
+            #region 绑定手机部分
+            //用户未点击跳过注册 并且电话为空
+            users res = new users();
+            var resCache = CacheHelper.GetCache("userInfo" + userOpenId);
+            if (resCache != null)
+            {
+                res = (users)resCache;
+            }
+            else
+            {
+                res = UserBiz.CreateNew().getUserInfoByOpenId(userOpenId);
+                var start = DateTime.Now;
+                var expiredDate = start.AddDays(1);
+                TimeSpan ts = expiredDate - start;
+                CacheHelper.SetCache("userInfo" + res.openid.ToString(), res, ts);
+                if (!string.IsNullOrEmpty(res.openid))
+                {
+                    CookieHelper.SetCookie("userOpenId", res.openid);
+                }
+            }
+
+            if (string.IsNullOrEmpty(res.phone))
+            {
+                return RedirectToAction("Register", "User", new { needRegister = "1", fromUrl = Request.RawUrl });//跳转到注册页面，且必须注册 
+            }
+            #endregion
+
             CheckOutModels checkOutModels = new CheckOutModels();
             useraddress userRes = new useraddress();
             List<UserShopcartsInfo> userUnpaidOrderInfo = new List<UserShopcartsInfo>();

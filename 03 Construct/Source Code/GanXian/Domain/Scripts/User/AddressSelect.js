@@ -1,14 +1,5 @@
 ﻿function SelAddress(receiver, phone, province, city, county, detailAddress, fromURL) {
-    console.log(receiver);
-    console.log(phone);
-    console.log(province);
-    console.log(city);
-    console.log(county);
-    console.log(detailAddress);
-    console.log(fromURL);
     var orderId = fromURL.split('=')[1];
-    console.log(orderId);
-
     $.ajax({
         url: "SelAddress",
         data: {
