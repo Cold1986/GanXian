@@ -185,7 +185,7 @@
 .add-item li:last-child {
 	margin-bottom: 20px;
 }
-.add-item li:last-child > div {
+.add-item li div {
 	display: inline-block;
 }
 .add-item li:last-child > label {
@@ -197,6 +197,7 @@
 	margin: 0 10px 5px 0;
 	width: 150px;
 }
+
 .add-item li:last-child div > .radio-box {
 	display: inline-block;
 	width: 100px;
@@ -225,7 +226,7 @@
 }
 .add-item li .error-msg {
 	position: relative;
-	padding-left: 135px;
+	/*padding-left: 135px;*/
 	right: 0;
 	top: 0;
 }

@@ -18,6 +18,39 @@ namespace GanXian.BLL
         }
 
         /// <summary>
+        /// 获取所有产品列表
+        /// </summary>
+        /// <returns></returns>
+        public List<products> getProductList()
+        {
+            List<products> products = new List<products>();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT * FROM Products";
+                products = conn.Query<products>(sqlCommandText).ToList();
+            }
+            if (products.Any())
+            {
+                products.ForEach(p =>
+                {
+                    if (!string.IsNullOrEmpty(p.remark)) p.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />");
+                });
+                foreach (var item in products)
+                {
+                    System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                    foreach (System.Reflection.PropertyInfo item2 in pro)
+                    {
+                        if (item2.Name == item.showPic)
+                        {
+                            item.showPic = item2.GetValue(item).ToString();
+                        }
+                    }
+                }
+            }
+            return products;
+        }
+
+        /// <summary>
         /// 根据ID获取产品信息
         /// </summary>
         /// <param name="productId"></param>
@@ -35,6 +68,25 @@ namespace GanXian.BLL
                 products.remark = products.remark.Replace("\n", "<br /><br />").Replace("\r", "<br /><br />");
             }
             return products;
+        }
+
+        public bool updateProductById(products product)
+        {
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"update Products set productName=@productName,specs=@specs,originalPrice=@originalPrice,discountedPrice=@discountedPrice,discountedExpiredDate=@discountedExpiredDate,pic1=@pic1,pic2=@pic2,pic3=@pic3,pic4=@pic4,showPic=@showPic,origin=@origin,nw=@nw,storageCondition=@storageCondition,remark=@remark,status=@status,column1=@column1,column2=@column2 WHERE productId=@productId";
+                    conn.Execute(sqlCommandText, product);
+                }
+                res = true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
         }
 
         /// <summary>
