@@ -432,13 +432,20 @@ namespace Domain.Controllers
                     //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
                     request.OutId = System.DateTime.Now.ToLongTimeString();
                     SendSmsResponse response = null;
-                    _SMSlog.WriteLog("发送短信给" + Phone + ": " + Newtonsoft.Json.JsonConvert.SerializeObject(request));
+                    //_SMSlog.WriteLog("发送短信给" + Phone + ": " + Newtonsoft.Json.JsonConvert.SerializeObject(request));
+                    _Apilog.WriteLog("发送短信给" + Phone + ": " + Newtonsoft.Json.JsonConvert.SerializeObject(request));
                     response = SendSMSBiz.sendSms(accessKeyId, accessKeySecret, request);
-                    _SMSlog.WriteLog("发送短信给" + Phone + "结果: " + Newtonsoft.Json.JsonConvert.SerializeObject(response));
-
-                    TimeSpan ts = DateTime.Now.AddMinutes(5) - DateTime.Now;
-                    CacheHelper.SetCache("smsInfo" + userOpenId + Phone, content, ts);
-
+                    if (response.Code.ToLower() != "ok")
+                    {
+                        res = "fail";
+                    }
+                    else
+                    {
+                        TimeSpan ts = DateTime.Now.AddMinutes(5) - DateTime.Now;
+                        CacheHelper.SetCache("smsInfo" + userOpenId + Phone, content, ts);
+                    }
+                    //_SMSlog.WriteLog("发送短信给" + Phone + "结果: " + Newtonsoft.Json.JsonConvert.SerializeObject(response));
+                    _Apilog.WriteLog("发送短信给" + Phone + "结果: " + Newtonsoft.Json.JsonConvert.SerializeObject(response));
                 }
                 catch (Exception e)
                 {

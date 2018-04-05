@@ -178,6 +178,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\InputExtensions.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Attribute\AuthorizationAttribute.cs" />
@@ -194,8 +195,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminProductViewModels.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\CheckBoxListInfo.cs" />
     <Compile Include="Models\CheckOutModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -400,6 +403,7 @@
     <Content Include="Views\Admin\login.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\product.cshtml" />
+    <Content Include="Views\Admin\userList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

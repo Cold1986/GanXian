@@ -380,7 +380,7 @@ namespace GanXian.BLL
             {
                 try
                 {
-                    string updateSalesSlipSQL = "update salesslip set status=4,display=0,column2=now() where status=0 and salesNo=@salesNo and userOpenId = @userOpenId";
+                    string updateSalesSlipSQL = "update salesslip set status=4,display=0,column2=now() where salesNo=@salesNo and userOpenId = @userOpenId";
                     conn.Execute(updateSalesSlipSQL, new { salesNo = orderId, userOpenId = userOpenId }).ToString();
                     res = true;
                 }

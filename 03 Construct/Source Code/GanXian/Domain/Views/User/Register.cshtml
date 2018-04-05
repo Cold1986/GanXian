@@ -49,7 +49,12 @@
 
     $(function () {
         $('#registerLater').click(function () {
-            window.location.href = "../../" + GetQueryString("fromUrl").slice(1) + "?ignoreRegister=1";
+            var fromurl = GetQueryString("fromUrl");
+            if (fromurl == null) {
+                window.location.href = "userhome?ignoreRegister=1";
+            } else {
+                window.location.href = "../../" + fromurl.slice(1) + "?ignoreRegister=1";
+            }
         });
 
         $('#getCode').click(function () {
@@ -71,7 +76,11 @@
                 error: function (data) {
                 },
                 success: function (retData) {
-                    alert('请查收短信验证码，并尽快完成验证。');
+                    if (retData == "fail") {
+                        alert('短信发送失败，请联系管理员');
+                    } else {
+                        alert('请查收短信验证码，并尽快完成验证。');
+                    }
                 },
                 complete: function () {
                     $('.add-address').removeAttr("disabled"); //设置变灰按钮

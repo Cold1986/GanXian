@@ -153,7 +153,7 @@ namespace Domain.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddShopcart(string prodId, int num,string prodPrice)
+        public JsonResult AddShopcart(string prodId, int num, string prodPrice)
         {
             string res = string.Empty;
             string userOpenId = base.getUserOpenIdFromCookie();

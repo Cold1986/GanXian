@@ -333,5 +333,16 @@ namespace GanXian.BLL
             }
             return userAddressInfo;
         }
+
+
+        public List<users> getUserList()
+        {
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"SELECT distinct(nickname),case sex when 1 then '男' when 2 then '女' else '未知' end as sex,province,city,country,phone,createDate FROM ganxian.users order by createDate desc;";
+                List<users> userList = conn.Query<users>(sqlCommandText).ToList();
+                return userList;
+            }
+        }
     }
 }
