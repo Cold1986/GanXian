@@ -108,6 +108,13 @@ namespace Domain.Controllers
             {
                 productsAndSalesNumList = productsAndSalesNumList.Where(w => (!string.IsNullOrEmpty(w.typeName) && w.typeName.Equals(typeName))).ToList();
             }
+            else
+            {
+                productsAndSalesNumList.ForEach(w => w.typeName = "");
+                productsAndSalesNumList.Distinct().ToList();
+            }
+
+
 
             switch (sortOrder)
             {

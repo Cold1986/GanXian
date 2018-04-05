@@ -43,6 +43,7 @@ namespace Domain
 
             bundles.Add(new ScriptBundle("~/bundles/myJqueryval").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.form.js",
                         "~/Scripts/jquery.validate*")
                         );
         }

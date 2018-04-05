@@ -14,8 +14,9 @@ namespace GanXian.Model
 		private int _productid;
 		private int _tabid;
 		private int? _sort;
+		private int _isshow;
 		private DateTime _createdate;
-		private int? _status;
+		private int? _status=1;
 		private string _column1;
 		private string _column2;
 		/// <summary>
@@ -49,6 +50,14 @@ namespace GanXian.Model
 		{
 			set{ _sort=value;}
 			get{return _sort;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public int isShow
+		{
+			set{ _isshow=value;}
+			get{return _isshow;}
 		}
 		/// <summary>
 		/// 
