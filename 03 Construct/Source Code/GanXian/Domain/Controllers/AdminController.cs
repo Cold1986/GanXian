@@ -259,5 +259,10 @@ namespace Domain.Controllers
             }
             return fileNewName;
         }
+
+        public ActionResult order()
+        {
+            return View();
+        }
     }
 }

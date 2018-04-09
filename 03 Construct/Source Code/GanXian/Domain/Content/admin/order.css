@@ -1,0 +1,118 @@
+.filter-inner {
+	padding-bottom: 40px;
+}
+.datepicker {
+
+}
+.datepicker label {
+	float: left;
+	line-height: 27px;
+}
+.datepicker .input-parent {
+	float: left;
+}
+.filter .beatpicker-clear {
+	display: none;
+}
+.filter select {
+	height: 24px;
+}
+.ion-logistics::before {
+	content:"";
+	display: inline-block;
+	width: 20px;
+	height: 14px;
+	background: url(../image/logistics.png) no-repeat;
+	background-size: auto 100%;
+}
+#resultTable {
+	margin-bottom: -1px;
+}
+.product-detail {
+	width: 100%;
+	min-width: 921px;
+}
+.product-detail td > div {
+	display: block;
+	float: left;
+	padding: 0;
+	width: 100%;
+}
+.product-detail ul {
+	display: block;
+}
+.product-detail li {
+	float: left;
+	width: 15%;
+	padding: 2px;
+	box-sizing: border-box;
+}
+.product-detail li img {
+	width: 100%;
+}
+.product-detail li span {
+	display: block;
+	text-overflow: ellipsis;
+	/*overflow: hidden;*/
+	word-wrap: break-word;
+	height: 1.5em;
+	line-height: 1.5em;
+}
+.product-detail p {
+	text-align: left;
+	margin: 0 0 0 2px;
+}
+.delivery-alert p {
+	margin-bottom: 20px;
+	padding: 0 20px;
+}
+.delivery-alert p input {
+	text-indent: 10px;
+}
+
+
+
+.shipping-list {
+	display: block;
+	max-width: 100px;
+	padding: 0 10px;
+	text-align: left;
+	line-height: 1.5em;
+}
+#resultTable .edit-price {
+	line-height: 1.5em;
+}
+#resultTable .edit-price p {
+	text-align: center;
+}
+#resultTable .edit-price input {
+	border: 1px solid #d1d1d1;
+	height: 22px;
+	width: 80px;
+	display: inline-block;
+}
+#resultTable .edit-price button {
+	display: inline-block;
+} 
+.red {
+	color: #f00;
+}
+
+
+
+/* 不同订单状态显示不同操作图标 */
+.ion-logistics {
+	display: none;
+}
+.order-unshipped .ion-logistics {
+	display: inline-block;
+}
+.ion-ios-undo {
+	display: none;
+}
+.order-in-delivery .ion-ios-undo, .order-completed .ion-ios-undo {
+	display: inline-block;
+}
+.edit-price p {
+	display: none;
+}

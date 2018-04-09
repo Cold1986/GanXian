@@ -1,0 +1,405 @@
+﻿
+@{
+    ViewBag.Title = "后台管理系统";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section style {
+    <link href="~/Content/admin/product.css" rel="stylesheet" />
+    <link href="~/Content/datepicker/css/BeatPicker.min.css" rel="stylesheet" />
+    <link href="~/Content/admin/order.css" rel="stylesheet" />
+}
+<div class="content">
+    <h2>订单管理</h2>
+    <div class="filter border-gray">
+        <div class="title border-bottom-gray"><i class="icon ion-android-search"></i>筛选条件</div>
+        <div class="filter-inner">
+            <ul class="filter-content clearfix">
+                <li>
+                    <label>订单号</label>
+                    <input type="text"></input>
+                </li>
+                <li>
+                    <label>订单状态</label>
+                    <select>
+                        <option>未付款</option>
+                        <option>已付款</option>
+                        <option>已发货</option>
+                        <option>已完成</option>
+                    </select>
+                </li>
+                <li class="datepicker">
+                    <label>下单日期</label>
+                    <input type="text" data-beatpicker="true" />
+                </li>
+                <li>
+                    <label>收件人</label>
+                    <input type="text"></input>
+                </li>
+                <li>
+                    <label>运单号</label>
+                    <input type="text"></input>
+                </li>
+            </ul>
+            <div class="control">
+                <Section>
+                    <button class="btn">清空</button>
+                    <button class="btn">查询</button>
+                </Section>
+            </div>
+        </div>
+    </div>
+    <div class="results">
+        <div class="results-header">
+            <table id="resultTableHead" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="8%">订单编号</td>
+                        <td width="7%">订单状态</td>
+                        <td width="8%">下单日期</td>
+                        <td width="7%">收件人</td>
+                        <td width="10%">联系电话</td>
+                        <td width="33%">收货地址</td>
+                        <td width="14%">操作</td>
+                        <td width="13%">运单号</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="results-inner">
+            <table id="resultTable" cellpadding="0" cellspacing="0" width="100%" style="table-layout:fixed;">
+                <thead>
+                    <tr>
+                        <td width="8%">&GX;</td>
+                        <td width="7%">&nbsp;</td>
+                        <td width="8%">&nbsp;</td>
+                        <td width="7%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="33%">&nbsp;</td>
+                        <td width="14%">&nbsp;</td>
+                        <td width="13%">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="order-unpaid">
+                        <td rowspan="2">GS12830</td>
+                        <td>未付款</td>
+                        <td>2017-12-30</td>
+                        <td>某某某</td>
+                        <td>13713111111</td>
+                        <td>上海市长宁区中山西路000000号101</td>
+                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td rowspan="2">
+                            <div class="shipping-list">
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="product-detail">
+                        <td colspan="5">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="edit-price">
+                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
+                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
+                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
+                        </td>
+                    </tr>
+
+                    <tr class="order-unshipped">
+                        <td rowspan="2">GS12830</td>
+                        <td>已付款</td>
+                        <td>2017-12-30</td>
+                        <td>某某某</td>
+                        <td>13713111111</td>
+                        <td>上海市长宁区中山西路000000号101</td>
+                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td rowspan="2">
+                            <p class="shipping-list">
+                                4984413147814,<br>4984413147814
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="product-detail">
+                        <td colspan="5">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="edit-price">
+                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
+                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
+                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
+                        </td>
+                    </tr>
+
+                    <tr class="order-in-delivery">
+                        <td rowspan="2">GS12830</td>
+                        <td>已发货</td>
+                        <td>2017-12-30</td>
+                        <td>某某某</td>
+                        <td>13713111111</td>
+                        <td>上海市长宁区中山西路000000号101</td>
+                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td rowspan="2">
+                            <p class="shipping-list">
+                                4984413147814,<br>4984413147814
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="product-detail">
+                        <td colspan="5">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="edit-price">
+                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
+                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
+                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
+                        </td>
+                    </tr>
+
+                    <tr class="order-completed">
+                        <td rowspan="2">GS12830</td>
+                        <td>已完成</td>
+                        <td>2017-12-30</td>
+                        <td>某某某</td>
+                        <td>13713111111</td>
+                        <td>上海市长宁区中山西路000000号101</td>
+                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td rowspan="2">
+                            <p class="shipping-list">
+                                4984413147814,<br>4984413147814
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="product-detail">
+                        <td colspan="5">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product02.jpg">
+                                            <div>
+                                                <span>小眼带鱼122223</span>
+                                                <span>￥20.00</span>
+                                                <span>x2</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="../view.html">
+                                            <img src="../img/product01.jpg">
+                                            <div>
+                                                <span>小眼带鱼123123</span>
+                                                <span>￥20.00</span>
+                                                <span>x1</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="edit-price">
+                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
+                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
+                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section popup {
+
+    <div class="popup delete-alert">
+        <div class="popup-bg"></div>
+        <div class="popup-inner">
+            <p class="blue">确认删除本条记录？</p>
+            <div>
+                <button class="btn popup-cancel">取消</button><button class="btn delete-alert-confirm">确认</button>
+            </div>
+        </div>
+    </div>
+    <div class="popup delivery-alert">
+        <div class="popup-bg"></div>
+        <div class="popup-inner shipping">
+            <p class="blue"><input type="text" placeholder="请输入运单号"></p>
+            <div class="add-shipping"><a href="javascript:">添加一张运单</a></div>
+            <div>
+                <button class="btn popup-confirm">发货</button><button class="btn popup-cancel">取消</button>
+            </div>
+        </div>
+    </div>
+    <div class="popup return-alert">
+        <div class="popup-bg"></div>
+        <div class="popup-inner">
+            <p class="blue">确认退回商品？</p>
+            <div>
+                <button class="btn popup-cancel">取消</button><button class="btn delete-alert-confirm">确认</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script charset="utf-8" src="~/Content/datepicker/js/BeatPicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.main a').removeClass('focus');
+            $('.main a').eq(2).addClass('focus');
+        })
+        
+        clickPopup(".ion-trash-a", ".delete-alert");
+        clickPopup(".ion-logistics", ".delivery-alert");
+        clickPopup(".ion-ios-undo", ".return-alert");
+        $(".order-unpaid").next().find(".edit-price p").show();
+        var addShipping = '<p class="blue"><input type="text" placeholder="请输入运单号"></p>';
+        $(".add-shipping").click(function () {
+            $(".blue:last").after(addShipping);
+        })
+    </script>
+}
+
+
+
+
