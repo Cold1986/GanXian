@@ -41,7 +41,7 @@
                         <div class="order-list-info">
                             <p>共<span class="red">@item.Order2ProductsList.Count</span>件商品 共<span class="red">@string.Concat("￥", item.amount)</span> （运费 ￥12.00起）</p>
                             <p>
-                                <button type="button" onclick="location.href=@string.Concat("'../Products/Checkout?orderId=",item.salesNo,"'")">付款</button>
+                                <button type="button" onclick="location.href=@string.Concat("'../products/Checkout?orderId=",item.salesNo,"'")">付款</button>
                                 <button type="button" onclick="deleteOrder(this,'@item.salesNo')">删除</button>
                             </p>
                         </div>
