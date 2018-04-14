@@ -23,7 +23,7 @@ namespace GanXian.Model
         private decimal? _postage;
         private decimal? _adminchangeamount;
         private decimal? _adminchangepostage;
-        private string _wechatsalesid;
+        private string _expressno;
         private DateTime _createdate;
         private DateTime? _paydate;
         private DateTime? _deliverydate;
@@ -138,10 +138,10 @@ namespace GanXian.Model
         /// <summary>
         /// 
         /// </summary>
-        public string wechatSalesId
+        public string expressNo
         {
-            set { _wechatsalesid = value; }
-            get { return _wechatsalesid; }
+            set { _expressno = value; }
+            get { return _expressno; }
         }
         /// <summary>
         /// 

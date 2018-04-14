@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<GanXian.Model.UserOrderListInfo>
 @{
     ViewBag.Title = "后台管理系统";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -17,34 +17,36 @@
             <ul class="filter-content clearfix">
                 <li>
                     <label>订单号</label>
-                    <input type="text"></input>
+                    <input type="text" id="orderNo" value="@ViewBag.orderNo" />
                 </li>
                 <li>
                     <label>订单状态</label>
-                    <select>
-                        <option>未付款</option>
-                        <option>已付款</option>
-                        <option>已发货</option>
-                        <option>已完成</option>
+                    <select id="orderStatus">
+                        <option value="all">全部</option>
+                        <option value="0">未付款</option>
+                        <option value="1">已付款</option>
+                        <option value="2">已发货</option>
+                        <option value="3">已完成</option>
+                        <option value="7">已退货</option>
                     </select>
                 </li>
                 <li class="datepicker">
                     <label>下单日期</label>
-                    <input type="text" data-beatpicker="true" />
+                    <input type="text" data-beatpicker="true" id="createDate" value="@ViewBag.createDate" />
                 </li>
                 <li>
                     <label>收件人</label>
-                    <input type="text"></input>
+                    <input type="text" id="receiver" value="@ViewBag.receiver" />
                 </li>
                 <li>
                     <label>运单号</label>
-                    <input type="text"></input>
+                    <input type="text" id="expressNo" value="@ViewBag.expressNo" />
                 </li>
             </ul>
             <div class="control">
                 <Section>
-                    <button class="btn">清空</button>
-                    <button class="btn">查询</button>
+                    <button class="btn btn-clean">清空</button>
+                    <button class="btn btn-search">查询</button>
                 </Section>
             </div>
         </div>
@@ -81,268 +83,107 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.status == 6)
+                        {
+                            continue;
+                        }
+                        else if (item.status == 0)
+                        {
                     <tr class="order-unpaid">
-                        <td rowspan="2">GS12830</td>
+                        <td rowspan="2">@item.salesNo.Split('-')[0]</td>
                         <td>未付款</td>
-                        <td>2017-12-30</td>
-                        <td>某某某</td>
-                        <td>13713111111</td>
-                        <td>上海市长宁区中山西路000000号101</td>
-                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td>@item.createDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.receiver</td>
+                        <td>@item.Phone</td>
+                        <td>@item.detailAddress</td>
+                        <td class="operation"></td>
                         <td rowspan="2">
                             <div class="shipping-list">
-
+                                @item.expressNo
                             </div>
                         </td>
                     </tr>
-                    <tr class="product-detail">
-                        <td colspan="5">
-                            <div>
-                                <ul>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                        <td class="edit-price">
-                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
-                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
-                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
-                        </td>
-                    </tr>
-
+                        }
+                        else if (item.status == 1)
+                        {
                     <tr class="order-unshipped">
-                        <td rowspan="2">GS12830</td>
+                        <td rowspan="2">@item.salesNo.Split('-')[0]</td>
                         <td>已付款</td>
-                        <td>2017-12-30</td>
-                        <td>某某某</td>
-                        <td>13713111111</td>
-                        <td>上海市长宁区中山西路000000号101</td>
-                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td>@item.createDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.receiver</td>
+                        <td>@item.Phone</td>
+                        <td>@item.detailAddress</td>
+                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-ios-undo" title="退货"></i></td>
                         <td rowspan="2">
-                            <p class="shipping-list">
-                                4984413147814,<br>4984413147814
-                            </p>
-                        </td>
-                    </tr>
-                    <tr class="product-detail">
-                        <td colspan="5">
-                            <div>
-                                <ul>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="shipping-list">
+                                @item.expressNo
                             </div>
                         </td>
-                        <td class="edit-price">
-                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
-                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
-                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
-                        </td>
                     </tr>
-
+                        }
+                        else if (item.status == 2)
+                        {
                     <tr class="order-in-delivery">
-                        <td rowspan="2">GS12830</td>
+                        <td rowspan="2">@item.salesNo.Split('-')[0]</td>
                         <td>已发货</td>
-                        <td>2017-12-30</td>
-                        <td>某某某</td>
-                        <td>13713111111</td>
-                        <td>上海市长宁区中山西路000000号101</td>
-                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td>@item.createDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.receiver</td>
+                        <td>@item.Phone</td>
+                        <td>@item.detailAddress</td>
+                        <td class="operation"><i class="icon ion-ios-undo" title="退货"></i></td>
                         <td rowspan="2">
-                            <p class="shipping-list">
-                                4984413147814,<br>4984413147814
-                            </p>
-                        </td>
-                    </tr>
-                    <tr class="product-detail">
-                        <td colspan="5">
-                            <div>
-                                <ul>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
+                            <div class="shipping-list">
+                                @item.expressNo
                             </div>
                         </td>
-                        <td class="edit-price">
-                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
-                            <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
-                            <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
-                        </td>
                     </tr>
-
+                        }
+                        else if (item.status == 3)
+                        {
                     <tr class="order-completed">
-                        <td rowspan="2">GS12830</td>
+                        <td rowspan="2">@item.salesNo.Split('-')[0]</td>
                         <td>已完成</td>
-                        <td>2017-12-30</td>
-                        <td>某某某</td>
-                        <td>13713111111</td>
-                        <td>上海市长宁区中山西路000000号101</td>
-                        <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-trash-a" title="删除"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                        <td>@item.createDate.ToString("yyyy-MM-dd")</td>
+                        <td>@item.receiver</td>
+                        <td>@item.Phone</td>
+                        <td>@item.detailAddress</td>
+                        <td class="operation"><i class="icon ion-ios-undo" title="退货"></i></td>
                         <td rowspan="2">
-                            <p class="shipping-list">
-                                4984413147814,<br>4984413147814
-                            </p>
+                            <div class="shipping-list">
+                                @item.expressNo
+                            </div>
                         </td>
                     </tr>
+                        }
                     <tr class="product-detail">
                         <td colspan="5">
                             <div>
                                 <ul>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product02.jpg">
-                                            <div>
-                                                <span>小眼带鱼122223</span>
-                                                <span>￥20.00</span>
-                                                <span>x2</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="../view.html">
-                                            <img src="../img/product01.jpg">
-                                            <div>
-                                                <span>小眼带鱼123123</span>
-                                                <span>￥20.00</span>
-                                                <span>x1</span>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    @foreach (var item2 in item.Order2ProductsList)
+                                        {
+                                        <li>
+                                            <a href="#">
+                                                <img title=@item2.productName src=@string.Concat(ViewBag.ProjectUrl,  item2.showPic)>
+                                                <div>
+                                                    <span title=@item2.productName>@item2.productName</span>
+                                                    <span>@string.Concat("￥", item2.discountedPrice)</span>
+                                                    <span>@string.Concat("x", item2.num)</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        }
                                 </ul>
                             </div>
                         </td>
                         <td class="edit-price">
-                            共 9 件商品，<br>合计：<span class="red">￥280.00</span><br>运费：<span class="red">￥10.00</span><br>
+                            共<span>@item.Order2ProductsList.Count</span>种商品，<br>合计：<span class="red">@string.Concat("￥", item.amount)</span><br>运费：<span class="red">@string.Concat("￥", item.postage)</span><br>
                             <p class="clearfix"><input type="text" placeholder="输入新价格"><button class="btn">修改</button></p>
                             <p class="clearfix"><input type="text" placeholder="输入新运费"><button class="btn">修改</button></p>
                         </td>
                     </tr>
-
+                    }
                 </tbody>
             </table>
         </div>
@@ -350,7 +191,6 @@
 </div>
 
 @section popup {
-
     <div class="popup delete-alert">
         <div class="popup-bg"></div>
         <div class="popup-inner">
@@ -383,21 +223,7 @@
 
 @section scripts{
     <script charset="utf-8" src="~/Content/datepicker/js/BeatPicker.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('.main a').removeClass('focus');
-            $('.main a').eq(2).addClass('focus');
-        })
-        
-        clickPopup(".ion-trash-a", ".delete-alert");
-        clickPopup(".ion-logistics", ".delivery-alert");
-        clickPopup(".ion-ios-undo", ".return-alert");
-        $(".order-unpaid").next().find(".edit-price p").show();
-        var addShipping = '<p class="blue"><input type="text" placeholder="请输入运单号"></p>';
-        $(".add-shipping").click(function () {
-            $(".blue:last").after(addShipping);
-        })
-    </script>
+    <script type="text/javascript" src="~/Scripts/Admin/order.js"></script>
 }
 
 

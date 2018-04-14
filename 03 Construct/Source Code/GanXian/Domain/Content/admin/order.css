@@ -53,7 +53,7 @@
 .product-detail li span {
 	display: block;
 	text-overflow: ellipsis;
-	/*overflow: hidden;*/
+	overflow: hidden;
 	word-wrap: break-word;
 	height: 1.5em;
 	line-height: 1.5em;
@@ -113,6 +113,6 @@
 .order-in-delivery .ion-ios-undo, .order-completed .ion-ios-undo {
 	display: inline-block;
 }
-.edit-price p {
+/*.edit-price p {
 	display: none;
-}
+}*/

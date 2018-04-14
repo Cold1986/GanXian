@@ -309,6 +309,7 @@
     <Content Include="img\WeChat Image_2017113013414420.jpg" />
     <Content Include="img\WeChat Image_2017113013414421.jpg" />
     <Content Include="img\WeChat Image_2017113013414422.jpg" />
+    <Content Include="Scripts\Admin\order.js" />
     <Content Include="Scripts\Admin\product.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

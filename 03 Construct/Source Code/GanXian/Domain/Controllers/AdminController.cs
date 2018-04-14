@@ -260,9 +260,50 @@ namespace Domain.Controllers
             return fileNewName;
         }
 
-        public ActionResult order()
+        /// <summary>
+        /// 订单管理页面
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public ActionResult order(string orderNo, string createDate, string receiver, string expressNo, string status)
         {
-            return View();
+            List<GanXian.Model.UserOrderListInfo> userOrderList = new List<GanXian.Model.UserOrderListInfo>();
+            try
+            {
+                userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
+                if (status.ToLower() != "all")
+                {
+                    userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
+                }
+                if (!string.IsNullOrEmpty(orderNo))
+                {
+                    userOrderList = userOrderList.Where(x => x.salesNo.Contains(orderNo.ToLower())).ToList();
+                }
+                if (!string.IsNullOrEmpty(receiver))
+                {
+                    userOrderList = userOrderList.Where(x => x.receiver.ToLower().Contains(receiver.ToLower())).ToList();
+                }
+                if (!string.IsNullOrEmpty(expressNo))
+                {
+                    userOrderList = userOrderList.Where(x => x.expressNo.ToLower().Contains(expressNo.ToLower())).ToList();
+                }
+                if (!string.IsNullOrEmpty(createDate))
+                {
+                    userOrderList = userOrderList.Where(x => x.createDate.ToString("yyyy-MM-dd").Equals(createDate)).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                _Apilog.WriteLog("AdminController order 异常：" + e.Message);
+            }
+            ViewBag.status = status;
+            ViewBag.orderNo = orderNo;
+            ViewBag.createDate = createDate;
+            ViewBag.receiver = receiver;
+            ViewBag.expressNo = expressNo;
+
+            ViewBag.ProjectUrl = System.Configuration.ConfigurationSettings.AppSettings["projectUrl"];
+            return View(userOrderList);
         }
     }
 }
