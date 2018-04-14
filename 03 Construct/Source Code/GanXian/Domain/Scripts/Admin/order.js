@@ -90,6 +90,30 @@ function change(type, salesNo, amount) {
     });
 }
 
+function returnProd(salesNo) {
+    if (confirm("确定退货操作么？")) {
+        $.ajax({
+            url: "ChangeStatusReturn",
+            data: {
+                "salesNo": salesNo
+            },
+            type: 'post',
+            async: false, //默认为true 异步   
+            dataType: 'json',
+            error: function (data) {
+                alert('修改失败，请联系管理员查看');
+            },
+            success: function (retData) {
+                if (retData == "success") {
+
+                } else {
+                    alert('修改失败，请联系管理员查看');
+                }
+            },
+        });
+    }
+}
+
 //clickPopup(".ion-trash-a", ".delete-alert");
 //clickPopup(".ion-logistics", ".delivery-alert");
 //clickPopup(".ion-ios-undo", ".return-alert");

@@ -328,5 +328,21 @@ namespace Domain.Controllers
             }
             return Json(res);
         }
+
+        [HttpPost]
+        public JsonResult ChangeStatusReturn(string salesNo)
+        {
+            string res = "success";
+            try
+            {
+                OrderBiz.CreateNew().adminReturnProd(salesNo);
+            }
+            catch (Exception e)
+            {
+                res = "fail";
+                _Apilog.WriteLog("AdminController ChangeStatus 异常：" + e.Message);
+            }
+            return Json(res);
+        }
     }
 }

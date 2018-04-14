@@ -132,7 +132,7 @@
                                 <td>@item.receiver</td>
                                 <td>@item.Phone</td>
                                 <td>@item.detailAddress</td>
-                                <td class="operation"><i class="icon ion-logistics" title="发货"></i><i class="icon ion-ios-undo" title="退货"></i></td>
+                                <td class="operation"><i class="icon ion-logistics" title="发货" onclick="addExpressNo('@item.salesNo')"></i><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
                                         @item.expressNo
@@ -149,7 +149,7 @@
                                 <td>@item.receiver</td>
                                 <td>@item.Phone</td>
                                 <td>@item.detailAddress</td>
-                                <td class="operation"><i class="icon ion-ios-undo" title="退货"></i></td>
+                                <td class="operation"><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
                                         @item.expressNo
@@ -166,7 +166,7 @@
                                 <td>@item.receiver</td>
                                 <td>@item.Phone</td>
                                 <td>@item.detailAddress</td>
-                                <td class="operation"><i class="icon ion-ios-undo" title="退货"></i></td>
+                                <td class="operation"><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
                                         @item.expressNo
@@ -240,6 +240,7 @@
     <div class="popup delivery-alert">
         <div class="popup-bg"></div>
         <div class="popup-inner shipping">
+            <input type="hidden" id="hidSalesNo" />
             <p class="blue"><input type="text" placeholder="请输入运单号"></p>
             <div class="add-shipping"><a href="javascript:">添加一张运单</a></div>
             <div>

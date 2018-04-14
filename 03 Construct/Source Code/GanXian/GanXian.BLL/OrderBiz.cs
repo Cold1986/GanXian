@@ -206,6 +206,31 @@ namespace GanXian.BLL
         }
 
         /// <summary>
+        /// 管理员执行退货操作
+        /// </summary>
+        /// <param name="salesNo"></param>
+        /// <param name="adminChangeAmount"></param>
+        /// <returns></returns>
+        public bool adminReturnProd(string salesNo)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set status=7,column2=now() where salesNo=@salesNo";
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo}).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
         /// 管理员修改邮费
         /// </summary>
         /// <param name="salesNo"></param>
