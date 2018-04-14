@@ -45,7 +45,51 @@
         $('#receiver').val('');
         $('#expressNo').val('');
     });
+
+    $('.popup-cancel').click(function () {
+        $('.delivery-alert').hide();
+    });
+
+    $('.popup-confirm').click(function () {
+        var salesNo = $('#hidSalesNo').val();
+        if (salesNo != '') {
+            var orderExpressNo = $('#orderExpressNo').val().trim();
+            if (orderExpressNo == '') {
+                if (confirm('确定不填写订单号发货么？')) {
+                    deliverProds(orderExpressNo, salesNo);
+                }
+            } else {
+                deliverProds(orderExpressNo, salesNo);
+            }
+
+        }
+        else {
+            alert('未获取到订单信息');
+        }
+    });
 })
+function deliverProds(orderExpressNo, salesNo) {
+    $.ajax({
+        url: "deliverProds",
+        data: {
+            "orderExpressNo": orderExpressNo,
+            "salesNo": salesNo
+        },
+        type: 'post',
+        async: false, //默认为true 异步   
+        dataType: 'json',
+        error: function (data) {
+            alert('修改失败，请联系管理员查看');
+        },
+        success: function (retData) {
+            if (retData == "success") {
+                location.href = 'order?orderNo=' + salesNo;
+            } else {
+                alert('修改失败，请联系管理员查看');
+            }
+        },
+    });
+}
 
 function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -105,7 +149,7 @@ function returnProd(salesNo) {
             },
             success: function (retData) {
                 if (retData == "success") {
-
+                    location.href = 'order?orderNo=' + salesNo;
                 } else {
                     alert('修改失败，请联系管理员查看');
                 }
@@ -113,6 +157,16 @@ function returnProd(salesNo) {
         });
     }
 }
+
+function addExpressNo(salesNo) {
+    $('#hidSalesNo').val(salesNo);
+    $('#orderExpressNo').val('');
+    $('.delivery-alert').show();
+}
+
+
+
+
 
 //clickPopup(".ion-trash-a", ".delete-alert");
 //clickPopup(".ion-logistics", ".delivery-alert");

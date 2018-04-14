@@ -270,7 +270,14 @@ namespace Domain.Controllers
             List<GanXian.Model.UserOrderListInfo> userOrderList = new List<GanXian.Model.UserOrderListInfo>();
             try
             {
-                userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
+                if (!string.IsNullOrEmpty(orderNo))
+                {
+                    userOrderList = OrderBiz.CreateNew().getAllOrderListInfo(orderNo);
+                }
+                else
+                {
+                    userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
+                }
                 if (status.ToLower() != "all")
                 {
                     userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
@@ -341,6 +348,22 @@ namespace Domain.Controllers
             {
                 res = "fail";
                 _Apilog.WriteLog("AdminController ChangeStatus 异常：" + e.Message);
+            }
+            return Json(res);
+        }
+
+        [HttpPost]
+        public JsonResult deliverProds(string salesNo, string expressNo)
+        {
+            string res = "success";
+            try
+            {
+                OrderBiz.CreateNew().deliverProds(salesNo, expressNo);
+            }
+            catch (Exception e)
+            {
+                res = "fail";
+                _Apilog.WriteLog("AdminController deliverProds 异常：" + e.Message);
             }
             return Json(res);
         }

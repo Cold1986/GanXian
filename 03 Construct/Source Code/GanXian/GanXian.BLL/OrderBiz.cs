@@ -219,7 +219,32 @@ namespace GanXian.BLL
                 try
                 {
                     string updateSalesSlipSQL = "update salesslip set status=7,column2=now() where salesNo=@salesNo";
-                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo}).ToString();
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo }).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 管理员发送物品操作
+        /// </summary>
+        /// <param name="salesNo"></param>
+        /// <param name="expressNo"></param>
+        /// <returns></returns>
+        public bool deliverProds(string salesNo, string expressNo)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set status=2,deliveryDate=now(),column2=now(),expressNo=@expressNo where salesNo=@salesNo";
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo, expressNo = expressNo }).ToString();
                     res = true;
                 }
                 catch (Exception e)
