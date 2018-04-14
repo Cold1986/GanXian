@@ -53,6 +53,43 @@ function GetQueryString(name) {
     if (r != null) return unescape(r[2]); return null;
 }
 
+function changeAmount(salesNo, obj) {
+    if (obj.previousElementSibling.value.trim() != '') {
+        change('changeAmount', salesNo, obj.previousElementSibling.value.trim());
+    }
+
+}
+
+function changeExpress(salesNo, obj) {
+    if (obj.previousElementSibling.value.trim() != '') {
+        change('changeExpress', salesNo, obj.previousElementSibling.value.trim());
+    }
+}
+
+function change(type, salesNo, amount) {
+    $.ajax({
+        url: "ChangePrice",
+        data: {
+            "type": type,
+            "salesNo": salesNo,
+            "price": amount
+        },
+        type: 'post',
+        async: false, //默认为true 异步   
+        dataType: 'json',
+        error: function (data) {
+            alert('修改失败，请联系管理员查看');
+        },
+        success: function (retData) {
+            if (retData == "success") {
+                alert('修改成功，请尽快联系买家付款');
+            } else {
+                alert('修改失败，请联系管理员查看');
+            }
+        },
+    });
+}
+
 //clickPopup(".ion-trash-a", ".delete-alert");
 //clickPopup(".ion-logistics", ".delivery-alert");
 //clickPopup(".ion-ios-undo", ".return-alert");

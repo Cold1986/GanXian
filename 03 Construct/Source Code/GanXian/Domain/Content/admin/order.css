@@ -107,12 +107,12 @@
 .order-unshipped .ion-logistics {
 	display: inline-block;
 }
-.ion-ios-undo {
+/*.ion-ios-undo {
 	display: none;
 }
 .order-in-delivery .ion-ios-undo, .order-completed .ion-ios-undo {
 	display: inline-block;
-}
+}*/
 /*.edit-price p {
 	display: none;
 }*/

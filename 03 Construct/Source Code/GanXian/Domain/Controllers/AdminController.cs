@@ -305,5 +305,28 @@ namespace Domain.Controllers
             ViewBag.ProjectUrl = System.Configuration.ConfigurationSettings.AppSettings["projectUrl"];
             return View(userOrderList);
         }
+
+        [HttpPost]
+        public JsonResult ChangePrice(string type, string salesNo, decimal price)
+        {
+            string res = "success";
+            try
+            {
+                if (type == "changeAmount")
+                {
+                    OrderBiz.CreateNew().adminChangeAmount(salesNo, price);
+                }
+                else if (type == "changeExpress")
+                {
+                    OrderBiz.CreateNew().adminChangePostage(salesNo, price);
+                }
+            }
+            catch (Exception e)
+            {
+                res = "fail";
+                _Apilog.WriteLog("AdminController ChangePrice 异常：" + e.Message);
+            }
+            return Json(res);
+        }
     }
 }

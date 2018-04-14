@@ -180,6 +180,57 @@ namespace GanXian.BLL
             return res;
         }
 
+        /// <summary>
+        /// 管理员修改价格
+        /// </summary>
+        /// <param name="salesNo"></param>
+        /// <param name="adminChangeAmount"></param>
+        /// <returns></returns>
+        public bool adminChangeAmount(string salesNo, decimal adminChangeAmount)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set adminChangeAmount=@adminChangeAmount where salesNo=@salesNo";
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo, adminChangeAmount = adminChangeAmount }).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 管理员修改邮费
+        /// </summary>
+        /// <param name="salesNo"></param>
+        /// <param name="adminChangeAmount"></param>
+        /// <returns></returns>
+        public bool adminChangePostage(string salesNo, decimal adminChangePostage)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = "update salesslip set adminChangePostage=@adminChangePostage where salesNo=@salesNo";
+                    conn.Execute(updateSalesSlipSQL, new { salesNo = salesNo, adminChangePostage = adminChangePostage }).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+
         public bool userUpdateOrderAddress(salesslip paidOrder)
         {
             bool res = false;
