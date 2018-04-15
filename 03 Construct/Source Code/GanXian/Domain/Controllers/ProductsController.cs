@@ -601,7 +601,7 @@ namespace Domain.Controllers
             {
                 try
                 {
-                    string salesNo = Guid.NewGuid().ToString();
+                    string salesNo = WxPayApi.GenerateOutTradeNo();// Guid.NewGuid().ToString();
                     OrderBiz.CreateNew().createOrder(prodId, num, userOpenId, salesNo);
                     res = salesNo;
                 }
@@ -647,7 +647,7 @@ namespace Domain.Controllers
 
                     if (prodExist)
                     {
-                        string salesNo = Guid.NewGuid().ToString();
+                        string salesNo = WxPayApi.GenerateOutTradeNo();// Guid.NewGuid().ToString();
                         OrderBiz.CreateNew().createOrderFromShopcart(prodIds, userOpenId, salesNo);
                         res = salesNo;
                     }

@@ -92,7 +92,7 @@
                         else if (item.status == 0)
                         {
                             <tr class="order-unpaid">
-                                <td rowspan="2">@item.salesNo.Split('-')[0]</td>
+                                <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>未付款</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
                                 <td>@item.receiver</td>

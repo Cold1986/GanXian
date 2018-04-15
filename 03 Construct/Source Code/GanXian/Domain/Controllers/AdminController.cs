@@ -270,14 +270,7 @@ namespace Domain.Controllers
             List<GanXian.Model.UserOrderListInfo> userOrderList = new List<GanXian.Model.UserOrderListInfo>();
             try
             {
-                if (!string.IsNullOrEmpty(orderNo))
-                {
-                    userOrderList = OrderBiz.CreateNew().getAllOrderListInfo(orderNo);
-                }
-                else
-                {
-                    userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
-                }
+                userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
                 if (status.ToLower() != "all")
                 {
                     userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
