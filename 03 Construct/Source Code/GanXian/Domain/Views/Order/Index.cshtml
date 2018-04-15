@@ -49,6 +49,15 @@
             <div class="order-list-info total">
                 <p>总价<span>@string.Concat("￥", Model.amount)</span></p>
                 <p>运费<span>@string.Concat("￥", Model.postage)</span></p>
+                @if (Model.adminChangeAmount !=null)
+                {
+                    <p>调整总价<span>@string.Concat("￥", Model.adminChangeAmount)</span></p>
+                }
+                @if (Model.adminChangePostage != null)
+                {
+                    <p>调整邮费<span>@string.Concat("￥", Model.adminChangePostage)</span></p>
+                }
+
                 <p>实付款（含运费）<span class="red">￥@ViewBag.totalPrice</span></p>
             </div>
         </div>

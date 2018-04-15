@@ -109,7 +109,7 @@
                         else if (item.status == 7)
                         {
                             <tr class="order-unpaid">
-                                <td rowspan="2">@item.salesNo.Split('-')[0]</td>
+                                <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已退货</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
                                 <td>@item.receiver</td>
@@ -126,7 +126,7 @@
                         else if (item.status == 1)
                         {
                             <tr class="order-unshipped">
-                                <td rowspan="2">@item.salesNo.Split('-')[0]</td>
+                                <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已付款</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
                                 <td>@item.receiver</td>
@@ -143,7 +143,7 @@
                         else if (item.status == 2)
                         {
                             <tr class="order-in-delivery">
-                                <td rowspan="2">@item.salesNo.Split('-')[0]</td>
+                                <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已发货</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
                                 <td>@item.receiver</td>
@@ -160,7 +160,7 @@
                         else if (item.status == 3)
                         {
                             <tr class="order-completed">
-                                <td rowspan="2">@item.salesNo.Split('-')[0]</td>
+                                <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已完成</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
                                 <td>@item.receiver</td>

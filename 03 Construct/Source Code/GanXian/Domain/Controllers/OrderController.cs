@@ -43,7 +43,27 @@ namespace Domain.Controllers
                 }
                 else
                 {
-                    ViewBag.totalPrice = userOrderList.amount + userOrderList.postage;
+                    decimal? factPrice = 0;
+                    decimal? factPostage = 0;
+                    if (Convert.IsDBNull(userOrderList.adminChangeAmount) || userOrderList.adminChangeAmount == null)
+                    {
+                        factPrice = userOrderList.amount;
+                    }
+                    else
+                    {
+                        factPrice = userOrderList.adminChangeAmount;
+                    }
+
+                    if (Convert.IsDBNull(userOrderList.adminChangePostage) || userOrderList.adminChangePostage == null)
+                    {
+                        factPostage = userOrderList.postage;
+                    }
+                    else
+                    {
+                        factPostage = userOrderList.adminChangePostage;
+                    }
+
+                    ViewBag.totalPrice = factPostage + factPrice;
                 }
             }
             catch (Exception e)
