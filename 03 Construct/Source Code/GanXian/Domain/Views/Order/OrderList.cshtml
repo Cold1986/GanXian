@@ -40,22 +40,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>件商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（运费 ￥12.00起）</span>
+                                    <span>运费 ￥12.00起</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)</span>
+                                    <span>运费 ￥12.00起</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
 
@@ -88,22 +89,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>种商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>种商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.postage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
                             <p>
@@ -134,22 +136,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>件商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.postage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
                             <p>
@@ -181,22 +184,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>件商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.postage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
                             <p>
@@ -228,22 +232,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>件商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.postage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
                             <p>
@@ -275,22 +280,23 @@
                         </ul>
                         <div class="order-list-info">
                             <p>
-                                共<span class="red">@item.Order2ProductsList.Count</span>件商品 共
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
                                 @if (item.adminChangeAmount == null)
                                 {
                                     <span class="red">@string.Concat("￥", item.amount)</span>
                                 }
                                 else
                                 {
-                                    <span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
                                 }
+                                <br />
                                 @if (item.adminChangePostage == null)
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.postage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
                                 }
                                 else
                                 {
-                                    <span>（@string.Concat("运费 ￥", item.adminChangePostage)）</span>
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
                                 }
                             </p>
                             <p>
