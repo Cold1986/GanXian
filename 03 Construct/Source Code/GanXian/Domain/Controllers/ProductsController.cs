@@ -338,7 +338,7 @@ namespace Domain.Controllers
             }
             else if (userSalesSlip.status == 5)
             {
-                userSalesSlip.status = OrderBiz.CreateNew().dealExpectionOrder(userSalesSlip.salesNo);
+                userSalesSlip.status = OrderBiz.CreateNew().dealExpectionOrder(userSalesSlip.salesNo, userSalesSlip.wechatOrderNo);
             }
             if (userSalesSlip.status == 0)//0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已过期
             {
@@ -402,18 +402,38 @@ namespace Domain.Controllers
                 return RedirectToAction("OrderList", "Order", new { status = userSalesSlip.status });
             }
 
+            decimal factPrice = 0;
+            decimal factPostage = 0;
+            if (Convert.IsDBNull(userSalesSlip.adminChangeAmount) || userSalesSlip.adminChangeAmount == null)
+            {
+                factPrice = productsPrice;
+            }
+            else
+            {
+                factPrice = userSalesSlip.adminChangeAmount ?? 1;
+            }
 
+            if (Convert.IsDBNull(userSalesSlip.adminChangePostage) || userSalesSlip.adminChangePostage == null)
+            {
+                factPostage = postage;
+            }
+            else
+            {
+                factPostage = userSalesSlip.adminChangePostage ?? 1;
+            }
 
             //若传递了相关参数，则调统一下单接口，获得后续相关接口的入口参数
             JsApiPay jsApiPay = new JsApiPay();
             jsApiPay.openid = userOpenId;
-            jsApiPay.total_fee = base.isPayTest == "false" ? decimal.ToInt32(productsPrice * 100 + postage * 100) : 1;//测试环境默认支付1分
+            jsApiPay.total_fee = base.isPayTest == "false" ? decimal.ToInt32(factPrice * 100 + factPostage * 100) : 1;//测试环境默认支付1分
 
             //JSAPI支付预处理
             try
             {
+                string wechatOrderId = Guid.NewGuid().ToString("N").ToLower();
+                OrderBiz.CreateNew().updateWechatOrderId(orderId, userOpenId, wechatOrderId);
 
-                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(wechatBody, orderId.Replace("-", ""));
+                WxPayData unifiedOrderResult = jsApiPay.GetUnifiedOrderResult(wechatBody, wechatOrderId);//orderId
                 ViewBag.wxJsApiParam = jsApiPay.GetJsApiParameters();//获取H5调起JS API参数    
                 _Apilog.WriteLog("ProductsController/Checkout 用户userOpenId: " + userOpenId + " wxJsApiParam : " + ViewBag.wxJsApiParam);
                 //Log.Debug(this.GetType().ToString(), "wxJsApiParam : " + wxJsApiParam);
@@ -430,10 +450,12 @@ namespace Domain.Controllers
             //_Apilog.WriteLog(orderId);
             ViewBag.productsPrice = productsPrice;
             ViewBag.postage = postage;
-            ViewBag.totalCost = productsPrice + postage;
+            ViewBag.totalCost = factPrice + factPostage;//productsPrice + postage;
             ViewBag.FooterType = "custom";
             ViewBag.PageName = "结算";
             ViewBag.ProjectUrl = base.projectURL;
+            ViewBag.adminChangeAmount = userSalesSlip.adminChangeAmount;
+            ViewBag.adminChangePostage = userSalesSlip.adminChangePostage;
             checkOutModels.UserAddress = userRes;
             return View(checkOutModels);
         }

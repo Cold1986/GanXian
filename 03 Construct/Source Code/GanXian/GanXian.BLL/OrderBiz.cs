@@ -116,6 +116,15 @@ namespace GanXian.BLL
             return userSalesSlip;
         }
 
+        public void updateWechatOrderId(string orderId, string userOpenId, string wechatOrderNo)
+        {
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCommandText = @"update ganxian.salesslip set wechatOrderNo=@wechatOrderNo where salesNo=@orderId and userOpenId=@userOpenId";
+                conn.Execute(sqlCommandText, new { orderId = orderId, userOpenId = userOpenId, wechatOrderNo = wechatOrderNo });
+            }
+        }
+
 
 
         /// <summary>
@@ -130,7 +139,7 @@ namespace GanXian.BLL
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
                 //c.status0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
-                string sqlCommandText = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
+                string sqlCommandText = @"SELECT a.num,a.createdTimePrice ,b.* FROM ganxian.sales2products a 
                                             inner join products b on a.productid=b.productid
                                             where  b.status=1 and a.salesId=@salesId
                                             order by a.createDate desc";
@@ -305,12 +314,12 @@ namespace GanXian.BLL
             return res;
         }
 
-        public int dealExpectionOrder(string salesNo)
+        public int dealExpectionOrder(string salesNo,string wechatOrderNo)
         {
             int status = 0;
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string queryRes = OrderQuery.Run("", salesNo.Replace("-", "")); //调用订单查询业务逻辑
+                string queryRes = OrderQuery.Run("", wechatOrderNo); //调用订单查询业务逻辑
                 string[] qRes = queryRes.Split(new[] { "<br>" }, StringSplitOptions.None);
                 foreach (var q in qRes)
                 {
@@ -362,7 +371,7 @@ namespace GanXian.BLL
                     #region 异常数据情况
                     if (userOrder.status == 5)
                     {
-                        userOrder.status = dealExpectionOrder(userOrder.salesNo);
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo,userOrder.wechatOrderNo);
                     }
                     #endregion
                     #region status==0 未付款，已失效情况
@@ -495,7 +504,7 @@ namespace GanXian.BLL
                     #region 异常数据情况
                     if (userOrder.status == 5)
                     {
-                        userOrder.status = dealExpectionOrder(userOrder.salesNo);
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo,userOrder.wechatOrderNo);
                     }
                     #endregion
                     #region status==0 未付款，已失效情况

@@ -20,5 +20,10 @@ namespace GanXian.Model
         /// 商品小计
         /// </summary>
         public decimal? productTotalPrice { get; set; }
+
+        /// <summary>
+        /// 创建时价格
+        /// </summary>
+        public decimal createdTimePrice { get; set; }
     }
 }

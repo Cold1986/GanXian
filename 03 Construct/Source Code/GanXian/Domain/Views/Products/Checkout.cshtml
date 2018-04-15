@@ -5,6 +5,23 @@
 }
 
 @*<link rel="stylesheet" href="~/Content/orderlist.css">*@
+<style>
+    .tips {
+        position: fixed;
+        bottom: 49px;
+        width: 100%;
+        background: #ffec80;
+        font-size: 12px;
+        color: #f00;
+        padding: 5px 10px 5px;
+    }
+
+        .tips p {
+            margin: 0;
+            line-height: 20px;
+            text-align: left;
+        }
+</style>
 <div class="maincontainer checkout">
     <div class="container" style="max-width:768px;margin:0 auto;">
         <div class="row">
@@ -37,6 +54,23 @@
         </div>
     </div>
 </div>
+<div id="tips" class="tips">
+    @foreach (var item in Model.UserOrderInfo)
+    {
+        if (item.createdTimePrice != item.discountedPrice)
+        {
+            <p>@string.Concat(item.productName, "： ￥", item.discountedPrice, " -- > ￥", item.createdTimePrice)</p>
+        }
+    }
+    @if (ViewBag.adminChangeAmount != null)
+    {
+        <p>@string.Concat("管理员修改订单价格： ￥", ViewBag.totalCost, " -- > ￥", ViewBag.adminChangeAmount)</p>
+    }
+    @if (ViewBag.adminChangePostage != null)
+    {
+        <p>@string.Concat("管理员修改邮费价格： ￥", ViewBag.postage, " -- > ￥", ViewBag.adminChangePostage)</p>
+    }
+</div>
 <footer class="footer checkout">
     <div class="foot-con">
         <div class="foot-con_2">
@@ -48,6 +82,10 @@
 <script>
 
     $(function () {
+        if($('#tips').html().trim().length!=0){
+            $('#tips').addClass("tips").prepend('<div>订单价格有更新，请确认：</div>');
+        }
+
         $('.btn-buy').click(function () {
             var receiver = $("#receiver").html();
             var phone = $('#Phone').html();
@@ -181,7 +219,7 @@
                  }
              }
          }
-         );
+     );
     }
 
     function callpay() {
