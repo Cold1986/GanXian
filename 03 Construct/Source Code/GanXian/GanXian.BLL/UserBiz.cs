@@ -344,5 +344,32 @@ namespace GanXian.BLL
                 return userList;
             }
         }
+
+        /// <summary>
+        /// 校验是否是后台管理员
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool isAdminUser(string account, string password)
+        {
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"select 1 from ManagerUsers where accountName =@accountName and psd=@psd and status=1 ";
+                    if (conn.Query(sqlCommandText, new { accountName = account, psd = password }).ToList().Any())
+                    {
+                        res = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
+        }
     }
 }

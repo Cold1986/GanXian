@@ -42,7 +42,7 @@ namespace Domain.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            if (model.Account == "Admin" && model.Password == "Good2018@")
+            if (UserBiz.CreateNew().isAdminUser(model.Account, model.Password))
             {
                 HttpContext.Session["LoginedUser"] = "adminUser";
                 return RedirectToLocal(returnUrl);
