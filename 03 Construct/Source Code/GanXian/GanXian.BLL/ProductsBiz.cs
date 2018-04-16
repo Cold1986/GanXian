@@ -58,9 +58,10 @@ namespace GanXian.BLL
             return products;
         }
 
-        public bool insertProduct(products prod, string tabs)
+        public string insertProduct(products prod, string tabs)
         {
-            bool res = false;
+            string prodId = string.Empty;
+            //bool res = false;
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
                 IDbTransaction transaction = conn.BeginTransaction();
@@ -68,25 +69,94 @@ namespace GanXian.BLL
                 {
                     string insertProdSQL = "insert into products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,showPic,origin,nw,storageCondition,remark,createDate,status,cost) values(@productName,@specs,@originalPrice,@discountedPrice,@pic1,@pic2,@pic3,@pic4,@showPic,@origin,@nw,@storageCondition,@remark,now(),1,@cost);select @@IDENTITY";
 
-                    string prodId = conn.ExecuteScalar(insertProdSQL, prod, transaction).ToString();
-
-                    string[] t = tabs.Split(',');
-                    for (int i = 0; i < t.Count(); i++)
+                    prodId = conn.ExecuteScalar(insertProdSQL, prod, transaction).ToString();
+                    if (!string.IsNullOrEmpty(tabs))
                     {
-                        if (!string.IsNullOrEmpty(t[i]))
+                        string[] t = tabs.Split(',');
+                        for (int i = 0; i < t.Count(); i++)
                         {
-                            string sqlCommandText = @"insert into products2tabs(productId,tabId,isShow,createDate,status) values(@prodId,@tabId,0,now(),1) ";
-                            conn.Execute(sqlCommandText, new { prodId = prodId, tabId = t[i] }, transaction);
+                            if (!string.IsNullOrEmpty(t[i]))
+                            {
+                                string sqlCommandText = @"insert into products2tabs(productId,tabId,isShow,createDate,status) values(@prodId,@tabId,0,now(),1) ";
+                                conn.Execute(sqlCommandText, new { prodId = prodId, tabId = t[i] }, transaction);
+                            }
                         }
                     }
                     //提交事务
                     transaction.Commit();
-                    res = true;
+                    //res = true;
                 }
                 catch (Exception e)
                 {
                     //出现异常，事务Rollback
                     transaction.Rollback();
+                    throw new Exception(e.Message);
+                }
+            }
+            return prodId;
+        }
+
+        public bool insertProductChangeLog(productchangelog changelog)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+
+                try
+                {
+                    string insertProdSQL = @"INSERT INTO `ganxian`.`productchangelog`
+                                            (`Operator`,
+                                            `LogTime`,
+                                            `productId`,
+                                            `productName`,
+                                            `specs`,
+                                            `originalPrice`,
+                                            `discountedPrice`,
+                                            `discountedExpiredDate`,
+                                            `cost`,
+                                            `pic1`,
+                                            `pic2`,
+                                            `pic3`,
+                                            `pic4`,
+                                            `showPic`,
+                                            `origin`,
+                                            `nw`,
+                                            `storageCondition`,
+                                            `remark`,
+                                            `createDate`,
+                                            `status`,
+                                            `column1`,
+                                            `column2`)
+                                            VALUES
+                                            (@Operator,
+                                            @LogTime,
+                                            @productId,
+                                            @productName,
+                                            @specs,
+                                            @originalPrice,
+                                            @discountedPrice,
+                                            @discountedExpiredDate,
+                                            @cost,
+                                            @pic1,
+                                            @pic2,
+                                            @pic3,
+                                            @pic4,
+                                            @showPic,
+                                            @origin,
+                                            @nw,
+                                            @storageCondition,
+                                            @remark,
+                                            @createDate,
+                                            @status,
+                                            @column1,
+                                            @column2);";
+
+                    conn.Execute(insertProdSQL, changelog);
+
+                    res = true;
+                }
+                catch (Exception e)
+                {
                     throw new Exception(e.Message);
                 }
             }
@@ -201,7 +271,8 @@ namespace GanXian.BLL
                         System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                         foreach (System.Reflection.PropertyInfo item2 in pro)
                         {
-                            try {
+                            try
+                            {
                                 if (item2.Name == item.showPic)
                                 {
                                     item.showPic = item2.GetValue(item).ToString();

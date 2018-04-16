@@ -45,6 +45,7 @@ namespace Domain.Controllers
             if (UserBiz.CreateNew().isAdminUser(model.Account, model.Password))
             {
                 HttpContext.Session["LoginedUser"] = "adminUser";
+                HttpContext.Session["LoginedUserName"] = model.Account;
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -227,17 +228,45 @@ namespace Domain.Controllers
                 //新增
                 if (string.IsNullOrEmpty(r_productId))
                 {
-                    productBiz.insertProduct(prod, tablist);
+                    r_productId = productBiz.insertProduct(prod, tablist);
                 }
                 else
                 {
                     productBiz.updateProductById(prod, tablist);
                 }
+                var prodInfo = productBiz.getProductById(Convert.ToInt32(r_productId), false);
+
+                productchangelog changelog = new productchangelog();
+                if (HttpContext.Session["LoginedUserName"] != null) changelog.Operator = HttpContext.Session["LoginedUserName"].ToString();
+                changelog.LogTime = System.DateTime.Now;
+                changelog.productId = prodInfo.productId;
+                changelog.productName = prodInfo.productName;
+                changelog.specs = prodInfo.specs;
+                changelog.originalPrice = prodInfo.originalPrice;
+                changelog.discountedPrice = prodInfo.discountedPrice;
+                changelog.discountedExpiredDate = prodInfo.discountedExpiredDate;
+                changelog.cost = prodInfo.cost;
+                changelog.pic1 = prodInfo.pic1;
+                changelog.pic2 = prodInfo.pic2;
+                changelog.pic3 = prodInfo.pic3;
+                changelog.pic4 = prodInfo.pic4;
+                changelog.showPic = prodInfo.showPic;
+                changelog.origin = prodInfo.origin;
+                changelog.nw = prodInfo.nw;
+                changelog.storageCondition = prodInfo.storageCondition;
+                changelog.remark = prodInfo.remark;
+                changelog.createDate = prodInfo.createDate;
+                changelog.status = prodInfo.status;
+                changelog.column1 = prodInfo.column1;
+                changelog.column2 = prodInfo.column2;
+
+                productBiz.insertProductChangeLog(changelog);
                 CacheHelper.RemoveAllCache();
                 return new JsonResult { Data = new { _code = 100, _msg = "上传成功" }, JsonRequestBehavior = JsonRequestBehavior.DenyGet };
             }
             catch (Exception e)
             {
+                _Apilog.WriteLog("新增或更新产品信息异常: " + e.Message);
                 return new JsonResult { Data = new { _code = 200, _msg = "上传失败" }, JsonRequestBehavior = JsonRequestBehavior.DenyGet };
             }
 
