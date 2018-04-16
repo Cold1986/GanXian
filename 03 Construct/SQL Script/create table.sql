@@ -182,4 +182,15 @@ status int null comment '状态', -- 0未付款 1已付款
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
--- 收藏
+-- 管理员账号
+create table ManagerUsers
+(
+userId int(8) NOT NULL AUTO_INCREMENT PRIMARY KEY comment '编号',
+accountName nvarchar(100) null comment '登陆账号',
+psd nvarchar(100) null comment '登陆密码',
+createDate datetime not null comment '插入时间' default now(), 
+updateDate datetime  null comment '更新时间' default now(), 
+status int null comment '状态' default 1, -- 0无效 1有效
+column1 nvarchar(100) null, -- 备用字段1
+column2 nvarchar(100) null -- 备用字段2
+)

@@ -72,3 +72,6 @@ select IFNULL(b.num,0) soldNum,a.* from products a
 left join (select sum(num) as num ,productid from sales2products group by productid) as b on a.productid=b.productid
 where a.status=1
 
+
+insert into ManagerUsers(accountName,psd,createDate) values ( 'Admin','Good2018@',now())
+insert into ManagerUsers(accountName,psd,createDate) values ( 'feij01','Good20!8',now())
