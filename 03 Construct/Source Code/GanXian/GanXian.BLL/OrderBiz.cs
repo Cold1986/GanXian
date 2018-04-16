@@ -152,9 +152,16 @@ namespace GanXian.BLL
                         System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                         foreach (System.Reflection.PropertyInfo item2 in pro)
                         {
-                            if (item2.Name == item.showPic)
+                            try
                             {
-                                item.showPic = item2.GetValue(item).ToString();
+                                if (item2.Name == item.showPic)
+                                {
+                                    item.showPic = item2.GetValue(item).ToString();
+                                }
+                            }
+                            catch
+                            {
+                                continue;
                             }
                         }
                     }
@@ -314,7 +321,7 @@ namespace GanXian.BLL
             return res;
         }
 
-        public int dealExpectionOrder(string salesNo,string wechatOrderNo)
+        public int dealExpectionOrder(string salesNo, string wechatOrderNo)
         {
             int status = 0;
             using (IDbConnection conn = DapperHelper.MySqlConnection())
@@ -371,7 +378,7 @@ namespace GanXian.BLL
                     #region 异常数据情况
                     if (userOrder.status == 5)
                     {
-                        userOrder.status = dealExpectionOrder(userOrder.salesNo,userOrder.wechatOrderNo);
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo, userOrder.wechatOrderNo);
                     }
                     #endregion
                     #region status==0 未付款，已失效情况
@@ -404,9 +411,16 @@ namespace GanXian.BLL
                                 System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                                 foreach (System.Reflection.PropertyInfo item2 in pro)
                                 {
-                                    if (item2.Name == item.showPic)
+                                    try
                                     {
-                                        item.showPic = item2.GetValue(item).ToString();
+                                        if (item2.Name == item.showPic)
+                                        {
+                                            item.showPic = item2.GetValue(item).ToString();
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        continue;
                                     }
                                 }
                             }
@@ -462,9 +476,16 @@ namespace GanXian.BLL
                                 System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                                 foreach (System.Reflection.PropertyInfo item2 in pro)
                                 {
-                                    if (item2.Name == item.showPic)
+                                    try
                                     {
-                                        item.showPic = item2.GetValue(item).ToString();
+                                        if (item2.Name == item.showPic)
+                                        {
+                                            item.showPic = item2.GetValue(item).ToString();
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        continue;
                                     }
                                 }
                             }
@@ -504,7 +525,7 @@ namespace GanXian.BLL
                     #region 异常数据情况
                     if (userOrder.status == 5)
                     {
-                        userOrder.status = dealExpectionOrder(userOrder.salesNo,userOrder.wechatOrderNo);
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo, userOrder.wechatOrderNo);
                     }
                     #endregion
                     #region status==0 未付款，已失效情况
@@ -597,7 +618,14 @@ namespace GanXian.BLL
                                 {
                                     if (item2.Name == item.showPic)
                                     {
-                                        item.showPic = item2.GetValue(item).ToString();
+                                        try
+                                        {
+                                            item.showPic = item2.GetValue(item).ToString();
+                                        }
+                                        catch
+                                        {
+                                            continue;
+                                        }
                                     }
                                 }
                             }

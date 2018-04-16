@@ -37,21 +37,23 @@ namespace GanXian.BLL
                 });
                 foreach (var item in products)
                 {
-                    try
+                    System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                    foreach (System.Reflection.PropertyInfo item2 in pro)
                     {
-                        System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
-                        foreach (System.Reflection.PropertyInfo item2 in pro)
+                        try
                         {
+
                             if (item2.Name == item.showPic)
                             {
                                 item.showPic = item2.GetValue(item).ToString();
                             }
                         }
+                        catch
+                        {
+                            continue;
+                        }
                     }
-                    catch
-                    {
 
-                    }
                 }
             }
             return products;
@@ -200,9 +202,15 @@ namespace GanXian.BLL
                         System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                         foreach (System.Reflection.PropertyInfo item2 in pro)
                         {
-                            if (item2.Name == item.showPic)
+                            try {
+                                if (item2.Name == item.showPic)
+                                {
+                                    item.showPic = item2.GetValue(item).ToString();
+                                }
+                            }
+                            catch
                             {
-                                item.showPic = item2.GetValue(item).ToString();
+                                continue;
                             }
                         }
                     }
@@ -271,9 +279,16 @@ namespace GanXian.BLL
                         System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
                         foreach (System.Reflection.PropertyInfo item2 in pro)
                         {
-                            if (item2.Name == item.showPic)
+                            try
                             {
-                                item.showPic = item2.GetValue(item).ToString();
+                                if (item2.Name == item.showPic)
+                                {
+                                    item.showPic = item2.GetValue(item).ToString();
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
                     }
