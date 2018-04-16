@@ -170,6 +170,7 @@ namespace Domain.Controllers
             string r_size = collection["r_size"];//规格
             string r_price = collection["r_price"];//原价
             string r_oPrice = collection["r_oPrice"];//折后价
+            string r_cost = collection["r_cost"];//成本价
             string r_APN = collection["r_APN"];//产地
             string r_weight = collection["r_weight"];//净重
             string r_condition = collection["r_condition"];//存放条件
@@ -188,6 +189,7 @@ namespace Domain.Controllers
             prod.specs = r_size.Trim();
             prod.originalPrice = Convert.ToDecimal(r_price.Trim());
             prod.discountedPrice = Convert.ToDecimal(r_oPrice.Trim());
+            if (!string.IsNullOrEmpty(r_cost)) prod.cost = Convert.ToDecimal(r_cost.Trim());
             prod.origin = r_APN.Trim();
             prod.nw = r_weight.Trim();
             prod.storageCondition = r_condition.Trim();

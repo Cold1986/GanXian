@@ -46,8 +46,9 @@
                         <td width="10%">编号</td>
                         <td width="20%">产品名称</td>
                         <td width="20%">规格</td>
-                        <td width="15%">原价</td>
-                        <td width="15%">折扣价</td>
+                        <td width="10%">原价</td>
+                        <td width="10%">折扣价</td>
+                        <td width="10%">成本价</td>
                         <td width="10%">状态</td>
                         <td width="10%">操作</td>
                     </tr>
@@ -61,8 +62,9 @@
                         <td width="10%">&nbsp;</td>
                         <td width="20%">&nbsp;</td>
                         <td width="20%">&nbsp;</td>
-                        <td width="15%">&nbsp;</td>
-                        <td width="15%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
                         <td width="10%">&nbsp;</td>
                         <td width="10%">&nbsp;</td>
                     </tr>
@@ -76,6 +78,7 @@
                         @Html.Raw("<td><input type=\"text\" value=\"" + item.specs + "\" /></td>");
                         @Html.Raw("<td><input type=\"text\" value=\"" + item.originalPrice + "\" /></td>");
                         @Html.Raw("<td><input type=\"text\" value=\"" + item.discountedPrice + "\" /></td>");
+                        @Html.Raw("<td><input type=\"text\" value=\"" + item.cost + "\" /></td>");
                         if (item.status == 1)
                         {
                             @Html.Raw("<td><input type=\"text\" value=\"有效\" /></td>");
@@ -141,6 +144,10 @@
                         <span class="error-msg">必填！</span>
                     </li>
                     <li>
+                        <label>成本价</label>
+                        <input type="text" id="r-cost" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9.]+/,'');}).call(this)" name="r_cost" />
+                    </li>
+                    <li>
                         <label>产地</label>
                         <input type="text" id="r-APN" name="r_APN" />
                     </li>
@@ -198,6 +205,6 @@
 }
 
 @section scripts{
-    <script charset="utf-8" src="~/Scripts/Admin/product.js"></script>
+    <script charset="utf-8" src="~/Scripts/Admin/product.js?v=2"></script>
 }
 
