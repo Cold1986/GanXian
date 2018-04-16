@@ -1,0 +1,243 @@
+﻿@model Domain.Models.CheckOutModels
+@{
+    ViewBag.Title = "结算";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+@*<link rel="stylesheet" href="~/Content/orderlist.css">*@
+<style>
+    .tips {
+        position: fixed;
+        bottom: 49px;
+        width: 100%;
+        background: #ffec80;
+        font-size: 12px;
+        color: #f00;
+        padding: 5px 10px 5px;
+    }
+
+        .tips p {
+            margin: 0;
+            line-height: 20px;
+            text-align: left;
+        }
+</style>
+<div class="maincontainer checkout">
+    <div class="container" style="max-width:768px;margin:0 auto;">
+        <div class="row">
+            <div class="list-group mb10">
+                <div class="list-group-item tip address">
+                    <a href="@string.Concat("/GanXian/User/AddressSelect?fromURL=", @HttpContext.Current.Request.RawUrl)">
+                        <p>收货人：<label id="receiver">@Model.UserAddress.receiver</label> <span id="Phone" style="font-weight: bold;">@Model.UserAddress.Phone</span></p>
+                        <p>收货地址：<label id="province">@Model.UserAddress.province</label> <label id="city">@Model.UserAddress.city</label> <label id="county">@Model.UserAddress.county</label> <label id="detailAddress">@Model.UserAddress.detailAddress</label></p>
+                    </a>
+                </div>
+                <ul class="product-list">
+                    @foreach (var item in Model.UserOrderInfo)
+                    {
+                        <li>
+                            <a href=@string.Concat("index/", item.productId)>
+                                <img src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(modelItem => item.showPic))>
+                                <p>@item.productName</p>
+                                <div class=""><span class="p-price">@string.Concat("￥", item.discountedPrice)</span><span>@string.Concat("x", item.num)</span></div>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+                <div class="order-list-info">
+                    <p>共<span class="red">@Model.UserOrderInfo.Count</span>件商品 合计：<span class="red">@string.Concat("￥", ViewBag.productsPrice)</span><br>运费：<span class="red">@string.Concat("￥", ViewBag.postage)</span></p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="tips" class="tips">
+    @foreach (var item in Model.UserOrderInfo)
+    {
+        if (item.createdTimePrice != item.discountedPrice)
+        {
+            <p>@string.Concat(item.productName, "： ￥", item.discountedPrice, " -- > ￥", item.createdTimePrice)</p>
+        }
+    }
+    @if (ViewBag.adminChangeAmount != null)
+    {
+        <p>@string.Concat("管理员修改订单价格： ￥", ViewBag.totalCost, " -- > ￥", ViewBag.adminChangeAmount)</p>
+    }
+    @if (ViewBag.adminChangePostage != null)
+    {
+        <p>@string.Concat("管理员修改邮费价格： ￥", ViewBag.postage, " -- > ￥", ViewBag.adminChangePostage)</p>
+    }
+</div>
+<footer class="footer checkout">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            <p>共<span class="red">@Model.UserOrderInfo.Count</span>件商品 合计<span class="red">@string.Concat("￥", ViewBag.totalCost)</span></p>
+            <div class="buy-btn-fix"><button type="button" class="btn btn-danger btn-buy">结算</button></div>
+        </div>
+    </div>
+</footer>
+<script>
+
+    $(function () {
+        if($('#tips').html().trim().length!=0){
+            $('#tips').addClass("tips").prepend('<div>订单价格有更新，请确认：</div>');
+        }
+
+        $('.btn-buy').click(function () {
+            var receiver = $("#receiver").html();
+            var phone = $('#Phone').html();
+            var province = $('#province').html();
+            var city = $('#city').html();
+            var county = $('#county').html();
+            var detailAddress = $('#detailAddress').html();
+            var orderId = GetQueryString('orderId');
+
+            if (receiver.trim() == "" || phone.trim() == ""
+                || province.trim() == "" || city.trim == ""
+                || detailAddress.trim() == "" || orderId.trim == "") {
+                alert('请先填写收货地址');
+                return false;
+            }
+
+            $.ajax({
+                url: "PayOrder",
+                data: {
+                    "receiver": receiver,
+                    "rPhone": phone,
+                    "province": province,
+                    "city": city,
+                    "county": county,
+                    "detailAddress": detailAddress,
+                    "orderId": orderId
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                },
+                success: function (retData) {
+                    //alert(retData);
+                    if(retData=="success"){
+                        callpay();
+                    }
+                    else
+                    {
+                        alert(retData);
+                        window.location.href = "../Order/OrderList";
+                    }
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        })
+    })
+
+
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+    //调用微信JS api 支付
+    function jsApiCall() {
+        var receiver = $("#receiver").html();
+        var phone = $('#Phone').html();
+        var province = $('#province').html();
+        var city = $('#city').html();
+        var county = $('#county').html();
+        var detailAddress = $('#detailAddress').html();
+        var orderId = GetQueryString('orderId');
+
+        WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        @Html.Raw(ViewBag.wxJsApiParam),//json串
+         function (res) {
+             WeixinJSBridge.log(res.err_msg);
+             //alert(res.err_code + res.err_desc + res.err_msg);
+             if (res.err_msg == "get_brand_wcpay_request:ok") {
+                 $.ajax({
+                     url: "PayOrder",
+                     data: {
+                         "receiver": receiver,
+                         "rPhone": phone,
+                         "province": province,
+                         "city": city,
+                         "county": county,
+                         "detailAddress": detailAddress,
+                         "orderId": orderId,
+                         "toStatus":1
+                     },
+                     type: 'post',
+                     async: false, //默认为true 异步
+                     dataType: 'json',
+                     error: function (data) {
+                     },
+                     success: function (retData) {
+                         alert("支付成功");
+                         window.location.href = "../Order/OrderList";
+                     },
+                     complete: function () {
+                         $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                     }
+                 });
+             }
+             else{
+                 //更新成0
+                 $.ajax({
+                     url: "PayOrder",
+                     data: {
+                         "receiver": receiver,
+                         "rPhone": phone,
+                         "province": province,
+                         "city": city,
+                         "county": county,
+                         "detailAddress": detailAddress,
+                         "orderId": orderId,
+                         "toStatus":0
+                     },
+                     type: 'post',
+                     async: false, //默认为true 异步
+                     dataType: 'json',
+                     error: function (data) {
+                     },
+                     success: function (retData) {
+
+                     },
+                     complete: function () {
+                         $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                     }
+                 });
+                 if (res.err_msg == 'get_brand_wcpay_request:cancel') {
+                     alert('取消支付');
+                 }
+                 else if(res.err_msg == 'get_brand_wcpay_request:fail'){
+                     alert('支付失败');
+                 }
+             }
+         }
+     );
+    }
+
+    function callpay() {
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+            }
+            else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+            }
+        }
+        else {
+            jsApiCall();
+        }
+    }
+</script>
+
+@*@section Scripts {
+        <script charset="utf-8" src="~/Scripts/Products/checkout.js"></script>
+    }*@

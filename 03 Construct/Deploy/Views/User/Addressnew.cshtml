@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "添加新地址";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="container" style="max-width:768px;margin:0 auto; padding: 0;">
+    <ul class="address-edit">
+        <li>
+            <label>收货人</label><input type="text" name="rName" placeholder="请输入收货人姓名" id="receiver">
+        </li>
+        <li>
+            <label>联系电话</label><input onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " type="text" name="rPhone" id="rPhone" placeholder="请输入收货人电话">
+        </li>
+        <li>
+            <label>所在地区</label><input id="demo1" type="text" readonly="" placeholder="选择城市" /><input id="value1" type="hidden" value="20,234,504" />
+        </li>
+        <li>
+            <textarea placeholder="请输入详细地址" id="detailAddress"></textarea>
+        </li>
+        <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2"></li>
+    </ul>
+
+</div>
+<footer class="footer">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            @Html.ActionLink("保 存", "Addresslist", "User", new { fromURL = ViewBag.fromBaseURL }, new { target = "_self", name = "link", @class = "add-address" })
+        </div>
+    </div>
+</footer>
+@section Scripts {
+    <script src="~/Scripts/User/LArea.js" charset="utf-8"></script>
+    <script src="~/Scripts/User/LAreaData1.js" charset="utf-8"></script>
+    <script src="~/Scripts/User/Addressnew.js" charset="utf-8"></script>
+}
+
+

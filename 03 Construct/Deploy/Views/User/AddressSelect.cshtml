@@ -1,0 +1,51 @@
+﻿@model IEnumerable<GanXian.Model.useraddress>
+@{
+    ViewBag.Title = "选择收货地址";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<header class="header">
+    <div class="fix_nav">
+        <div style="max-width:768px;margin:0 auto;background:#000000;position: relative;">
+            @if (!string.IsNullOrEmpty(@ViewBag.fromURL))
+            {
+                <a class="nav-left back-icon" href="@ViewBag.fromURL">返回</a>
+            }
+            else
+            {
+                <a class="nav-left back-icon" href="javascript:history.go(-1);">返回</a>
+            }
+            <div class="tit" style="font-size:18px;">选择收货地址</div>
+            <a href="@string.Concat("/GanXian/User/Addresslist?fromURL=", @HttpContext.Current.Request.RawUrl)" class="nav-right" style="text-indent:0;font-size:14px;top:0;color:#fff;">管理</a>
+        </div>
+    </div>
+</header>
+
+<div class="container" style="max-width:768px;margin:0 auto;">
+    <div class="row">
+
+        <ul class="address-list address-select">
+            @foreach (var item in Model)
+            {
+                if (item.SetAsDefault == "1")
+                {
+                    <li onclick="SelAddress('@item.receiver', '@item.Phone', '@item.province', '@item.city', '@item.county', '@item.detailAddress','@ViewBag.fromURL');">
+                        <p class="address-info">@Html.DisplayFor(modelItem => item.receiver)<span>@Html.DisplayFor(modelItem => item.Phone)</span></p>
+                        <p><span class="red">[默认] </span>@string.Concat(item.province, item.city, item.county, " ", item.detailAddress)</p>
+                    </li>
+                }
+                else
+                {
+                    <li onclick="SelAddress('@item.receiver', '@item.Phone', '@item.province', '@item.city', '@item.county', '@item.detailAddress','@ViewBag.fromURL');">
+                        <p class="address-info">@Html.DisplayFor(modelItem => item.receiver)<span>@Html.DisplayFor(modelItem => item.Phone)</span></p>
+                        <p>@string.Concat(item.province, item.city, item.county, " ", item.detailAddress)</p>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+    <script charset="utf-8" src="~/Scripts/User/AddressSelect.js"></script>
+}

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GanXian.Model.ProductsAndSalesNum>
+﻿@model Domain.Models.CategoryViewModel
 @{
     ViewBag.Title = "产品列表";
     Layout = "~/Views/Shared/_WebLayout.cshtml";
@@ -8,47 +8,95 @@
     <div class="row">
         <ul class="mod-filter clearfix">
             <div class="white-bg_2 bb1">
-                <li id="default" class="active">
-                    @Html.ActionLink("默认", "Category", new { sortOrder = "" })
-                </li>
-                <li id="publishDate">
-                    <a title="点击按日期从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.ReleaseDateSortParm)>
-                        日期
-                        <i class='icon_sort'></i>
-                    </a>
-                </li>
-                <li id="buys">
-                    <a title="点击按销量从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.SalesSortParm)>
-                        销量
-                        <i class='icon_sort'></i>
-                    </a>
-                </li>
-                <li id="cash">
-                    <a title="点击按价格从高到低排序"
-                       href=@string.Concat("Category?sortOrder=",ViewBag.PriceSortParm)>
-                        价格
-                        <i class='icon_sort'></i>
-                    </a>
-
-                </li>
+                @if (string.IsNullOrEmpty(ViewBag.SortMethod) || ViewBag.SortMethod == "defaultSort")
+                {
+                    <li id="default" class="active">
+                        <a title="点击按默认排序" href=@string.Concat("javascript:location.href='Category?typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>默认</a>
+                    </li>
+                }
+                else
+                {
+                    <li id="default">
+                        <a title="点击按默认排序" href=@string.Concat("javascript:location.href='Category?typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>默认</a>
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "date")
+                {
+                    <li id="publishDate" class="active">
+                        <a title="点击按日期从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.ReleaseDateSortParm, "&typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>
+                            @*href=@string.Concat("Category?sortOrder=", ViewBag.ReleaseDateSortParm)>*@
+                            日期
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="publishDate">
+                        <a title="点击按日期从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.ReleaseDateSortParm, "&typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>
+                            日期
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "sales")
+                {
+                    <li id="buys" class="active">
+                        <a title="点击按销量从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.SalesSortParm,"&typeName=", ViewBag.TypeName, "&searchString='+document.getElementById('searchString').value")>
+                            销量
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="buys">
+                        <a title="点击按销量从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.SalesSortParm, "&typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>
+                            销量
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
+                @if (ViewBag.SortMethod == "price")
+                {
+                    <li id="cash" class="active">
+                        <a title="点击按价格从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.PriceSortParm, "&typeName=", ViewBag.TypeName,"&searchString='+document.getElementById('searchString').value")>
+                            价格
+                            <i class=@ViewBag.SortClass></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li id="cash">
+                        <a title="点击按价格从高到低排序"
+                           href=@string.Concat("javascript:location.href='Category?sortOrder=", ViewBag.PriceSortParm, "&typeName=", ViewBag.TypeName, "&searchString='+document.getElementById('searchString').value")>
+                            价格
+                            <i class="icon_sort"></i>
+                        </a>
+                    </li>
+                }
             </div>
         </ul>
 
         <div class="item-list" id="container" rel="2" status="0">
             <input type="hidden" id="ListTotal" value="1">
-            @foreach (var item in Model)
+            @foreach (var item in Model.productsAndSalesNum)
             {
                 <a href=@string.Concat("index/", item.productId)>
                     <div class="hproduct clearfix" style="background:#fff;border-top:0px;">
-                        <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src=@string.Concat("http://", HttpContext.Current.Request.Url.Host, "/ganxian", Html.DisplayFor(modelItem => item.pic1))></div>
+                        <div class="p-pic"><img style="max-height:100px;margin:auto;" class="~/img-responsive" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(modelItem => item.showPic))></div>
                         <div class="p-info">
                             <p class="p-title">@Html.DisplayFor(modelItem => item.productName)</p>
                             <p class="p-description">
                                 @(new HtmlString(item.remark))
                             </p>
-                            <p class="p-origin"><em class="price">@Html.DisplayFor(modelItem => item.discountedPrice)</em><del class="old-price">@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
+                            <p class="p-origin"><em class="price">¥@Html.DisplayFor(modelItem => item.discountedPrice)</em><del class="old-price">¥@Html.DisplayFor(modelItem => item.originalPrice)</del></p>
                         </div>
                     </div>
                 </a>
@@ -67,4 +115,30 @@
             <input type="hidden" id="prop" name="prop" value="" />
         </form>
     </div>
+</div>
+
+<div class="side-nav">
+    @if (ViewBag.TypeName == "all")
+    {
+        <a class="active" href=@string.Concat("javascript:location.href='Category?typeName=all&searchString='+document.getElementById('searchString').value")>全部</a>
+    }
+    else
+    {
+        <a href=@string.Concat("javascript:location.href='Category?typeName=all&searchString='+document.getElementById('searchString').value")>全部</a>
+    }
+    @foreach (var item in Model.tabList)
+    {
+        if (ViewBag.TypeName == item.typeName)
+        {
+            <a class="active" href=@string.Concat("javascript:location.href='Category?typeName=", item.typeName, "&searchString='+document.getElementById('searchString').value")>
+                @item.typeName
+            </a>
+        }
+        else
+        {
+            <a href=@string.Concat("javascript:location.href='Category?typeName=", item.typeName, "&searchString='+document.getElementById('searchString').value")>
+                @item.typeName
+            </a>
+        }
+    }
 </div>

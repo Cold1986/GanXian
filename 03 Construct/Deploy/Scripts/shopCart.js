@@ -77,23 +77,23 @@ function increase(obj){
 		return;
 	}
 	
-	var result = changeShopCartNumber(basket_id,_num,prod_id,sku_id,1);
-	if(result){
-		$(_count_obj).val(count*1+1);
-		var cash = $(_this).parent().parent().prev().find("em[class='price']").html().substring(1);//单价
-		var total_cash =  $(_this).parent().prev().find("em[class='red productTotalPrice']").html().substring(1);//商品小计
+	//var result = changeShopCartNumber(basket_id,_num,prod_id,sku_id,1);
+	//if(result){
+	//	$(_count_obj).val(count*1+1);
+	//	var cash = $(_this).parent().parent().prev().find("em[class='price']").html().substring(1);//单价
+	//	var total_cash =  $(_this).parent().prev().find("em[class='red productTotalPrice']").html().substring(1);//商品小计
 
-		var e_cash = Math.round((Number(total_cash)+Number(cash))*100)/100;
-		var pos_decimal = e_cash.toString().indexOf('.');
-		if (pos_decimal < 0)
-		{
-			e_cash += '.00';
-		}
-		$(_this).parent().prev().find("em").html("¥"+e_cash);
+	//	var e_cash = Math.round((Number(total_cash)+Number(cash))*100)/100;
+	//	var pos_decimal = e_cash.toString().indexOf('.');
+	//	if (pos_decimal < 0)
+	//	{
+	//		e_cash += '.00';
+	//	}
+	//	$(_this).parent().prev().find("em").html("¥"+e_cash);
 		
-		//计算总价
-		calculateTotal();
-	}
+	//	//计算总价
+	//	calculateTotal();
+	//}
 	
 }
 
@@ -113,22 +113,22 @@ function disDe(obj){
 	}else if(_num==0){
 		return ;
 	}
-	var result = changeShopCartNumber(basket_id,_num,prod_id,sku_id,0);
-	if(result){
-		$(_count_obj).val(count*1-1);
-		var cash = $(_this).parent().parent().prev().find("em[class='price']").html().substring(1);//单价
-		var total_cash =  $(_this).parent().prev().find("em[class='red productTotalPrice']").html().substring(1);//商品小计		
-		var e_cash = Math.round((Number(total_cash)-Number(cash))*100)/100;
-		var pos_decimal = e_cash.toString().indexOf('.');
-		if (pos_decimal < 0)
-		{
-			e_cash += '.00';
-		}
-		$(_this).parent().prev().find("em").html("¥"+e_cash);
+	//var result = changeShopCartNumber(basket_id,_num,prod_id,sku_id,0);
+	//if(result){
+	//	$(_count_obj).val(count*1-1);
+	//	var cash = $(_this).parent().parent().prev().find("em[class='price']").html().substring(1);//单价
+	//	var total_cash =  $(_this).parent().prev().find("em[class='red productTotalPrice']").html().substring(1);//商品小计		
+	//	var e_cash = Math.round((Number(total_cash)-Number(cash))*100)/100;
+	//	var pos_decimal = e_cash.toString().indexOf('.');
+	//	if (pos_decimal < 0)
+	//	{
+	//		e_cash += '.00';
+	//	}
+	//	$(_this).parent().prev().find("em").html("¥"+e_cash);
 		
-		//计算总价
-		calculateTotal();
-	}
+	//	//计算总价
+	//	calculateTotal();
+	//}
 }
 //更新购物车商品数量
 function changeShopCartNumber(_basketId,_num,_prodId,_skuId,type){

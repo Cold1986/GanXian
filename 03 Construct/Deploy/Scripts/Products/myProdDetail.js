@@ -26,5 +26,87 @@
 
     });
 
-   
+    //插件：图片轮播
+    TouchSlide({
+        slideCell: "#slide",
+        titCell: ".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell: ".bd ul",
+        effect: "left",
+        autoPlay: true,//自动播放
+        autoPage: true, //自动分页
+        switchLoad: "_src" //切换加载，真实图片路径为"_src"
+    });
+
+    $('.btn-cart').click(function () {
+        $(this).attr("disabled", "true"); //设置变灰按钮  
+        var prodId = $("#currProdId").val();//商品Id
+        var prodCount = $("#prodCount").val();//购买数量
+        var prodPrice = $("#prodCash").html().replace('¥','');
+        if (prodCount == 0) {
+            return;
+        }
+
+        $.ajax({
+            url: "../AddShopcart",
+            data: {
+                "prodId": prodId,
+                "num": prodCount,
+                "prodPrice": prodPrice
+            },
+            type: 'post',
+            async: false, //默认为true 异步   
+            dataType: 'json',
+            error: function (data) {
+
+            },
+            success: function (retData) {
+                if (retData == 'false') {
+                    alert("添加失败，请稍后尝试");
+                }
+                else {
+                    $('#totalNum').html(retData);
+                    alert("已添加成功");
+                }
+            },
+            complete: function () {
+                $('#prodCount').val(1);
+                $('.btn-cart').removeAttr("disabled"); //设置变灰按钮  
+            }
+
+        });
+    });
+
 });
+
+//立即购买
+function buyNow() {
+    $(".btn-buy").attr("disabled", "true"); //设置变灰按钮  
+    var prodId = $("#currProdId").val();//商品Id
+    var prodCount = $("#prodCount").val();//购买数量
+
+    $.ajax({
+        url: "../CreateOrder",
+        data: {
+            "prodId": prodId,
+            "num": prodCount
+        },
+        type: 'post',
+        async: false, //默认为true 异步   
+        dataType: 'json',
+        error: function (data) {
+
+        },
+        success: function (retData) {
+            if (retData == 'false') {
+                alert("添加失败，请稍后尝试");
+            }
+            else {
+                window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/index') + 1).toLowerCase() + "Checkout?orderId=" + retData;
+                //window.location.href = "../Checkout?orderId=" + retData;
+            }
+        },
+        complete: function () {
+            $(".btn-buy").removeAttr("disabled"); //设置变灰按钮  
+        }
+    });
+}

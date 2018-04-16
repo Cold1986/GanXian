@@ -1,0 +1,203 @@
+﻿@model Domain.Models.AdminProductViewModels
+@{
+    ViewBag.Title = "后台管理系统";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section style {
+    <link href="~/Content/admin/product.css" rel="stylesheet" />
+}
+<div class="content">
+    <h2>产品列表</h2>
+    <div class="filter border-gray">
+        <div class="title border-bottom-gray"><i class="icon ion-android-search"></i>筛选条件</div>
+        <div class="filter-inner">
+            @using (Html.BeginForm("product", "Admin"))
+            {
+                <ul class="filter-content clearfix">
+                    <li>
+                        <label>产品名称</label>
+                        @Html.TextBox("searchString", "")
+                    </li>
+                    <li>
+                        <label>产品状态</label>
+
+                        @Html.DropDownList("searchStatus", new List<SelectListItem>{
+                            new SelectListItem{Text="全部",Value="99"},
+                            new SelectListItem{Text="有效",Value="1"},
+                            new SelectListItem{Text="失效",Value="0"},
+                            })
+                    </li>
+                </ul>
+                <div class="control">
+                    <Section>
+                        @*<button class="btn">清空</button>*@
+                        <input type="submit" class="btn" value="查询" />
+                    </Section>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="results">
+        <div class="results-header">
+            <table id="resultTableHead" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="10%">编号</td>
+                        <td width="20%">产品名称</td>
+                        <td width="20%">规格</td>
+                        <td width="15%">原价</td>
+                        <td width="15%">折扣价</td>
+                        <td width="10%">状态</td>
+                        <td width="10%">操作</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="results-inner">
+            <table id="resultTable" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="10%">&nbsp;</td>
+                        <td width="20%">&nbsp;</td>
+                        <td width="20%">&nbsp;</td>
+                        <td width="15%">&nbsp;</td>
+                        <td width="15%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.productList)
+                    {
+                        @Html.Raw("<tr>");
+                        @Html.Raw("<td>" + item.productId + "</td>");
+                        @Html.Raw("<td><input type=\"text\" value=\"" + item.productName + "\" /></td>");
+                        @Html.Raw("<td><input type=\"text\" value=\"" + item.specs + "\" /></td>");
+                        @Html.Raw("<td><input type=\"text\" value=\"" + item.originalPrice + "\" /></td>");
+                        @Html.Raw("<td><input type=\"text\" value=\"" + item.discountedPrice + "\" /></td>");
+                        if (item.status == 1)
+                        {
+                            @Html.Raw("<td><input type=\"text\" value=\"有效\" /></td>");
+                            @Html.Raw("<td class=\"operation\"><i class=\"icon ion-edit\" alt=\"编辑商品\" onclick=\"editItem(" + item.productId + ")\"></i><i class=\"icon ion-trash-a\" alt=\"删除商品\" onclick=\"delItem(" + item.productId + ")\"></i></td>");
+                        }
+                        else
+                        {
+                            @Html.Raw("<td><input type=\"text\" value=\"失效\" /></td>");
+                            @Html.Raw("<td class=\"operation\"><i class=\"icon ion-checkmark-circled\" alt=\"恢复商品状态\" onclick=\"recoverItem(" + item.productId + ")\"></i></td>");
+
+                        }
+                        @Html.Raw("</tr>")
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn add">新增</button>
+</div>
+
+@section popup {
+    <div class="popup delete-alert">
+        <div class="popup-bg"></div>
+        <div class="popup-inner">
+            <p class="blue">确认删除本条记录？</p>
+            <div>
+                <input type="hidden" id="delProductId" />
+                <button class="btn popup-cancel">取消</button><button class="btn delete-alert-confirm">确认</button>
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm("CreateOrUploadProds", "Admin", FormMethod.Post, new { id = "formUpload", enctype = "multipart /form-data" }))
+    {
+        <div class="popup add-item edit-item">
+            <div class="popup-bg"></div>
+            <div class="popup-inner">
+                <p class="blue">新增产品</p>
+                <ul>
+                    <li>
+                        <label>编号</label>
+                        <span id="r-productId"></span>
+                        <input type="hidden" name="r_productId" id="h-productId" />
+                    </li>
+                    <li>
+                        <label>产品名称</label>
+                        <input type="text" id="r-product" name="r_product" />
+                        <span class="error-msg">必填！</span>
+                    </li>
+
+                    <li>
+                        <label>规格</label>
+                        <input type="text" id="r-size" name="r_size" />
+                        <span class="error-msg">必填！</span>
+                    </li>
+                    <li>
+                        <label>原价</label>
+                        <input type="text" id="r-price" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9.]+/,'');}).call(this)" name="r_price" />
+                        <span class="error-msg">必填！</span>
+                    </li>
+                    <li>
+                        <label>折扣价</label>
+                        <input type="text" id="r-oPrice" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9.]+/,'');}).call(this)" name="r_oPrice" />
+                        <span class="error-msg">必填！</span>
+                    </li>
+                    <li>
+                        <label>产地</label>
+                        <input type="text" id="r-APN" name="r_APN" />
+                    </li>
+                    <li>
+                        <label>净重</label>
+                        <input type="text" id="r-weight" name="r_weight" />
+                    </li>
+                    <li>
+                        <label>存放条件</label>
+                        <input type="text" id="r-condition" name="r_condition" />
+                    </li>
+                    <li>
+                        <label>产品描述</label>
+                        <textarea id="r-remark" name="r_remark"></textarea>
+                    </li>
+                    <li>
+                        <label>产品类别</label>
+                        <div id="tablist">
+                            @Html.CheckBoxList("tablist", Model.checkBoxList, null, 4)
+                        </div>
+                    </li>
+                    <li>
+                        <label>产品图片1</label>
+                        <div>
+                            <input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" name="file1" id="file1" /><span class="radio-box"><input type="radio" name="main_pic" id="pic1" value="pic1" /><label for="pic1">设为主图</label></span><br />
+                        </div>
+                    </li>
+                    <li>
+                        <label>产品图片2</label>
+                        <div>
+                            <input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" name="file2" id="file2" /><span class="radio-box"><input type="radio" name="main_pic" id="pic2" value="pic2" /><label for="pic2">设为主图</label></span><br />
+                        </div>
+                    </li>
+                    <li>
+                        <label>产品图片3</label>
+                        <div>
+                            <input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" name="file3" id="file3" /><span class="radio-box"><input type="radio" name="main_pic" id="pic3" value="pic3" /><label for="pic3">设为主图</label></span><br />
+                        </div>
+                    </li>
+                    <li>
+                        <label>产品图片4</label>
+                        <div>
+                            <input type="file" class="r-pic" accept="image/png,image/gif,image/jpg,image/jpeg" name="file4" id="file4" /><span class="radio-box"><input type="radio" name="main_pic" id="pic4" value="pic4" /><label for="pic4">设为主图</label></span><br />
+                        </div>
+                    </li>
+
+                </ul>
+                <div>
+                    <button class="btn popup-cancel">取消</button><button class="btn add-item-confirm">确认</button>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+@section scripts{
+    <script charset="utf-8" src="~/Scripts/Admin/product.js"></script>
+}
+

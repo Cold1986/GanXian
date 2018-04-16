@@ -1,0 +1,54 @@
+﻿@model IEnumerable<GanXian.Model.useraddress>
+@{
+    ViewBag.Title = "管理收货地址";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="container" style="max-width:768px;margin:0 auto;">
+    <div class="row">
+        <ul class="address-list">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <p class="address-info">@Html.DisplayFor(modelItem => item.receiver)<span>@Html.DisplayFor(modelItem => item.Phone)</span></p>
+                    <p>@string.Concat(item.province, item.city, item.county, " ", item.detailAddress)</p>
+                    @if (item.SetAsDefault == "1")
+                    {
+                        <div class="address-panel default-address">
+                            <input type="radio" name="default" id="default1" checked=""><label for="default1">默认地址</label>
+                            @Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px;margin-bottom: 5px;margin-top: 5px;font-weight: bold;" })
+                            @Html.ActionLink("编辑", "Addressedit", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px;margin-bottom: 5px;margin-top: 5px;font-weight: bold;" })
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="address-panel">
+                            <input type="radio" name="default" id="default2"><label for="default2">@Html.ActionLink("设为默认", "SetDefaultAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { })</label>
+                            @Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px;margin-bottom: 5px;margin-top: 5px;font-weight: bold; " })
+                            @Html.ActionLink("编辑", "Addressedit", "User", new { addressId = item.Id, fromURL = ViewBag.fromURL }, new { style = "float:right;margin-left:20px;margin-bottom: 5px;margin-top: 5px;font-weight: bold;" })
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+<footer class="footer">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            @Html.ActionLink("添加新地址", "Addressnew", "User", new { fromURL = ViewBag.fromURL }, new { target = "_self", name = "link", @class = "add-address" })
+        </div>
+    </div>
+</footer>
+<script>
+    $(".address-list").find($("input[type='radio']")).click(function () {
+        $(".address-list").find($("input[type='radio']")).parent(".address-panel").removeClass("default-address");
+        $(this).parent(".address-panel").addClass("default-address");
+    })
+    function deleteAddress(obj) {
+        if (confirm("确认删除这个地址？")) {
+            $(obj).parents("li").remove();
+        }
+
+    }
+</script>

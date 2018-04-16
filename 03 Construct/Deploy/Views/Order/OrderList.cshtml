@@ -1,0 +1,319 @@
+﻿@model IEnumerable<GanXian.Model.UserOrderListInfo>
+@{
+    ViewBag.Title = "我的订单";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="container" style="max-width:768px;margin:0 auto;">
+    <div class="row">
+
+        <div class="list-group">
+            <div class="list-group-item tip order-panel mb10">
+                @Html.ActionLink("全部订单", "OrderList", "Order", new { status = "all" }, new { })
+                @Html.ActionLink("未付款", "OrderList", "Order", new { status = "0" }, new { })
+                @Html.ActionLink("待发货", "OrderList", "Order", new { status = "1" }, new { })
+                @Html.ActionLink("已发货", "OrderList", "Order", new { status = "2" }, new { })
+                @Html.ActionLink("已完成", "OrderList", "Order", new { status = "3" }, new { })
+            </div>
+            @foreach (var item in Model)
+            {
+                if (item.status == 0
+                    || item.status == 5)
+                {
+                    <!--未付款订单-->
+                    <div class="order order-unpaid">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">未付款</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl,  item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>运费 ￥12.00起</span>
+                                }
+                                else
+                                {
+                                    <span>运费 ￥12.00起</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+
+                            <p>
+                                <button type="button" onclick="location.href=@string.Concat("'/ganxian/products/Checkout?orderId=",item.salesNo,"'")">付款</button>
+                                <button type="button" onclick="deleteOrder(this,'@item.salesNo')">删除</button>
+                            </p>
+                        </div>
+                    </div>
+                    <!--end-->
+                }
+                else if (item.status == 1)
+                {
+                      <!--待发货订单-->
+                    <div class="order order-unshipped">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">待发货</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl,  item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>种商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+                            <p>
+                                <button type="button" onclick="location.href=@string.Concat("'index?orderId=",item.salesNo,"'")">订单详情</button>
+                            </p>
+                        </div>
+                    </div>
+                    <!--end-->
+                }
+                else if (item.status == 2)
+                {
+                                <!--已发货订单-->
+                    <div class="order order-unshipped">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">已发货</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+                            <p>
+                                @*<button type="button" onclick="location.href='logistics.html'">查看物流</button>*@
+                                <button type="button" onclick="location.href=@string.Concat("'index?orderId=",item.salesNo,"'")">订单详情</button>
+                            </p>
+                        </div>
+                    </div>
+                                <!--end-->
+                }
+                else if (item.status == 3)
+                {
+                                <!--已完成订单-->
+                    <div class="order order-unshipped">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">已完成</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+                            <p>
+                                @*<button type="button" onclick="location.href='logistics.html'">查看物流</button>*@
+                                <button type="button" onclick="location.href=@string.Concat("'index?orderId=",item.salesNo,"'")">订单详情</button>
+                            </p>
+                        </div>
+                    </div>
+                                <!--end-->
+                }
+                else if (item.status == 6)
+                {
+                                <!--已失效订单-->
+                    <div class="order order-unpaid">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">已失效</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+                            <p>
+                                @*<button type="button" onclick="location.href=@string.Concat("'index?orderId=",item.salesNo,"'")">订单详情</button>*@
+                                <button type="button" onclick="deleteOrder(this,'@item.salesNo')">删除</button>
+                            </p>
+                        </div>
+                    </div>
+                                <!--end-->
+                }
+                else if (item.status == 7)
+                {
+                                <!--已退货订单-->
+                    <div class="order order-unshipped">
+                        <div class="order-list-title">
+                            <p>订单号：@item.salesNo</p><p class="red">已退货</p>
+                        </div>
+                        <ul class="product-list">
+                            @foreach (var item2 in item.Order2ProductsList)
+                            {
+                                <li>
+                                    <a href=@string.Concat("../products/index/", item2.productId)>
+                                        <img src=@string.Concat(ViewBag.ProjectUrl, item2.showPic)>
+                                        <p>@item2.productName</p>
+                                        <div class=""><span class="p-price">@string.Concat("￥", item2.discountedPrice)</span><span>@string.Concat("x", item2.num)</span></div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <div class="order-list-info">
+                            <p>
+                                共<span class="red">@item.Order2ProductsList.Count</span>件商品<br />
+                                @if (item.adminChangeAmount == null)
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span>
+                                }
+                                else
+                                {
+                                    <span class="red">@string.Concat("￥", item.amount)</span><span> ---> </span><span class="red">@string.Concat("￥", item.adminChangeAmount)</span>
+                                }
+                                <br />
+                                @if (item.adminChangePostage == null)
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Concat("运费 ￥", item.postage)</span><span> ---> </span><span>@string.Concat("￥", item.adminChangePostage)</span>
+                                }
+                            </p>
+                            <p>
+                                @*<button type="button" onclick="location.href='logistics.html'">查看物流</button>*@
+                                <button type="button" onclick="location.href=@string.Concat("'index?orderId=",item.salesNo,"'")">订单详情</button>
+                                <button type="button" onclick="deleteOrder(this,'@item.salesNo')">删除</button>
+                            </p>
+                        </div>
+                    </div>
+
+                                <!--end-->
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Order/OrderList.js?v=1" charset="utf-8"></script>
+}

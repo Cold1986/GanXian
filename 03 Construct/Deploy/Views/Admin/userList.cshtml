@@ -1,0 +1,69 @@
+﻿@model IEnumerable<GanXian.Model.users>
+@{
+    ViewBag.Title = "用户列表";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@section style {
+    <link href="~/Content/admin/product.css" rel="stylesheet" />
+}
+<div class="content">
+    <h2>用户列表</h2>
+    <div class="results">
+        <div class="results-header">
+            <table id="resultTableHead" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="20%">nickname</td>
+                        <td width="10%">sex</td>
+                        <td width="15%">province</td>
+                        <td width="15%">city</td>
+                        <td width="10%">country</td>
+                        <td width="10%">phone</td>
+                        <td width="20%">createDate</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="results-inner">
+            <table id="resultTable" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td width="20%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="15%">&nbsp;</td>
+                        <td width="15%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="10%">&nbsp;</td>
+                        <td width="20%">&nbsp;</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        @Html.Raw("<tr>");
+                        @Html.Raw("<td>" + item.nickname + "</td>");
+                        @Html.Raw("<td>" + item.sex + "</td>");
+                        @Html.Raw("<td>" + item.province + "</td>");
+                        @Html.Raw("<td>" + item.city + "</td>");
+                        @Html.Raw("<td>" + item.country + "</td>");
+                        @Html.Raw("<td>" + item.phone + "</td>");
+                        @Html.Raw("<td>" + item.createDate + "</td>");
+                        @Html.Raw("</tr>")
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('.main a').removeClass('focus');
+            $('.main a').eq(1).addClass('focus');
+        });
+        
+    </script>
+}
+

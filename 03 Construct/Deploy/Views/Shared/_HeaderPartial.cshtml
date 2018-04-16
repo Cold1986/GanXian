@@ -5,14 +5,16 @@
     <header class="header">
         <div class="fix_nav">
             <div style="max-width:768px;margin:0 auto;height: 44px;position: relative;background:#000000;">
-                <form action="#" method="get" id="searchform" name="searchform">
+                @using (Html.BeginForm("Category", "Products"))
+                {
                     <div class="navbar-search left-search">
-                        <input type="text" id="keyword" name="keyword" value="" placeholder="搜索商品" class="form-control">
+                        @Html.TextBox("searchString", "", new { @class = "form-control", placeholder = "搜索商品" })
+                        @*<input type="text" id="keyword" name="keyword" value="" placeholder="搜索商品" class="form-control">*@
                     </div>
                     <div class="nav-right">
-                        <input type="button" value="搜索" onclick="searchproduct();" class="img-responsive" style="text-align:center;background:#6a91ee;color:#fff;border-radius: 5px;border:none;height:34px;vertical-align:middle;clear:both;padding:0px;width:42px;" />
+                        <input type="submit" value="搜索" onclick="searchproduct();" class="img-responsive" style="text-align:center;background:#6a91ee;color:#fff;border-radius: 5px;border:none;height:34px;vertical-align:middle;clear:both;padding:0px;width:42px;" />
                     </div>
-                </form>
+                }
             </div>
         </div>
     </header>
@@ -26,7 +28,14 @@ else if (!string.IsNullOrEmpty(@ViewBag.PageName))
     <header class="header">
         <div class="fix_nav">
             <div class="nav_inner">
-                <a class="nav-left back-icon" href="javascript:history.back();">返回</a>
+                @if (!string.IsNullOrEmpty(@ViewBag.fromURL))
+                {
+                    <a class="nav-left back-icon" href="@ViewBag.fromURL">返回</a>
+                }
+                else
+                {
+                    <a class="nav-left back-icon" href="javascript:history.go(-1);">返回</a>
+                }
                 <div class="tit">@ViewBag.PageName</div>
             </div>
         </div>

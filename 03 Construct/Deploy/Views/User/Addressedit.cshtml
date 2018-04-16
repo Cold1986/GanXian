@@ -1,0 +1,145 @@
+﻿@model GanXian.Model.useraddress_extension
+@{
+    ViewBag.Title = "管理收货地址";
+    Layout = "~/Views/Shared/_WebLayout.cshtml";
+}
+
+<div class="container" style="max-width:768px;margin:0 auto; padding: 0;">
+    <ul class="address-edit">
+        <li>
+            <label>收货人</label><input type="text" name="rName" placeholder="请输入收货人姓名" id="receiver" value="@Model.receiver">
+        </li>
+        <li>
+            <label>联系电话</label><input onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" " type="text" name="rPhone" placeholder="请输入收货人电话" id="rPhone" value="@Model.Phone">
+        </li>
+        <li>
+            @if (!string.IsNullOrEmpty(Model.county))
+            {
+                <label>所在地区</label><input id="demo1" type="text" readonly="" placeholder="城市选择特效" value="@Model.provinceName,@Model.cityName,@Model.countyName" /><input id="value1" type="hidden" value="@Model.province,@Model.city,@Model.county" />
+            }
+            else
+            {
+                <label>所在地区</label><input id="demo1" type="text" readonly="" placeholder="城市选择特效" value="@Model.provinceName,@Model.cityName" /><input id="value1" type="hidden" value="@Model.province,@Model.city" />
+            }
+        </li>
+        <li>
+            <textarea placeholder="请输入详细地址" id="detailAddress">@Model.detailAddress</textarea>
+        </li>
+
+        @if (Model.SetAsDefault == "1")
+        {
+            <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2" checked></li>
+        }
+        else
+        {
+            <li><label for="default2">设为默认</label><input type="checkbox" name="default" id="default2"></li>
+        }
+    </ul>
+
+    @*<div class="address-edit-delete" onclick="deleteAddress(this)">@Html.ActionLink("删除", "DeleteAddress", "User", new { addressId = Model.Id, fromURL = ViewBag.fromBaseURL }, new {@class= "address-edit-delete" })</div>*@
+
+</div>
+<footer class="footer">
+    <div class="foot-con">
+        <div class="foot-con_2">
+            @Html.ActionLink("保 存", "Addresslist", "User", new { fromURL = ViewBag.fromBaseURL }, new { target = "_self", name = "link", @class = "add-address" })
+        </div>
+    </div>
+</footer>
+@section Scripts {
+    <script src="~/Scripts/User/LArea.js" charset="utf-8"></script>
+    <script src="~/Scripts/User/LAreaData1.js" charset="utf-8"></script>
+
+    <script>
+        var area1 = new LArea();
+        area1.init({
+            'trigger': '#demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+            'valueTo': '#value1', //选择完毕后id属性输出到该位置
+            'keys': {
+                id: 'id',
+                name: 'name'
+            }, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+            'type': 1, //数据源类型
+            'data': LAreaData //数据源
+        });
+
+        var x, y, z;
+        //console.log(LAreaData);
+        for (var i in LAreaData) {
+            if (LAreaData[i].id == '@Model.province') {
+                x = i;
+                for (var j in LAreaData[i].child) {
+                    if (LAreaData[i].child[j].id == '@Model.city') {
+                        y = j;
+                        for (var k in LAreaData[i].child[j].child) {
+                            if (LAreaData[i].child[j].child[k].id == '@Model.county') {
+                                z = k;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        area1.value = [x, y, z];//控制初始位置，注意：该方法并不会影响到input的value
+
+        function deleteAddress(obj) {
+            if (confirm("确认删除这个地址？")) {
+                location.href = "addresslist.html"
+            }
+
+        }
+
+        $('.add-address').click(function () {
+            if ($('#receiver').val().trim() == "") {
+                alert("收货人不能为空");
+                return false;
+            }
+            if ($('#rPhone').val().trim() == "") {
+                alert("联系电话不能为空");
+                return false;
+            }
+            if ($('#value1').val().trim() == "") {
+                alert("所在地区不能为空");
+                return false;
+            }
+            if ($('#detailAddress').val().trim() == "") {
+                alert("详细地址不能为空");
+                return false;
+            }
+            var pattern1 = /^1[34578]\d{9}$/; //手机
+            var pattern2 = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/; //固定电话
+            if (!pattern1.test($('#rPhone').val())
+                && !pattern2.test($('#rPhone').val())) {
+                alert("联系电话不正确，请重新输入");
+                return false;
+            }
+
+            $(this).attr("disabled");
+            $.ajax({
+                url: "AddressUpdate",
+                data: {
+                    "id": '@Model.Id',
+                    "receiver": $('#receiver').val(),
+                    "rPhone": $('#rPhone').val(),
+                    "district": $('#value1').val(),
+                    "detailAddress": $('#detailAddress').val(),
+                    "setAsDefault": $('#default2').prop('checked')
+                },
+                type: 'post',
+                async: false, //默认为true 异步
+                dataType: 'json',
+                error: function (data) {
+                },
+                success: function (retData) {
+                    if (retData == 'false') {
+                        alert("更新失败，请稍后尝试");
+                        return false;
+                    }
+                },
+                complete: function () {
+                    $('.add-address').removeAttr("disabled"); //设置变灰按钮
+                }
+            });
+        });
+    </script>
+}
