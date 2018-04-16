@@ -40,7 +40,7 @@ status int null comment '状态' default 1, -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
-drop table Products2Tabs
+
 -- 首页标签2产品表
 create table Products2Tabs
 (
@@ -48,6 +48,7 @@ id int(4) NOT NULL AUTO_INCREMENT PRIMARY KEY comment '编号',
 productId int(4) not null comment '产品编号',
 tabId int(4) not null comment '标签编号',
 sort int(4) null comment '排序规则', -- 排序规则，优先时间
+isShow int(2) not null comment '是否需要在首页显示', -- 0否 1是
 createDate datetime not null comment '插入时间' default now(), 
 status int null comment '状态' default 1, -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
@@ -109,6 +110,7 @@ status int null comment '状态' default 1, -- 0无效 1有效
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
+
 -- 购物车
 create table ShoppingCart
 (
@@ -118,6 +120,7 @@ productId int(4) not null comment '产品编号',
 num int(4) not null comment '购买数量',
 createDate datetime not null comment '插入时间' default now(), 
 status int null comment '状态', -- 0无效 1有效 2已转为订单
+createdTimePrice DECIMAL(50,2)  null comment '下单时价格', -- 用于提醒用户价格是否有变动
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2
 )
@@ -136,11 +139,14 @@ detailAddress nvarchar(400) null comment '详细地址', -- 用户地址
 Phone nvarchar(20) null comment '联系电话',-- 此单联系电话
 amount decimal(10,2) null, -- 总金额
 postage decimal(5,2) null comment '邮费',
-wechatSalesId varchar(40) null,-- 微信交易id
+adminChangeAmount decimal(10,2) null comment '管理员修改价格',
+adminChangePostage decimal(5,2) null comment '管理员修改邮费',
+wechatOrderNo varchar(40) null comment '微信销售单号',
+expressNo varchar(40) null comment '快递单号',
 createDate datetime not null comment '创建时间' default now(), 
 payDate datetime  null comment '付款时间' ,
 deliveryDate datetime null comment '发货时间',
-status int null comment '状态', -- 0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除取消订单
+status int null comment '状态', -- 0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除取消订单 5 预付款 6 已过期  7 已退货
 display int null comment '是否显示' default '1' ,-- 0 否 1是
 column1 nvarchar(2000) null, -- 备用字段1
 column2 nvarchar(2000) null -- 备用字段2
@@ -158,6 +164,7 @@ nw nvarchar(100) null comment '净重',
 num int(4) not null comment '购买数量',
 salesPrice varchar(50) null comment '实际付款价，理论上应该是 折后价*数量',
 createDate datetime not null comment '插入时间' default now(), 
+createdTimePrice DECIMAL(50,2)  null comment '下单时价格', -- 用于提醒用户价格是否有变动
 status int null comment '状态', -- 0未付款 1已付款
 column1 nvarchar(100) null, -- 备用字段1
 column2 nvarchar(100) null -- 备用字段2

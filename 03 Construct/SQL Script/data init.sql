@@ -52,20 +52,21 @@ set SQL_SAFE_UPDATES =1
 use ganxian
 
 -- 标签与产品分类
-insert into Products2Tabs(productId,tabId,sort,status) values(12,1,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(13,1,2,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(14,1,3,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(15,1,4,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(16,1,5,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(17,1,6,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(12,1,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(13,1,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(14,1,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(15,1,4,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(16,1,5,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(17,1,6,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(18,1,7,1,0);
 
-insert into Products2Tabs(productId,tabId,sort,status) values(1,2,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(2,2,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(3,2,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(4,2,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(1,2,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(2,2,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(3,2,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(4,2,1,1,1);
 
-insert into Products2Tabs(productId,tabId,sort,status) values(7,3,1,1);
-insert into Products2Tabs(productId,tabId,sort,status) values(8,3,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(7,3,1,1,1);
+insert into Products2Tabs(productId,tabId,sort,status,isShow) values(8,3,1,1,1);
 -- test part
 select IFNULL(b.num,0) soldNum,a.* from products a 
 left join (select sum(num) as num ,productid from sales2products group by productid) as b on a.productid=b.productid
