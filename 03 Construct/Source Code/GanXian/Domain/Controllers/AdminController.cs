@@ -303,27 +303,30 @@ namespace Domain.Controllers
             List<GanXian.Model.UserOrderListInfo> userOrderList = new List<GanXian.Model.UserOrderListInfo>();
             try
             {
-                userOrderList = OrderBiz.CreateNew().getAllOrderListInfo();
-                if (status.ToLower() != "all")
+                salesslip slipCondition = new salesslip();
+
+                if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
                 {
-                    userOrderList = userOrderList.Where(x => x.status == Convert.ToInt32(status)).ToList();
+                    slipCondition.status = Convert.ToInt32(status);
                 }
                 if (!string.IsNullOrEmpty(orderNo))
                 {
-                    userOrderList = userOrderList.Where(x => x.salesNo.Contains(orderNo.ToLower())).ToList();
+                    slipCondition.salesNo = orderNo.ToLower();
                 }
                 if (!string.IsNullOrEmpty(receiver))
                 {
-                    userOrderList = userOrderList.Where(x => x.receiver.ToLower().Contains(receiver.ToLower())).ToList();
+                    slipCondition.receiver = receiver.ToLower();
                 }
                 if (!string.IsNullOrEmpty(expressNo))
                 {
-                    userOrderList = userOrderList.Where(x => x.expressNo.ToLower().Contains(expressNo.ToLower())).ToList();
+                    slipCondition.expressNo = expressNo.ToLower();
                 }
                 if (!string.IsNullOrEmpty(createDate))
                 {
-                    userOrderList = userOrderList.Where(x => x.createDate.ToString("yyyy-MM-dd").Equals(createDate)).ToList();
+                    slipCondition.createDate = Convert.ToDateTime(createDate);
                 }
+
+                userOrderList = OrderBiz.CreateNew().getOrderListInfoByCondition(slipCondition);
             }
             catch (Exception e)
             {

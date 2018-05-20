@@ -59,9 +59,9 @@
                         <td width="8%">订单编号</td>
                         <td width="7%">订单状态</td>
                         <td width="8%">下单日期</td>
-                        <td width="7%">收件人</td>
-                        <td width="10%">联系电话</td>
-                        <td width="33%">收货地址</td>
+                        <td width="9%">下单人</td>
+                        <td width="9%">收件人</td>
+                        <td width="32%">收货地址</td>
                         <td width="14%">操作</td>
                         <td width="13%">运单号</td>
                     </tr>
@@ -75,9 +75,9 @@
                         <td width="8%">&GX;</td>
                         <td width="7%">&nbsp;</td>
                         <td width="8%">&nbsp;</td>
-                        <td width="7%">&nbsp;</td>
-                        <td width="10%">&nbsp;</td>
-                        <td width="33%">&nbsp;</td>
+                        <td width="9%">&nbsp;</td>
+                        <td width="9%">&nbsp;</td>
+                        <td width="32%">&nbsp;</td>
                         <td width="14%">&nbsp;</td>
                         <td width="13%">&nbsp;</td>
                     </tr>
@@ -95,9 +95,9 @@
                                 <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>未付款</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
-                                <td>@item.receiver</td>
-                                <td>@item.Phone</td>
-                                <td>@item.detailAddress</td>
+                                <td><table><tr><td>@item.orderName</td></tr><tr><td>@item.orderPhone</td></tr></table></td>
+                                <td><table><tr><td>@item.receiver</td></tr><tr><td>@item.Phone</td></tr></table></td>
+                                <td>@item.province @item.city @item.county @item.detailAddress</td>
                                 <td class="operation"></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
@@ -112,9 +112,9 @@
                                 <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已退货</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
-                                <td>@item.receiver</td>
-                                <td>@item.Phone</td>
-                                <td>@item.detailAddress</td>
+                                <td><table><tr><td>@item.orderName</td></tr><tr><td>@item.orderPhone</td></tr></table></td>
+                                <td><table><tr><td>@item.receiver</td></tr><tr><td>@item.Phone</td></tr></table></td>
+                                <td>@item.province @item.city @item.county @item.detailAddress</td>
                                 <td class="operation"></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
@@ -129,9 +129,9 @@
                                 <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已付款</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
-                                <td>@item.receiver</td>
-                                <td>@item.Phone</td>
-                                <td>@item.detailAddress</td>
+                                <td><table><tr><td>@item.orderName</td></tr><tr><td>@item.orderPhone</td></tr></table></td>
+                                <td><table><tr><td>@item.receiver</td></tr><tr><td>@item.Phone</td></tr></table></td>
+                                <td>@item.province @item.city @item.county @item.detailAddress</td>
                                 <td class="operation"><i class="icon ion-logistics" title="发货" onclick="addExpressNo('@item.salesNo')"></i><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
@@ -146,9 +146,9 @@
                                 <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已发货</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
-                                <td>@item.receiver</td>
-                                <td>@item.Phone</td>
-                                <td>@item.detailAddress</td>
+                                <td><table><tr><td>@item.orderName</td></tr><tr><td>@item.orderPhone</td></tr></table></td>
+                                <td><table><tr><td>@item.receiver</td></tr><tr><td>@item.Phone</td></tr></table></td>
+                                <td>@item.province @item.city @item.county @item.detailAddress</td>
                                 <td class="operation"><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">
@@ -163,9 +163,9 @@
                                 <td rowspan="2">@item.salesNo.Substring(item.salesNo.Length - 6, 6)</td>
                                 <td>已完成</td>
                                 <td>@item.createDate.ToString("yyyy-MM-dd")</td>
-                                <td>@item.receiver</td>
-                                <td>@item.Phone</td>
-                                <td>@item.detailAddress</td>
+                                <td><table><tr><td>@item.orderName</td></tr><tr><td>@item.orderPhone</td></tr></table></td>
+                                <td><table><tr><td>@item.receiver</td></tr><tr><td>@item.Phone</td></tr></table></td>
+                                <td>@item.province @item.city @item.county @item.detailAddress</td>
                                 <td class="operation"><i class="icon ion-ios-undo" title="退货" onclick="returnProd('@item.salesNo')"></i></td>
                                 <td rowspan="2">
                                     <div class="shipping-list">

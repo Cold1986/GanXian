@@ -325,24 +325,18 @@ namespace GanXian.BLL
             List<products2Tab> products2TabList = new List<products2Tab>();
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
-                string sqlCommandText = @"SELECT a.tabId,c.productId FROM ganxian.tablist a
-                            inner join products2tabs b on a.tabId=b.tabId
-                            inner join products c on b.productId=c.productId 
-                            where a.isShow=1 and a.status=1 and b.status=1 and b.isShow=1 and c.status=1 order by a.sort,b.sort,b.createDate";
-                //products2TabList = conn.Query<products2Tab, products, products2Tab>(sqlCommandText, (products2Tab, products) => products2Tab.Products = products;)
-
-                //return products2TabList;
-
+                //因为首页设置功能未完成，先去除掉该条件 and b.isShow=1
                 List<tablist> tabList = conn.Query<tablist>(@"SELECT a.* FROM ganxian.tablist a
-                                                                where a.isShow=1 and a.status=1 and exists(select 1 from products2tabs b where b.status=1 and b.isShow=1 and b.tabId=a.tabId) order by a.sort,a.createDate", new { }).ToList();
+                                                                where a.isShow=1 and a.status=1 and exists(select 1 from products2tabs b where b.status=1 and b.tabId=a.tabId) order by a.sort,a.createDate", new { }).ToList();
                 tabList.ForEach(x =>
                 {
+                    //先去除 and b.isShow=1
                     products2Tab prod2Tab = new products2Tab();
                     prod2Tab.Tablist = x;
                     prod2Tab.Products = conn.Query<products>(@"SELECT c.* FROM ganxian.tablist a
                             inner join products2tabs b on a.tabId=b.tabId
                             inner join products c on b.productId=c.productId 
-                            where a.tabId=@tabId and a.isShow=1 and a.status=1 and b.status=1 and b.isShow=1 and c.status=1 order by a.sort,b.sort,b.createDate desc", new { tabId = x.tabId }).ToList();
+                            where a.tabId=@tabId and a.isShow=1 and a.status=1 and b.status=1 and c.status=1 order by a.sort,b.sort,b.createDate desc", new { tabId = x.tabId }).ToList();
 
                     foreach (var item in prod2Tab.Products)
                     {

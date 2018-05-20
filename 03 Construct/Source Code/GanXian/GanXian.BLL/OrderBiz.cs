@@ -511,14 +511,177 @@ namespace GanXian.BLL
             {
                 if (string.IsNullOrEmpty(salesNo))
                 {
-                    string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and status<>6 order by column2 desc, salesid desc";
+                    string sqlCommandText = @"SELECT salesslip.*,users.nickname as orderName,users.phone as orderPhone
+                                                FROM ganxian.salesslip 
+                                                join ganxian.users on salesslip.userOpenId=users.openid
+                                                where salesslip.status<>4 and salesslip.status<>6 order by salesslip.column2 desc, salesslip.salesid desc limit 1000";
                     userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText).ToList();
                 }
                 else
                 {
-                    string sqlCommandText = @"SELECT * FROM ganxian.salesslip where status<>4 and status<>6 and salesNo=@salesNo  order by column2 desc, salesid desc";
+                    string sqlCommandText = @"SELECT salesslip.*,users.nickname as orderName,users.phone as orderPhone
+                                                FROM ganxian.salesslip 
+                                                join ganxian.users on salesslip.userOpenId=users.openid
+                                                where salesslip.status<>4 and salesslip.status<>6 and salesNo=@salesNo  order by salesslip.column2 desc, salesslip.salesid desc";
                     userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText, new { salesNo = salesNo }).ToList();
                 }
+                foreach (var userOrder in userOrderList)
+                {
+                    //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已失效
+                    #region 异常数据情况
+                    if (userOrder.status == 5)
+                    {
+                        userOrder.status = dealExpectionOrder(userOrder.salesNo, userOrder.wechatOrderNo);
+                    }
+                    #endregion
+                    #region status==0 未付款，已失效情况
+                    if (userOrder.status == 0 || userOrder.status == 6)
+                    {
+                        //未付款订单30分钟后失效
+                        if (userOrder.status == 0)
+                        {
+                            double mins = Convert.ToDouble(System.Configuration.ConfigurationSettings.AppSettings["orderExpiredMins"]);
+                            if (DateTime.Now.AddMinutes(-mins) > userOrder.createDate)
+                            {
+                                string sqlCommandTextUpdateOrder = "update salesslip set status=6 ,column2=now() where salesId=@salesId";
+                                conn.Execute(sqlCommandTextUpdateOrder, new { salesId = userOrder.salesId });
+                                userOrder.status = 6;
+                            }
+                        }
+
+                        decimal totalPrice = 0;//总价，未付款时需要关联产品表获取当前价格
+                        string sqlCommandTextStatus0 = @"SELECT a.num ,b.* FROM ganxian.sales2products a 
+                                            inner join products b on a.productid=b.productid
+                                            where  b.status=1 and a.salesId=@salesId
+                                            order by a.createDate desc";
+                        var resStatus0 = conn.Query<UserShopcartsInfo>(sqlCommandTextStatus0, new { salesId = userOrder.salesId }).ToList();
+                        if (resStatus0.Any())
+                        {
+                            resStatus0.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                            foreach (var item in resStatus0)
+                            {
+                                totalPrice += item.productTotalPrice ?? 0;
+                                System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                                foreach (System.Reflection.PropertyInfo item2 in pro)
+                                {
+                                    if (item2.Name == item.showPic)
+                                    {
+                                        item.showPic = item2.GetValue(item).ToString();
+                                    }
+                                }
+                            }
+                        }
+                        userOrder.Order2ProductsList = resStatus0;
+                        userOrder.amount = totalPrice;
+                        //userOrder.postage
+                    }
+                    #endregion
+                    #region 显示订单处理
+                    else if (userOrder.status == 0 || userOrder.status == 1 || userOrder.status == 2 || userOrder.status == 3 || userOrder.status == 7)
+                    {
+                        //已发货一周后变为已完成状态
+                        if (userOrder.status == 2 && userOrder.deliveryDate != null)
+                        {
+                            if (DateTime.Now.AddDays(-7) > userOrder.deliveryDate)
+                            {
+                                string sqlCommandTextUpdateOrder = "update salesslip set status=3 ,column2=now() where salesId=@salesId";
+                                conn.Execute(sqlCommandTextUpdateOrder, new { salesId = userOrder.salesId });
+                                userOrder.status = 3;
+                            }
+                        }
+
+
+                        string sqlCommandTextStatus123 = @"SELECT a.num ,b.`productId`,
+                                                        b.`productName`,
+                                                        b.`specs`,
+                                                        a.`originalPrice`,
+                                                        a.`discountedPrice`,
+                                                        b.`discountedExpiredDate`,
+                                                        b.`pic1`,
+                                                        b.`pic2`,
+                                                        b.`pic3`,
+                                                        b.`pic4`,
+                                                        b.`showPic`,
+                                                        b.`origin`,
+                                                        a.`nw`,
+                                                        b.`storageCondition`,
+                                                        b.`remark`,
+                                                        b.`createDate`,
+                                                        b.`status`,
+                                                        b.`column1`,
+                                                        b.`column2` FROM ganxian.sales2products a 
+                                            inner join products b on a.productid=b.productid
+                                            where a.salesId=@salesId
+                                            order by a.createDate desc";
+                        var resStatus123 = conn.Query<UserShopcartsInfo>(sqlCommandTextStatus123, new { salesId = userOrder.salesId }).ToList();
+                        if (resStatus123.Any())
+                        {
+                            resStatus123.ForEach(x => x.productTotalPrice = x.num * x.discountedPrice);
+                            foreach (var item in resStatus123)
+                            {
+                                System.Reflection.PropertyInfo[] pro = item.GetType().GetProperties();
+                                foreach (System.Reflection.PropertyInfo item2 in pro)
+                                {
+                                    if (item2.Name == item.showPic)
+                                    {
+                                        try
+                                        {
+                                            item.showPic = item2.GetValue(item).ToString();
+                                        }
+                                        catch
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        userOrder.Order2ProductsList = resStatus123;
+                    }
+                    #endregion
+                }
+            }
+            return userOrderList;
+        }
+
+        /// <summary>
+        /// 根据条件获取订单信息
+        /// </summary>
+        /// <returns></returns>
+        public List<UserOrderListInfo> getOrderListInfoByCondition(salesslip slipCondition)
+        {
+            List<UserOrderListInfo> userOrderList = new List<UserOrderListInfo>();
+            List<UserShopcartsInfo> orderProductList = new List<UserShopcartsInfo>();
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                string sqlCondition = string.Empty;
+                if (slipCondition.status != null)
+                {
+                    sqlCondition += " and  salesslip.status='" + slipCondition.status + "'";
+                }
+                if (!string.IsNullOrEmpty(slipCondition.salesNo))
+                {
+                    sqlCondition += " and  salesslip.salesNo like '%" + slipCondition.salesNo + "%'";
+                }
+                if (!string.IsNullOrEmpty(slipCondition.receiver))
+                {
+                    sqlCondition += " and  salesslip.receiver like '%" + slipCondition.receiver + "%'";
+                }
+                if (!string.IsNullOrEmpty(slipCondition.expressNo))
+                {
+                    sqlCondition += " and  salesslip.expressNo like '%" + slipCondition.expressNo + "%'";
+                }
+                if (slipCondition.createDate != null && slipCondition.createDate != default(DateTime))
+                {
+                    sqlCondition += " and  datediff(salesslip.createDate,'" + slipCondition.createDate + "')= 0";
+                }
+
+                string sqlCommandText = @"SELECT salesslip.*,users.nickname as orderName,users.phone as orderPhone
+                                                FROM ganxian.salesslip 
+                                                join ganxian.users on salesslip.userOpenId=users.openid
+                                                where salesslip.status<>4 and salesslip.status<>6 " + sqlCondition + " order by salesslip.column2 desc, salesslip.salesid desc limit 1000";
+                userOrderList = conn.Query<UserOrderListInfo>(sqlCommandText).ToList();
+
                 foreach (var userOrder in userOrderList)
                 {
                     //0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款 6 已失效

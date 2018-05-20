@@ -130,12 +130,12 @@ namespace Domain.Controllers
                     //缓存不为空，说明可能先点过购物车或者产品
                     if (!string.IsNullOrEmpty(userOpenId))
                     {
-                        _Apilog.WriteLog("1.userOpenId 不为空:" + userOpenId);
+                        //_Apilog.WriteLog("1.userOpenId 不为空:" + userOpenId);
                         var resCache = CacheHelper.GetCache(userOpenId);
                         if (resCache != null)
                         {
                             user = (users)resCache;
-                            _Apilog.WriteLog("2.userOpenId 不为空,缓存不为空:" + userOpenId);
+                            //_Apilog.WriteLog("2.userOpenId 不为空,缓存不为空:" + userOpenId);
                             return new Tuple<string, users>(string.Empty, user);
                         }
 
@@ -145,7 +145,7 @@ namespace Domain.Controllers
                         user = userBiz.getUserInfoByOpenId(userOpenId);
                         if (user != null)
                         {
-                            _Apilog.WriteLog("3.userOpenId 不为空,表不为空:" + userOpenId);
+                            //_Apilog.WriteLog("3.userOpenId 不为空,表不为空:" + userOpenId);
                             DateTime dtCreate = user.updateDate ?? user.createDate;
                             DateTime dtNow = DateTime.Now;
                             if (dtCreate.AddDays(7) < dtNow || string.IsNullOrEmpty(user.nickname))
@@ -153,12 +153,12 @@ namespace Domain.Controllers
                                 //第一步
                                 if (string.IsNullOrEmpty(code))
                                 {
-                                    _Apilog.WriteLog("4.userOpenId 不为空,表不为空，第一步:" + userOpenId);
+                                    //_Apilog.WriteLog("4.userOpenId 不为空,表不为空，第一步:" + userOpenId);
                                     return new Tuple<string, users>(getSnsapi_userinfo_Link(), user);
                                 }
                                 else
                                 {
-                                    _Apilog.WriteLog("5.userOpenId 不为空,表不为空，第二步:" + userOpenId);
+                                    //_Apilog.WriteLog("5.userOpenId 不为空,表不为空，第二步:" + userOpenId);
                                     //授权第二步，获取openid
                                     authorizeInfo = getAuthorizeInfo(code);
                                     //授权3
@@ -175,27 +175,27 @@ namespace Domain.Controllers
                             //第一步
                             if (string.IsNullOrEmpty(code))
                             {
-                                _Apilog.WriteLog("6.userOpenId 不为空,表为空，第一步:" + userOpenId);
+                                //_Apilog.WriteLog("6.userOpenId 不为空,表为空，第一步:" + userOpenId);
                                 return new Tuple<string, users>(getSnsapi_userinfo_Link(), user);
                             }
                             else
                             {
-                                _Apilog.WriteLog("7.userOpenId 不为空,表为空，第二步:" + userOpenId);
-                                _Apilog.WriteLog("7.1.userOpenId 不为空,表为空，第二步:code" + code);
+                                //_Apilog.WriteLog("7.userOpenId 不为空,表为空，第二步:" + userOpenId);
+                                //_Apilog.WriteLog("7.1.userOpenId 不为空,表为空，第二步:code" + code);
                                 //授权第二步，获取openid
                                 authorizeInfo = getAuthorizeInfo(code);
-                                _Apilog.WriteLog("7.2.userOpenId 不为空,表为空，第二步:access_token" + authorizeInfo.access_token + " openid: " + authorizeInfo.openid);
+                                //_Apilog.WriteLog("7.2.userOpenId 不为空,表为空，第二步:access_token" + authorizeInfo.access_token + " openid: " + authorizeInfo.openid);
 
                                 //授权3
                                 wechatInfo = getWechatUserInfo(authorizeInfo);
-                                _Apilog.WriteLog("7.3.userOpenId 不为空,表为空，第二步:wechatInfo" + wechatInfo.nickname);
+                                //_Apilog.WriteLog("7.3.userOpenId 不为空,表为空，第二步:wechatInfo" + wechatInfo.nickname);
                                 //insert 
                                 user = setUserinfoFromWechat(wechatInfo);
-                                _Apilog.WriteLog("7.4.userOpenId 不为空,表为空，第二步:user" + user.nickname);
+                                //_Apilog.WriteLog("7.4.userOpenId 不为空,表为空，第二步:user" + user.nickname);
                                 user.createDate = DateTime.Now;
                                 user.updateDate = user.createDate;
                                 userBiz.insertUserWeChatInfo(user);
-                                _Apilog.WriteLog("7.5.userOpenId 不为空,表为空，第二步:code" + code);
+                                //_Apilog.WriteLog("7.5.userOpenId 不为空,表为空，第二步:code" + code);
                             }
                         }
                     }
@@ -205,26 +205,26 @@ namespace Domain.Controllers
                         //授权第一步，返回地址
                         if (string.IsNullOrEmpty(code))
                         {
-                            _Apilog.WriteLog("8.userOpenId 为空，第一步:");
+                            //_Apilog.WriteLog("8.userOpenId 为空，第一步:");
                             return new Tuple<string, users>(getSnsapi_userinfo_Link(), user);
                         }
                         else
                         {
                             //授权第二步，获取openid
-                            _Apilog.WriteLog("9.userOpenId 为空，第二步:" + code);
+                            //_Apilog.WriteLog("9.userOpenId 为空，第二步:" + code);
                             authorizeInfo = getAuthorizeInfo(code);
-                            _Apilog.WriteLog("10.userOpenId 为空，第二.2步:");
+                            //_Apilog.WriteLog("10.userOpenId 为空，第二.2步:");
                             var resCache = CacheHelper.GetCache(authorizeInfo.openid);
                             if (resCache != null)
                             {
-                                _Apilog.WriteLog("11.userOpenId 为空,缓存不为空，第二步:" + code);
+                                //_Apilog.WriteLog("11.userOpenId 为空,缓存不为空，第二步:" + code);
                                 user = (users)resCache;
                                 return new Tuple<string, users>(string.Empty, user);
                             }
                             UserBiz userBiz = UserBiz.CreateNew();
                             //判断openid是否已存在或者需要更新
                             user = userBiz.getUserInfoByOpenId(authorizeInfo.openid);
-                            _Apilog.WriteLog("12.userOpenId 为空，第二.3步:");
+                            //_Apilog.WriteLog("12.userOpenId 为空，第二.3步:");
                             if (user != null)
                             {
                                 DateTime dtCreate = user.updateDate ?? user.createDate;
@@ -232,7 +232,7 @@ namespace Domain.Controllers
                                 if (dtCreate.AddDays(7) < dtNow || string.IsNullOrEmpty(user.nickname))
                                 {
                                     //授权3
-                                    _Apilog.WriteLog("13.userOpenId 为空,缓存为空，表不为空，第三步:");
+                                    //_Apilog.WriteLog("13.userOpenId 为空,缓存为空，表不为空，第三步:");
                                     wechatInfo = getWechatUserInfo(authorizeInfo);
                                     //update 
                                     user = setUserinfoFromWechat(wechatInfo);
@@ -242,7 +242,7 @@ namespace Domain.Controllers
                             }
                             else
                             {
-                                _Apilog.WriteLog("14.userOpenId 为空,缓存为空，表为空，第三步:");
+                                //_Apilog.WriteLog("14.userOpenId 为空,缓存为空，表为空，第三步:");
                                 wechatInfo = getWechatUserInfo(authorizeInfo);
                                 //insert 
                                 user = setUserinfoFromWechat(wechatInfo);
