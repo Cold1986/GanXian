@@ -84,7 +84,7 @@ namespace Domain.Controllers
                     var start = DateTime.Now;
                     var expiredDate = start.AddHours(1);
                     TimeSpan ts = expiredDate - start;
-                    CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
+                    //CacheHelper.SetCache("productsAndSalesNumList", productsAndSalesNumList, ts);
                 }
             }
 
@@ -304,13 +304,19 @@ namespace Domain.Controllers
             else
             {
                 res = UserBiz.CreateNew().getUserInfoByOpenId(userOpenId);
-                var start = DateTime.Now;
-                var expiredDate = start.AddDays(1);
-                TimeSpan ts = expiredDate - start;
-                CacheHelper.SetCache("userInfo" + res.openid.ToString(), res, ts);
-                if (!string.IsNullOrEmpty(res.openid))
+                if (res == null)
                 {
-                    CookieHelper.SetCookie("userOpenId", res.openid);
+                    return RedirectToAction("Register", "User", new { needRegister = "1", fromUrl = Request.RawUrl });//跳转到注册页面，且必须注册 
+                }
+                else {
+                    var start = DateTime.Now;
+                    var expiredDate = start.AddDays(1);
+                    TimeSpan ts = expiredDate - start;
+                    CacheHelper.SetCache("userInfo" + res.openid.ToString(), res, ts);
+                    if (!string.IsNullOrEmpty(res.openid))
+                    {
+                        CookieHelper.SetCookie("userOpenId", res.openid);
+                    }
                 }
             }
 
@@ -387,11 +393,20 @@ namespace Domain.Controllers
                 #endregion
 
                 #region 订单产品部分
-                userUnpaidOrderInfo = OrderBiz.CreateNew().getUnpaidOrderInfo(userSalesSlip.salesId);
+                OrderBiz orderBiz = OrderBiz.CreateNew();
+                userUnpaidOrderInfo = orderBiz.getUnpaidOrderInfo(userSalesSlip.salesId);
                 checkOutModels.UserOrderInfo = userUnpaidOrderInfo;
 
                 foreach (var i in userUnpaidOrderInfo)
                 {
+                    try
+                    {
+                        orderBiz.updateOrder2ProductLogField(i.productId, i.id);
+                    }
+                    catch (Exception ex)
+                    {
+                        _Apilog.WriteLog("ProductsController/Checkout更新订单logid异常" + ex.Message);
+                    }
                     wechatBody += i.productName + "*" + i.num.ToString() + ";";
                     productsPrice += i.productTotalPrice ?? 0;
                 }
@@ -441,8 +456,7 @@ namespace Domain.Controllers
             }
             catch (Exception ex)
             {
-                //Response.Write("<span style='color:#FF0000;font-size:20px'>" + "下单失败，请返回重试" + "</span>");
-                //submit.Visible = false;
+                _Apilog.WriteLog("ProductsController/Checkout下单失败" + ex.Message);
             }
 
 

@@ -139,7 +139,7 @@ namespace GanXian.BLL
             using (IDbConnection conn = DapperHelper.MySqlConnection())
             {
                 //c.status0未付款 1已付款待发货 2 已发货，待收货 3 已完成 4 已删除 5 预付款
-                string sqlCommandText = @"SELECT a.num,a.createdTimePrice ,b.* FROM ganxian.sales2products a 
+                string sqlCommandText = @"SELECT a.num,a.createdTimePrice ,a.id,b.* FROM ganxian.sales2products a 
                                             inner join products b on a.productid=b.productid
                                             where  b.status=1 and a.salesId=@salesId
                                             order by a.createDate desc";
@@ -653,6 +653,34 @@ namespace GanXian.BLL
                 {
                     string updateSalesSlipSQL = "update salesslip set status=4,display=0,column2=now() where salesNo=@salesNo and userOpenId = @userOpenId";
                     conn.Execute(updateSalesSlipSQL, new { salesNo = orderId, userOpenId = userOpenId }).ToString();
+                    res = true;
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// 更新产品下单时的产品日志记录id，用户算出付款时所对应成本
+        /// </summary>
+        /// <param name="userOpenId"></param>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public bool updateOrder2ProductLogField(int productId, int id)
+        {
+            bool res = false;
+            using (IDbConnection conn = DapperHelper.MySqlConnection())
+            {
+                try
+                {
+                    string updateSalesSlipSQL = @"update sales2products  a
+                                                inner join(select max(logID) as logId, productId from productchangelog  where productId = @productId) as b on a.productId = b.productId
+                                                set a.productLogId = b.logId
+                                                where a.productId = @productId and a.id=@id;";
+                    conn.Query(updateSalesSlipSQL, new { productId = productId, id = id });
                     res = true;
                 }
                 catch (Exception e)

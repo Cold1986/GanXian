@@ -492,7 +492,16 @@ namespace Domain.Controllers
                             users user = new users();
                             user.phone = Phone;
                             user.openid = OpenId;
-                            UserBiz.CreateNew().updateUserPhone(user);
+                            UserBiz uBiz = UserBiz.CreateNew();
+                            var resUser=uBiz.getUserInfoByOpenId(user.openid);
+                            if (resUser != null)
+                            {
+                                uBiz.updateUserPhone(user);
+                            }
+                            else
+                            {
+                                uBiz.insertUserPhone(user);
+                            }
                             CacheHelper.RemoveCacheByKey("userInfo" + userOpenId);
                             res = "success";
                         }

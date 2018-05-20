@@ -25,5 +25,7 @@ namespace GanXian.Model
         /// 创建时价格
         /// </summary>
         public decimal createdTimePrice { get; set; }
+
+        public int id { get; set; }
     }
 }

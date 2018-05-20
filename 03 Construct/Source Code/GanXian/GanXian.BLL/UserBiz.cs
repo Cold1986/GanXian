@@ -50,11 +50,14 @@ namespace GanXian.BLL
             bool res = false;
             try
             {
-                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                if (!string.IsNullOrEmpty(user.openid))
                 {
-                    string sqlCommandText = @"insert into Users(openid,nickname,sex,province,city,country,headimgurl,privilege,unionid,createDate,updateDate,status) values(@openid,@nickname,@sex,@province,@city,@country,@headimgurl,@privilege,@unionid,@createDate,@updateDate,@status) ";
-                    conn.Execute(sqlCommandText, user);
-                    res = true;
+                    using (IDbConnection conn = DapperHelper.MySqlConnection())
+                    {
+                        string sqlCommandText = @"insert into Users(openid,nickname,sex,province,city,country,headimgurl,privilege,unionid,createDate,updateDate,status) values(@openid,@nickname,@sex,@province,@city,@country,@headimgurl,@privilege,@unionid,@createDate,@updateDate,@status) ";
+                        conn.Execute(sqlCommandText, user);
+                        res = true;
+                    }
                 }
             }
             catch (Exception e)
@@ -88,9 +91,23 @@ namespace GanXian.BLL
             return res;
         }
 
-        public void insertUserPhone()
+        public bool insertUserPhone(users user)
         {
-
+            bool res = false;
+            try
+            {
+                using (IDbConnection conn = DapperHelper.MySqlConnection())
+                {
+                    string sqlCommandText = @"insert into Users(openid,phone,createDate,updateDate) values(@openid,@phone,now(),now()) ";
+                    conn.Execute(sqlCommandText, user);
+                    res = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return res;
         }
 
         public bool updateUserPhone(users user)
