@@ -255,14 +255,18 @@
     <Content Include="images\back_icon.png" />
     <Content Include="images\bot_top_arrow.png" />
     <Content Include="images\checkIcont.png" />
+    <Content Include="images\edit.png" />
     <Content Include="images\forward.png" />
+    <Content Include="images\home.png" />
     <Content Include="images\icon.png" />
     <Content Include="images\loading.gif" />
     <Content Include="images\location.png" />
+    <Content Include="images\logistics.png" />
     <Content Include="images\member_bg.png" />
     <Content Include="images\member_img16.png" />
     <Content Include="images\member_mp_img.png" />
     <Content Include="images\must-learn.png" />
+    <Content Include="images\must-learn2.png" />
     <Content Include="images\noavatar.png" />
     <Content Include="images\order_bg.png" />
     <Content Include="images\order_bg_1.png" />
@@ -409,6 +413,7 @@
     <Content Include="Views\Admin\product.cshtml" />
     <Content Include="Views\Admin\userList.cshtml" />
     <Content Include="Views\Admin\order.cshtml" />
+    <Content Include="Scripts\jweixin-1.2.0.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

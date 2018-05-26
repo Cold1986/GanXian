@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 .clear{ clear:both;}
 .my_nav,.my_tab a,.my_menu li,.layer .action a {-webkit-box-sizing:border-box;box-sizing:border-box}
 .my_nav ul {display:box;display:-ms-box;display:-webkit-box;display:flex;display:-ms-flexbox;display:-webkit-flex}
@@ -261,7 +261,14 @@ ul.cmd_icon li:last-child{border-bottom:0 none;background:none}
   text-indent: -999px;
   border-radius: 5px;
 }
-
+.nav-right.home {
+	text-indent: 15px;
+	color: #fff;
+	line-height: 34px;
+	width: 60px;
+	background: url("../images/home.png") left center no-repeat;
+	background-size: auto 50%;
+}
 .fl{float:left;}
 .fr{float:right;}
 .member_cz_con{font-size: 12px;max-width: 768px;margin: 0 auto;}
