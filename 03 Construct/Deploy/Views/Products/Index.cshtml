@@ -8,6 +8,68 @@
     <link rel="stylesheet" href="~/Content/productDetail.css">
     <script charset="utf-8" src="~/Scripts/TouchSlide.js"></script>
     <script charset="utf-8" src="~/Scripts/Products/myProdDetail.js?V=1.5"></script>
+    <script charset="utf-8" src="~/Scripts/jweixin-1.2.0.js"></script>
+@*<script type="text/javascript">
+    wx.config({
+        debug: false,
+        appId: '<%=appId %>',
+        timestamp: <%=timestamp %>,
+        nonceStr: '<%=nonceStr %>',
+        signature: '<%=signature %>',
+        jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'scanQRCode'
+        ]
+    });
+    function shareCallBack() {
+        alert("分享成功");
+        // 用户确认分享后执行的回调函数
+        //$.ajax({
+        //    url: "Handler/NewsHandler.ashx",
+        //    data: {
+        //        act: "share",
+        //        openid: "<%=openid %>"
+        //    },
+        //    cache:false,
+        //    success: function (result) {
+        //        var data = $.parseJSON(result);
+        //        if (data.errcode == 0) {
+        //            alert("分享成功");
+        //        }
+        //        else{
+        //            alert(result);
+        //        }
+        //    }
+        //});
+    }
+    wx.ready(function () {
+        var shareData = {
+            title: "萌宅族抽奖",
+            desc: "百分百中奖,分享此页面给朋友,朋友扫描二维码并关注,既能多抽一次哦~",
+            link: "<%=shareurl%>",
+            imgUrl: '<%=newsPic%>',
+            success: shareCallBack
+        };
+
+        // 2. 分享接口
+        // 2.1 “分享给朋友”
+        wx.onMenuShareAppMessage(shareData);
+        // 2.2 “分享到朋友圈”
+        wx.onMenuShareTimeline(shareData);
+        // 2.3 “分享到QQ”
+        wx.onMenuShareQQ(shareData);
+        // 2.4 “分享到微博”
+        wx.onMenuShareWeibo(shareData);
+    });
+
+    wx.error(function (res) {
+        alert(res.errMsg);
+    });
+</script>*@
 }
 <div class="container">
     <div class="row white-bg">
@@ -34,14 +96,14 @@
                     <ul style="width: 3072px; position: relative; overflow: hidden; padding: 0px; margin: 0px; transition-duration: 200ms; transform: translateX(-768px);">
                         <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                             <a href="#">
-                                <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic1))>
+                                <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic1))>
                             </a>
                         </li>
                         @if (!string.IsNullOrEmpty(Model.pic2))
                         {
                             <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                                 <a href="#">
-                                    <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic2))>
+                                    <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic2))>
                                 </a>
                             </li>
                         }
@@ -49,7 +111,7 @@
                         {
                             <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                                 <a href="#">
-                                    <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic3))>
+                                    <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic3))>
                                 </a>
                             </li>
                         }
@@ -57,7 +119,7 @@
                         {
                             <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                                 <a href="#">
-                                    <img style="max-width:100vw;max-height:80vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(model => model.pic4))>
+                                    <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(model => model.pic4))>
                                 </a>
                             </li>
                         }

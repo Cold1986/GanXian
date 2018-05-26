@@ -19,6 +19,7 @@
             $('#r-size').val(retData.specs);
             $('#r-price').val(retData.originalPrice);
             $('#r-oPrice').val(retData.discountedPrice);
+            $('#r-cost').val(retData.cost);
             $('#r-APN').val(retData.origin);
             $('#r-weight').val(retData.nw);
             $('#r-condition').val(retData.storageCondition);
