@@ -380,7 +380,8 @@ namespace Domain.Controllers
                 {
                     if (userRes.province.IndexOf("上海") >= 0
                         || userRes.province.IndexOf("江苏") >= 0
-                        || userRes.province.IndexOf("浙江") >= 0)
+                        || userRes.province.IndexOf("浙江") >= 0
+                        || userRes.province.IndexOf("安徽") >= 0)
                     {
                         postage = SFJZF;
                     }
