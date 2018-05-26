@@ -47,7 +47,7 @@ function getPropValImgs(valId){
 			  for(var j=0;j<imgList.length;j++){
 
 				  str+= '<li style="display: table-cell; vertical-align: middle; max-width: 768px;">';
-				  str+= '<a href="#"><img style="max-width:100vw;max-height:80vw;margin:auto;" src="'+photoPath+imgList[j]+'"></a>';
+				  str+= '<a href="#"><img style="max-width:100vw;margin:auto;" src="'+photoPath+imgList[j]+'"></a>';
 				  str+= '</li>';
 				  
 				  strCounts+= '<li></li>';

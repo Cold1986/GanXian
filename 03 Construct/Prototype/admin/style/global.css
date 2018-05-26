@@ -162,11 +162,11 @@ aside ul li a i {
 	margin-left: 10px;
 	float: right;
 }
-.delete-alert .popup-inner {
+.delete-alert .popup-inner, .return-alert .popup-inner {
 	width: 350px;
 }
 
-.delete-alert p {
+.delete-alert p, .return-alert p {
 	margin: 30px;
 	font-weight: bold;
 }

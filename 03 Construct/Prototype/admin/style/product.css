@@ -6,6 +6,7 @@
 }
 .filter {
 	margin-bottom: 20px;
+	position: relative;
 }
 .filter .title {
 	padding-left: 20px;
@@ -30,6 +31,7 @@
 .filter ul li {
 	margin: 0 20px 5px 0;
 	float: left;
+	height: 24px;
 }
 .filter ul li label {
 	display: inline-block;
@@ -53,14 +55,13 @@
 	margin-bottom: 2px;
 }
 .filter .control {
-	min-width: 60px;
-	position: relative;
+	position: absolute;
+	width: 130px;
+	bottom: 10px;
+	right: 10px;
 }
 .filter .control section {
-	position: absolute;
-	width: 125px;
-	bottom: 0;
-	right: 0;
+
 }
 
 
@@ -180,18 +181,37 @@
 }
 .add-item li {
 	font-size: 12px;
+	margin-bottom: 5px;
 }
-.add-item li label {
+.add-item li:last-child {
+	margin-bottom: 20px;
+}
+.add-item li:last-child > div {
+	display: inline-block;
+}
+.add-item li:last-child > label {
+	vertical-align: top;
+}
+.add-item .r-pic {
+	display: inline-block;
+	background: #ececec;
+	margin: 0 10px 5px 0;
+	width: 150px;
+}
+.add-item li:last-child div > .radio-box {
+	display: inline-block;
+	width: 100px;
+}
+.add-item li > label {
 	width: 125px;
 	display: inline-block;
 	text-align: right;
 	padding-right: 15px;
 }
-.add-item li input {
+.add-item li input[type="text"] {
 	width: 250px;
 	height: 22px;
 	border: 1px solid #d1d1d1;
-	margin-bottom: 5px;
 	padding: 0 10px;
 }
 .add-item li textarea {
@@ -206,6 +226,7 @@
 }
 .add-item li .error-msg {
 	position: relative;
+	padding-left: 135px;
 	right: 0;
 	top: 0;
 }
@@ -225,3 +246,29 @@
 		max-height: calc( 100vh - 120px - 153px - 75px );
 	}
 }
+
+
+.shipping {
+	padding: 20px 40px;
+}
+.shipping .blue {
+	margin-bottom: 3px;
+}
+.delivery-alert .shipping p {
+	padding: 0;
+}
+.shipping a {
+	font-size: 12px;
+	padding: 5px 0;
+	color: #1495ff;
+	margin: 0 auto;
+	text-decoration: underline;
+}
+.add-shipping {
+	text-align: center;
+	margin: 10px;
+}
+.shipping button {
+	float: none;
+}
+

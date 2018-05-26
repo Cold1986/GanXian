@@ -39,6 +39,10 @@
     #register {
       width: 100%;
     }
+    .skip {
+      text-align: center;
+      margin-top: 10px;
+    }
 </style>
 </head>
 <body class="" style="background-color:#fff">
@@ -62,6 +66,7 @@
               <input id="code" name="j_code" class="form-control" placeholder="请输入验证码" message="验证码" required="true" style="-webkit-appearance:none;" autocomplete="off"  tabindex="2" ><input type="button" class="btn" tabindex="3" onclick="sendCode(this)" value="获取验证码" id="getCode" />
                 <div class="clear" style="margin-bottom: 20px"></div>
                 <div><button type="button" class="btn btn-info btn-block" id="register" onclick=""  tabindex="4" >注 册</button></div>
+                <div class="skip"><a href="javascript:history.go(-1)">跳过手机绑定</div>
             </form>
         </div>
      </div>
