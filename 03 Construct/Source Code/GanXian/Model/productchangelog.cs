@@ -24,6 +24,11 @@ namespace GanXian.Model
 		private string _pic2;
 		private string _pic3;
 		private string _pic4;
+		private string _pic5;
+		private string _picdetail1;
+		private string _picdetail2;
+		private string _picdetail3;
+		private string _picdetail4;
 		private string _showpic;
 		private string _origin;
 		private string _nw;
@@ -144,6 +149,46 @@ namespace GanXian.Model
 		{
 			set{ _pic4=value;}
 			get{return _pic4;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string pic5
+		{
+			set{ _pic5=value;}
+			get{return _pic5;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string picDetail1
+		{
+			set{ _picdetail1=value;}
+			get{return _picdetail1;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string picDetail2
+		{
+			set{ _picdetail2=value;}
+			get{return _picdetail2;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string picDetail3
+		{
+			set{ _picdetail3=value;}
+			get{return _picdetail3;}
+		}
+		/// <summary>
+		/// 
+		/// </summary>
+		public string picDetail4
+		{
+			set{ _picdetail4=value;}
+			get{return _picdetail4;}
 		}
 		/// <summary>
 		/// 

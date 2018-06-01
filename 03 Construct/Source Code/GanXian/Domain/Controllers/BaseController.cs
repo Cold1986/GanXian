@@ -20,7 +20,8 @@ namespace Domain.Controllers
         // GET: Base
         protected string isWechatTest = System.Configuration.ConfigurationSettings.AppSettings["isWechatTest"];
         protected string isPayTest = System.Configuration.ConfigurationSettings.AppSettings["isPayTest"];
-
+        protected string wechatAppid = System.Configuration.ConfigurationSettings.AppSettings["wechat:appid"];
+        protected string wechatAppSecret = System.Configuration.ConfigurationSettings.AppSettings["wechat:AppSecret"];
         protected string projectURL = System.Configuration.ConfigurationSettings.AppSettings["projectUrl"];
 
         /// <summary>

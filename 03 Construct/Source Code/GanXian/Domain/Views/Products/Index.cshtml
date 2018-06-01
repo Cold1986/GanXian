@@ -8,6 +8,68 @@
     <link rel="stylesheet" href="~/Content/productDetail.css">
     <script charset="utf-8" src="~/Scripts/TouchSlide.js"></script>
     <script charset="utf-8" src="~/Scripts/Products/myProdDetail.js?V=1.5"></script>
+    <script charset="utf-8" src="~/Scripts/jweixin-1.2.0.js"></script>
+    <script type="text/javascript">
+        wx.config({
+            debug: false,
+            appId: '@Html.Raw(ViewBag.appId)',
+            timestamp: '@Html.Raw(ViewBag.timestamp)',
+            nonceStr: '@Html.Raw(ViewBag.nonceStr)',
+            signature: '@Html.Raw(ViewBag.signature)',
+            jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'scanQRCode'
+            ]
+        });
+
+        wx.checkJsApi({
+            jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'scanQRCode'
+            ], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function (res) {
+                console.log(res);
+                // 以键值对的形式返回，可用的api值true，不可用为false
+                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            }
+        });
+
+        function shareCallBack() {
+            alert("分享成功");
+        }
+        wx.ready(function () {
+            var shareData = {
+                title: '@Model.productName',
+                desc:  '@Model.remark',
+                link: '@Html.Raw(ViewBag.url)',
+                imgUrl: '@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic1))',//Html.Raw(ViewBag.shareImg)
+                success: shareCallBack
+            };
+
+                    // 2. 分享接口
+                    // 2.1 “分享给朋友”
+                    wx.onMenuShareAppMessage(shareData);
+                    // 2.2 “分享到朋友圈”
+                    wx.onMenuShareTimeline(shareData);
+                    // 2.3 “分享到QQ”
+                    wx.onMenuShareQQ(shareData);
+                    // 2.4 “分享到微博”
+                    wx.onMenuShareWeibo(shareData);
+                });
+
+        wx.error(function (res) {
+            //alert('好像出错了');
+            alert(res.errMsg);
+        });
+    </script>
 }
 <div class="container">
     <div class="row white-bg">
@@ -26,6 +88,10 @@
                     @if (!string.IsNullOrEmpty(Model.pic4))
                     {
                         <li>4</li>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.pic5))
+                    {
+                        <li>5</li>
                     }
                 </ul>
             </div>
@@ -58,6 +124,14 @@
                             <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
                                 <a href="#">
                                     <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(model => model.pic4))>
+                                </a>
+                            </li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.pic5))
+                        {
+                            <li style="display: table-cell; vertical-align: middle; max-width: 768px;">
+                                <a href="#">
+                                    <img style="max-width:100vw;margin:auto;" src=@string.Concat(ViewBag.ProjectUrl, Html.DisplayFor(model => model.pic5))>
                                 </a>
                             </li>
                         }
@@ -140,18 +214,21 @@
                     @(new HtmlString(Model.remark))
                 </div>
                 <div class="prop-area" style="min-height:300px;overflow: hidden;">
-                    <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic1)) alt="" />
-                    @if (!string.IsNullOrEmpty(Model.pic2))
+                    @if (!string.IsNullOrEmpty(Model.picDetail1))
                     {
-                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic2)) alt="" />
+                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.picDetail1)) alt="" />
                     }
-                    @if (!string.IsNullOrEmpty(Model.pic3))
+                    @if (!string.IsNullOrEmpty(Model.picDetail2))
                     {
-                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic3)) alt="" />
+                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.picDetail2)) alt="" />
                     }
-                    @if (!string.IsNullOrEmpty(Model.pic4))
+                    @if (!string.IsNullOrEmpty(Model.picDetail3))
                     {
-                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.pic4)) alt="" />
+                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.picDetail3)) alt="" />
+                    }
+                    @if (!string.IsNullOrEmpty(Model.picDetail4))
+                    {
+                        <img src=@string.Concat(ViewBag.ProjectUrl,Html.DisplayFor(model => model.picDetail4)) alt="" />
                     }
                 </div>
             </div>

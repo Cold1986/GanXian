@@ -67,7 +67,7 @@ namespace GanXian.BLL
                 IDbTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    string insertProdSQL = "insert into products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,showPic,origin,nw,storageCondition,remark,createDate,status,cost) values(@productName,@specs,@originalPrice,@discountedPrice,@pic1,@pic2,@pic3,@pic4,@showPic,@origin,@nw,@storageCondition,@remark,now(),1,@cost);select @@IDENTITY";
+                    string insertProdSQL = "insert into products(productName,specs,originalPrice,discountedPrice,pic1,pic2,pic3,pic4,pic5,picDetail1,picDetail2,picDetail3,picDetail4,showPic,origin,nw,storageCondition,remark,createDate,status,cost) values(@productName,@specs,@originalPrice,@discountedPrice,@pic1,@pic2,@pic3,@pic4,@pic5,@picDetail1,@picDetail2,@picDetail3,@picDetail4,@showPic,@origin,@nw,@storageCondition,@remark,now(),1,@cost);select @@IDENTITY";
 
                     prodId = conn.ExecuteScalar(insertProdSQL, prod, transaction).ToString();
                     if (!string.IsNullOrEmpty(tabs))
@@ -118,6 +118,11 @@ namespace GanXian.BLL
                                             `pic2`,
                                             `pic3`,
                                             `pic4`,
+                                            `pic5`,
+                                            `picDetail1`,
+                                            `picDetail2`,
+                                            `picDetail3`,
+                                            `picDetail4`,
                                             `showPic`,
                                             `origin`,
                                             `nw`,
@@ -141,6 +146,11 @@ namespace GanXian.BLL
                                             @pic2,
                                             @pic3,
                                             @pic4,
+                                            @pic5,
+                                            @picDetail1,
+                                            @picDetail2,
+                                            @picDetail3,
+                                            @picDetail4,
                                             @showPic,
                                             @origin,
                                             @nw,
@@ -203,7 +213,7 @@ namespace GanXian.BLL
                 IDbTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    string sqlCommandText = @"update Products set cost=@cost, productName=@productName,specs=@specs,originalPrice=@originalPrice,discountedPrice=@discountedPrice,discountedExpiredDate=@discountedExpiredDate,pic1=@pic1,pic2=@pic2,pic3=@pic3,pic4=@pic4,showPic=@showPic,origin=@origin,nw=@nw,storageCondition=@storageCondition,remark=@remark,status=@status,column1=@column1,column2=@column2 WHERE productId=@productId";
+                    string sqlCommandText = @"update Products set cost=@cost, productName=@productName,specs=@specs,originalPrice=@originalPrice,discountedPrice=@discountedPrice,discountedExpiredDate=@discountedExpiredDate,pic1=@pic1,pic2=@pic2,pic3=@pic3,pic4=@pic4,pic5=@pic5,picDetail1=@picDetail1,picDetail2=@picDetail2,picDetail3=@picDetail3,picDetail4=@picDetail4,showPic=@showPic,origin=@origin,nw=@nw,storageCondition=@storageCondition,remark=@remark,status=@status,column1=@column1,column2=@column2 WHERE productId=@productId";
                     conn.Execute(sqlCommandText, product, transaction);
 
                     string sql = @"update products2tabs set status = 0 where productId=@prodId; ";

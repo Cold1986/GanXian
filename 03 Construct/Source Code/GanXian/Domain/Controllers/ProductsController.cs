@@ -35,7 +35,6 @@ namespace Domain.Controllers
             ViewBag.userShopcartNum = ShopCartBiz.CreateNew().getUserCartsNum(userOpenId).ToString();//获取用户购物车数量
             #endregion
 
-
             #region 产品信息部分
             products products = new products();
             var resCache = CacheHelper.GetCache("product_" + id.ToString());
@@ -56,8 +55,18 @@ namespace Domain.Controllers
             }
             ViewBag.PageName = "商品详情";
             ViewBag.ProjectUrl = base.projectURL;
-            return View(products);
             #endregion
+
+            //微信分享
+            ViewBag.appId = base.wechatAppid;
+            ViewBag.appSecret = base.wechatAppSecret;
+            ViewBag.timestamp = DateTime.Now.Ticks.ToString().Substring(0, 10);
+            ViewBag.nonceStr = Guid.NewGuid().ToString().Substring(0, 16);
+            ViewBag.url = Request.Url.ToString();
+            string jsapi_ticket = WeiXinSDK.WeiXinJSSDK.GetJsapiTicket(ViewBag.appId, ViewBag.appSecret);
+            ViewBag.signature = WeiXinSDK.WeiXinJSSDK.GetJsSdkSignature(ViewBag.nonceStr, jsapi_ticket, ViewBag.timestamp.ToString(), ViewBag.url);
+            ViewBag.shareImg = string.Concat(base.projectURL, products.pic1).Replace("/img/", "/Thumbnail/");
+            return View(products);
         }
 
         /// <summary>

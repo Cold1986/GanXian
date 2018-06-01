@@ -106,6 +106,7 @@
     <Compile Include="EnumLogType.cs" />
     <Compile Include="managerusers.cs" />
     <Compile Include="orderlog.cs" />
+    <Compile Include="product2share.cs" />
     <Compile Include="productchangelog.cs" />
     <Compile Include="products.cs" />
     <Compile Include="products2Tab.cs" />

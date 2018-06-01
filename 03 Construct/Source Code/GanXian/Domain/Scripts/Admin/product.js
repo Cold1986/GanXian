@@ -28,7 +28,6 @@
             $('.popup-inner input').prop('checked', false);
             $('#' + retData.showPic).prop('checked', true);
         },
-
     });
 
     $.ajax({
@@ -52,12 +51,8 @@
                     }
                 });
             }
-
         },
-
     });
-
-
 
     $(".edit-item").show();
 }

@@ -5,6 +5,7 @@ using GanXian.BLL;
 using GanXian.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -71,16 +72,19 @@ namespace Domain.Controllers
             AdminProductViewModels adminproduct = new AdminProductViewModels();
             ProductsBiz Pbiz = ProductsBiz.CreateNew();
             var ProductList = Pbiz.getProductList();
+            //根据名称或备注搜索产品信息
             if (!string.IsNullOrEmpty(searchString))
             {
                 ProductList = ProductList.Where(w => (!string.IsNullOrEmpty(w.remark) && w.remark.Contains(searchString))
                                                                         || w.productName.Contains(searchString)).ToList();
             }
+            //根据状态搜索产品
             if (searchStatus != 99)
             {
                 ProductList = ProductList.Where(w => w.status.Equals(searchStatus)).ToList();
             }
             adminproduct.productList = ProductList;
+            //页面产品标签绑定
             var tablist = Pbiz.getAllTab();
             List<CheckBoxListInfo> infos = new List<CheckBoxListInfo>();
             foreach (tablist item in tablist)
@@ -177,7 +181,7 @@ namespace Domain.Controllers
             string r_weight = collection["r_weight"];//净重
             string r_condition = collection["r_condition"];//存放条件
             string r_remark = collection["r_remark"];//产品描述
-            string main_pic = Request.Params["main_pic"];//主图图片
+            string main_pic = "pic1";// Request.Params["main_pic"];//主图图片
             string tablist = Request.Params["tablist"];
 
             products prod = new products();
@@ -203,6 +207,7 @@ namespace Domain.Controllers
             string res1 = savefiles(file1, r_product);
             if (!string.IsNullOrEmpty(res1))
             {
+                this.saveThumbnail(file1, res1);
                 prod.pic1 = "/img/" + res1;
             }
             HttpPostedFileBase file2 = Request.Files["file2"];
@@ -222,6 +227,37 @@ namespace Domain.Controllers
             if (!string.IsNullOrEmpty(res4))
             {
                 prod.pic4 = "/img/" + res4;
+            }
+
+            HttpPostedFileBase file5 = Request.Files["file5"];
+            string res5 = savefiles(file5, r_product);
+            if (!string.IsNullOrEmpty(res5))
+            {
+                prod.pic5 = "/img/" + res5;
+            }
+            HttpPostedFileBase filePicDetail1 = Request.Files["picDetail1"];
+            string picDetail1 = savefiles(filePicDetail1, r_product);
+            if (!string.IsNullOrEmpty(picDetail1))
+            {
+                prod.picDetail1 = "/img/" + picDetail1;
+            }
+            HttpPostedFileBase filePicDetail2 = Request.Files["picDetail2"];
+            string picDetail2 = savefiles(filePicDetail2, r_product);
+            if (!string.IsNullOrEmpty(picDetail2))
+            {
+                prod.picDetail2 = "/img/" + picDetail2;
+            }
+            HttpPostedFileBase filePicDetail3 = Request.Files["picDetail3"];
+            string picDetail3 = savefiles(filePicDetail3, r_product);
+            if (!string.IsNullOrEmpty(picDetail3))
+            {
+                prod.picDetail3 = "/img/" + picDetail3;
+            }
+            HttpPostedFileBase filePicDetail4 = Request.Files["picDetail4"];
+            string picDetail4 = savefiles(filePicDetail4, r_product);
+            if (!string.IsNullOrEmpty(picDetail4))
+            {
+                prod.picDetail4 = "/img/" + picDetail4;
             }
 
             try
@@ -251,6 +287,11 @@ namespace Domain.Controllers
                 changelog.pic2 = prodInfo.pic2;
                 changelog.pic3 = prodInfo.pic3;
                 changelog.pic4 = prodInfo.pic4;
+                changelog.pic5 = prodInfo.pic5;
+                changelog.picDetail1 = prodInfo.picDetail1;
+                changelog.picDetail2 = prodInfo.picDetail2;
+                changelog.picDetail3 = prodInfo.picDetail3;
+                changelog.picDetail4 = prodInfo.picDetail4;
                 changelog.showPic = prodInfo.showPic;
                 changelog.origin = prodInfo.origin;
                 changelog.nw = prodInfo.nw;
@@ -288,9 +329,50 @@ namespace Domain.Controllers
                     Directory.CreateDirectory(fileSaveDir);
                 }
                 file.SaveAs(Path.Combine(fileSaveDir, fileNewName));
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
             return fileNewName;
+        }
+
+        /// <summary>
+        /// 保存缩略图，用于分享朋友圈
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="fileNewName"></param>
+        private void saveThumbnail(HttpPostedFileBase file, string fileNewName)
+        {
+            //生成缩略图保存  
+            System.Drawing.Image image = System.Drawing.Image.FromStream(file.InputStream);
+            int width = image.Width;
+            int height = image.Height;
+
+            int max = 100;
+            if (width > max || height > max)
+            {
+                try
+                {
+                    System.Drawing.Image newPic; //定义新位图对象  
+                    if (width > height)
+                    {
+                        newPic = new Bitmap(image, max, height * max / width); //缩放  
+                    }
+                    else
+                    {
+                        newPic = new Bitmap(image, width * max / height, max); //缩放  
+                    }
+                    string fileSaveDir = Server.MapPath("~/Thumbnail");
+                    if (!Directory.Exists(fileSaveDir))
+                    {
+                        Directory.CreateDirectory(fileSaveDir);
+                    }
+                    newPic.Save(Path.Combine(fileSaveDir, fileNewName));
+                    Thread.Sleep(50);
+                }
+                catch (System.Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         /// <summary>

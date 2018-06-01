@@ -453,6 +453,10 @@
       <Project>{a5fc745f-240a-4cce-a567-aff8b4f90678}</Project>
       <Name>WechatService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WeiXinSDK\WeiXinSDK.csproj">
+      <Project>{defbf641-1396-4082-9945-c2ce6c56cd5f}</Project>
+      <Name>WeiXinSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
